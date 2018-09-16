@@ -372,19 +372,18 @@ tb_pb_2.motif_summary.csv</samp>
           Using the same raw data and the SMRT portal analysis suite we have generated whole genome assemblies
           for the samples. These were then aligned to the reference and variants were called. The variants from all
           the samples were merged to a single FASTA formatted file. We can use this file to create the phylogenetic
-          tree. <b>Try to remember the command to create the tree and run it in the terminal using 'PacBio.ML' as
-          the output name</b>. If you need the solution
-          click on the button below.
+          tree. <b>Try to remember the command to create the tree and run it in the terminal using 'pacbio.fasta' as
+          the input fasta and 'pacbio.ML' as the output name</b>. If you need the solution click on the button below.
       </p>
       <div id="tree_solution">
           <button id="solution_button" type="button" class="btn btn-primary" data-toggle="collapse" data-target="#collapseFour">Give me the solution</button>
           <div id="collapseFour" class="collapse" aria-labelledby="solution_button" data-parent="#tree_solution">
-            <pre><code>raxmlHPC -m GTRGAMMA -s PacBio.fasta -n PacBio.ML -p 11334 -k -f a -x 13243 -N 100</code></pre>
+            <pre><code>raxmlHPC -m GTRGAMMA -s pacbio.fasta -n pacbio.ML -p 11334 -k -f a -x 13243 -N 100</code></pre>
           </div>
       </div>
       <br>
       <p>
-          Open up the tree by launching <kbd>figtree</kbd>. Open the tree by clicking on <kbd>Open...</kbd> and selecting the 'RAxML_bestTree.PacBio.ML'
+          Open up the tree by launching <kbd>figtree</kbd>. Open the tree by clicking on <kbd>Open...</kbd> and selecting the 'RAxML_bestTree.pacbio.ML'
           tree. Midpoint root the tree by selecting <kbd>Midpoint Root</kbd> from the <kbd>Tree</kbd> menu. Finally, we
           will load annotations allowing figtree to display which samples do or don't have methylation. Select <kbd>Import
           annotations...</kbd> from the <kbd>File</kbd> menu and select the '<b>filtered_motifs.tsv</b>' file. This file was
@@ -445,18 +444,18 @@ tb_pb_2.motif_summary.csv</samp>
       </p>
       <p>
           The variants found by aligning the whole genome assemblies to the reference are stored in the multi-sample VCF file
-          '<b>PacBio.vcf.gz</b>'. We will use bcftools to process this file and extract the relevant information we need .
+          '<b>pacbio.vcf.gz</b>'. We will use bcftools to process this file and extract the relevant information we need .
       </p>
       <h6>1. Extracting sample-specific mutations</h6>
       <p>
           The first thing we need to do is extract variants which are only present in the three samples. We can do this using
           the <kbd>bcftools view</kbd> command. First let find out how many variants are present in the VCF file:
       </p>
-      <pre><code>bcftools view PacBio.vcf.gz -H | wc -l</code></pre>
+      <pre><code>bcftools view pacbio.vcf.gz -H | wc -l</code></pre>
       <p>
           The command can be broken down into several parts:
           <ul>
-              <li><kbd>bcftools view PacBio.vcf.gz</kbd>: allows to view contents of the VCF file</li>
+              <li><kbd>bcftools view pacbio.vcf.gz</kbd>: allows to view contents of the VCF file</li>
               <li><kbd>-H</kbd>: This flag prevents header lines present in the file to be output</li>
               <li><kbd>|</kbd>: The pipe passes the output from whatever command was written before it and passes it to the next.</li>
               <li><kbd>wc -l</kbd>: This command counts the number of lines which are passed to it</li>
@@ -468,7 +467,7 @@ tb_pb_2.motif_summary.csv</samp>
           using the <kbd>-s</kbd> flag. We can also restrict our analysis to variants which are present exclusively in our samples
           using the <kbd>-x</kbd> flag. The command will be the following:
       </p>
-      <pre><code>bcftools view PacBio.vcf.gz -H  -s tb_pb_10,tb_pb_14,tb_pb_11 -x | wc -l</code></pre>
+      <pre><code>bcftools view pacbio.vcf.gz -H  -s tb_pb_10,tb_pb_14,tb_pb_11 -x | wc -l</code></pre>
       <p>
           The command will now count <b>780</b> variants.
       </p>
@@ -479,7 +478,7 @@ tb_pb_2.motif_summary.csv</samp>
           of the variants on the chromosome but no information about genes. We can use <kbd>bcftools csq</kbd>
           to perform the annotation:
       </p>
-      <pre><code>bcftools view PacBio.vcf.gz -s tb_pb_10,tb_pb_14,tb_pb_11 -x | bcftools csq -f tb_genome.fasta -g tb_genome.gff  | grep Rv3263</code></pre>
+      <pre><code>bcftools view pacbio.vcf.gz -s tb_pb_10,tb_pb_14,tb_pb_11 -x | bcftools csq -f tb_genome.fasta -g tb_genome.gff  | grep Rv3263</code></pre>
       <p>
           We have dropped the <kbd>-H</kbd> we are no longer counting lines and the header is needed by the next command.
           The following new parts have been added:
@@ -502,7 +501,7 @@ Chromosome	3644554	.	G	A	225	PASS	VDB=0.847222;SGB=-0.693147;MQSB=0.91807;MQ0F=0
           This format can be a little difficult to understand so the last part we will add to this command will
           translate this to a more readable format:
       </p>
-      <pre><code>bcftools view PacBio.vcf.gz -s tb_pb_10,tb_pb_14,tb_pb_11 -x | bcftools csq -f tb_genome.fasta -g tb_genome.gff  | bcftools query -f '[%POS\t%SAMPLE\t%TBCSQ{1}\n]' | grep Rv3263</code></pre>
+      <pre><code>bcftools view pacbio.vcf.gz -s tb_pb_10,tb_pb_14,tb_pb_11 -x | bcftools csq -f tb_genome.fasta -g tb_genome.gff  | bcftools query -f '[%POS\t%SAMPLE\t%TBCSQ{1}\n]' | grep Rv3263</code></pre>
       <p>
           We have moved the <kbd>grep</kbd> command to the end and added in the following parameters:
           <ol>
