@@ -247,7 +247,7 @@
           The modifications and motifs pipeline also provides a CSV file containing all the positions in the genome as rows
           and several columns of information for each position (including the IPD ratio). Take a look at an example:
       </p>
-      <pre><code>head tb_pb_14.ipd.csv</code></pre>
+      <pre><code>zcat tb_pb_14.ipd.csv | head</code></pre>
       <p>
           This is a very large file, so we can't open it with LibreOffice Calc. The first
           few lines should look like the example below.
@@ -269,8 +269,8 @@
           1) the ipd.csv file, 2) the motif you would like to analyse and 3) the genome assembly for the sample
           (to find the motif locations). Let's analyse the '<b>CTCCAG</b>' motif for tb_pb_14 and tb_pb_16:
       </p>
-      <pre><code>analyse_motif_ipd.py tb_pb_14 CTCCAG tb_pb_14.assembly.fa
-analyse_motif_ipd.py tb_pb_16 CTCCAG tb_pb_16.assembly.fa </code></pre>
+      <pre><code>analyse_motif_ipd.py tb_pb_14.ipd.csv.gz CTCCAG tb_pb_14.assembly.fa
+analyse_motif_ipd.py tb_pb_16.ipd.csv.gz CTCCAG tb_pb_16.assembly.fa </code></pre>
       <div class="alert alert-warning" role="alert">
           The script will output the number of times the motif if found in the genome. Why do you think there are differences?
       </div>
