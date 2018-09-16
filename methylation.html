@@ -287,8 +287,38 @@ analyse_motif_ipd.py tb_pb_16.ipd.csv.gz CTCCAG tb_pb_16.assembly.fa </code></pr
       <img src="img/methylation_3.jpg" class="img-fluid" alt="Responsive image">
       <p>
           You should be able to see that tb_pb_16 has elevated IPD ratios (indicating methylation) on the 5th position of the motif while
-          tb_pb_14 does not. You can check to see if this is concordant with the motif_summary CSV files for these samples.
+          tb_pb_14 does not. Check to see if this is concordant with the motif_summary CSV files for these samples.
       </p>
+      <p>
+          We will now create the same plot for the '<b>GTAYNNNNATC</b>' motif for samples tb_pb_1 and tb_pb_4.
+      </p>
+      <pre><code>analyse_motif_ipd.py tb_pb_1.ipd.csv.gz GTAYNNNNATC tb_pb_1.assembly.fa
+analyse_motif_ipd.py tb_pb_4.ipd.csv.gz GTAYNNNNATC tb_pb_4.assembly.fa
+plot_ipd.R tb_pb_1,tb_pb_4 GTAYNNNNATC GTAYNNNNATC.pdf</code></pre>
+
+<div class="accordion" id="accordionExample">
+    <div class="card">
+        <div class = "card-header alert-warning"><strong>Which sample has evidence for methhylation at the 'GATNNNNRTAC' motif.</strong></div>
+        <div class="card-header" id="headingOne" data-toggle="collapse" data-target="#collapseOne">
+              tb_pb_1
+        </div>
+        <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+          <div class="card-body alert-danger">
+            <strong>False</strong>: There are no elevated IPD ratios on any of the bases for this sample.
+          </div>
+        </div>
+        <div class="card-header" id="headingTwo" data-toggle="collapse" data-target="#collapseTwo">
+              tb_pb_4
+        </div>
+        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+          <div class="card-body alert-success">
+            <strong>True</strong>: There are elevated IPD ratios on the third position (A).
+          </div>
+        </div>
+    </div>
+    <p>
+        <b>Finally try to follow to same commands to visualise the methylation at 'CACGCAG' for samples tb_pb_1 and tb_pb2.</b>
+    </p>
       <p>
           Let's try and combine all the individual datasets into a merged dataset. We have created a script to take the CSV files
           and create a matrix where the rows represent samples, the columns represent motifs and the cells represents the fraction
