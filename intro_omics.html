@@ -312,6 +312,66 @@ CGCCGCCGCCTTGGCGATCGCAGAAGCACCCGCCCGCGCTTACAACCCCCTGTTCATCTGGGGCGAGTCC</samp>
         out that this value always has to be a number, however since we left out that parameter it parses <b>tb.fasta</b>
         as the value and that causes the error.
     </p>
+    <hr>
+    <h4>R - A statistical package</h4>
+    <p>
+        In some parts of the practial you will be asked to open <b>R</b>. R is a free software environment for statistical
+        computing and graphics. It compiles and runs on a wide variety of UNIX platforms, Windows and MacOS. We will
+        be using it to run analysis and visualise results. R runs on the terminal and is started by typing <kbd>R</kbd>
+        and hitting enter. Go ahead and try it now. After running R you should see something like this in the terminal:
+    </p>
+    <div class="alert alert-info" role="alert">
+        <samp>R version 3.5.0 (2018-04-23) -- "Joy in Playing"
+Copyright (C) 2018 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin15.6.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+></samp>
+    </div>
+    <p>
+        It migt look slightly different depending on the version installed, but once you can see the '<b>></b>'
+        you are ready to type in commands. Try this for example:
+    </p>
+    <pre><code>1+2</code></pre>
+    <p>
+        This will output a value of '3'. You can store values in variables so you can access them later. Try this:
+    </p>
+    <pre><code>x&lt;-1+2
+x+1</code></pre>
+    <p>
+        You should have gotten an output of '4' after executing the final line. Here we stored the outcome of
+        <kbd>1+2</kbd> in <kbd>x</kbd> and then asked R to output <kbd>x+1</kbd>.
+    </p>
+    <p>
+        We can also use R to visualise data. Try to run the following:
+    </p>
+    <pre><code>plot(1:10,1:10)</code></pre>
+    <p>
+        A plot similar to the one below should appear.
+    </p>
+    <img src="img/omics_intro_5.jpg" class="img-fluid" alt="Responsive image">
+    <p>
+        We do not expect you to master R during this course, but rather to know how to run commands and understand
+        what they are doing. You can exit R by typing <kbd>quit()</kbd> followed by <kbd>n</kbd>.
+    </p>
+    <p>
+        That is it for the into to linux. You are now ready to go on the practicals. Good luck!
+    </p>
+
+
 
 
 
