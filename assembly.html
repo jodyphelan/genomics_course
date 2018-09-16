@@ -1,0 +1,551 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="course.css" type="text/css">
+    <style>
+
+    a:link,
+    a:visited {
+      color: black;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    </style>
+
+	<style>
+
+
+    .jumbotron-head{
+        background:linear-gradient(rgba(0, 0, 250, 0.45), rgba(125, 250, 250, 0.55)),url(img/Head_assembly.jpg);
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-position: top right;
+        color:white !important;
+        background-size: 100%;
+    }
+	</style>
+
+
+    <title>Assembly of Genomes - Pathogen 'Omics</title>
+  </head>
+  <!-- hello ernest! -->
+  <body>
+
+      <div class="jumbotron vertical-center jumbotron-fluid jumbotron-head">
+        <div class="container">
+          <h1 class="display-4">Assembly of Genomes</h1>
+          <p class="lead">From mapping and variant calling to <i>denovo</i> assembly of genomes</p>
+        </div> <!-- Container -->
+      </div>
+
+
+
+      <div class="container">
+    <h4>Assembly lecture</h4>
+    <object data="presentations/assembly_lecture_2018.pdf#page=1" type="application/pdf" width="100%" height=700px>
+        <p><b>Example fallback content</b>: This browser does not support PDFs. Please download the PDF to view it:
+        <a href="presentations/assembly_lecture_2018.pdf">Download PDF</a>.</p>
+    </object>
+    <hr>
+      <h4>Assembly Practical</h4>
+      <h4>Introduction</h4>
+      <p>The main challenge of sequencing a genome is determining how to arrange reads into chromosomes.
+        We have already explored mapping, where the sequence data is aligned to a known reference genome.
+        A complementary technique, where no reference is used or available, is called <b>de novo assembly</b>.</p>
+      <p><i>De novo</i> assembly is the process of reconstruction of the sample genome sequence without
+        comparison to other genomes. It follows a bottom-up strategy by which reads are overlapped and
+        grouped into contigs. Contigs are joined into scaffolds covering, ideally, the whole of each
+        chromosome in the organism. However <i>de novo</i> assembly from next generation sequence (NGS) data
+        faces several challenges. Read lengths are short and therefore detectable overlap between reads
+        is lower and repeat regions harder to resolve. Longer read lengths will overcome these limitations
+        but this is technology limited. These issues can also be overcome by increasing the coverage depth,
+        <i>i.e.</i> the number of reads over each part of the genome. The higher the coverage then the
+        greater the chance of observing overlaps among reads to create larger contigs and being able to
+        span short repeat regions. In addition, the modern hardware commonly output paired-end reads.
+        These are two reads that are separated by a gap of known size. They enable the resolution of
+        repeats greater than the read length by employing their expected separation and orientation as
+        location constraints. Sequencing errors add difficulty since algorithms must allow certain
+        mismatches when overlapping reads and joining regions, possibly leading to discarding true
+        overlaps and false positives (Miller, Koren, & Sutton, 2010)</p>
+      <p>Despite all mentioned limitations, the high coverage currently achieved, growing read lengths
+        (e.g. 100 read depth, >150bp – Illumina HiSeq2500) and paired-end information make it feasible
+        to obtain assemblies from small genomes (e.g. bacterial) with relatively low fragmentation.
+        Current assemblers employ graph theory to represent sequences and their overlaps as a set of
+        nodes and edges, being classified into three main groups: greedy, Overlap/Layout/Consensus (OLC)
+        and de Bruijn graph assemblers</p>
+        <div class="row">
+          <div class="col-sm-6 text-center">
+              <img src="img/assembly_2.jpg" class="img-fluid">
+          </div>
+          <div class="col-sm-6">
+              <p>Graph theory is a branch of discrete mathematics that studies problems
+                  of graphs. Graphs are sets of points called ‘vertices’ or ‘nodes’ joined by lines called
+                  ‘edges’. In the graph to the left there are 6 nodes and 7 edges. The edges are
+                  unidirectional which means that they can only be traversed in the direction of the arrow.
+                  For example paths in this graph include 3-2-5-1, 3-4-6 and 3-2-1.
+              </p>
+          </div>
+        </div>
+        <p>The greedy algorithms consist of progressively adding single reads into contigs by
+          end-to-end overlapping, starting with those reads with the highest overlap score and
+          ending once no more joins can be found. Such scores are normally measured as the overlap
+          length or the percentage of identity between reads along their joining region. SSAKE
+          (Warren, Sutton, Jones, & Holt, 2007), the first short-read assembler, is based on this
+          approach as well as its two descendants SHARCGS (Dohm, Lottaz, Borodina, & Himmelbauer,
+          2007) and VCAKE (Jeck et al., 2007).</p>
+        <p>OLC assemblers build an overlap graph, in which nodes represent the reads and edges the
+          overlaps. It requires a very time-consuming first step, where all reads are compared
+          against each other. Paths along the graph show likely contigs.</p>
+        <p>These two algorithms (greedy and OLC) are more suited to fewer, longer reads than
+          those generated with NGS technologies. De Bruijn graph assemblers are the state-of-the-art
+          approach for data sets composed of many thousands of short reads.</p>
+      <div class="text-center">
+          <figure>
+              <img src="img/assembly_3.jpg" class="img-fluid">
+              <figcaption class="figure-caption">An example de Bruijn graph – the graph on the left is how
+              modern <i>de novo</i> assemblers work (Compeau, 2007).</figcaption>
+          </figure>
+
+      </div>
+
+
+
+          <p>De Bruijn graph assemblers start by splitting the set of reads into k-mers, a set of
+            overlapping sub-reads, and then use the latter to build the graph. Each edge
+            represents an observed k-mer and its adjacent nodes the prefix and suffix of the
+            original k-mer. Therefore, groups of overlapping reads are not actually computed
+            but rather represented as paths in the graph. In the figure above the sequence
+            ATGGCGTGCA with 3-mers and overlap of 2 base pairs (bp).</p>
+          <p>Since edges correspond to all k-mers existing in the sampled genome, the assembly
+            is resolved by finding a path that visits every edge in the graph. This approach
+            is especially suitable to handle the large number of reads because each k-mer is
+            stored at most once regardless of how many times it occurs in the reads. Several
+            programs implement de Bruijn graph algorithms, including Euler (Pevzner, Tang, &
+            Waterman, 2001), Velvet (Zerbino & Birney, 2008), ABySS (Simpson et al., 2009),
+            AllPaths (Butler et al., 2008) and SOAPdenovo (Li et al., 2010).</p>
+          <p>In conclusion, the de Bruijn graph assemblers are more appropriate for large
+            amounts of data from high-coverage sequencing and have become the programs of
+            choice when processing short reads produced by Illumina and other established
+            platforms (>100bp).</p>
+          <h4>Exercise 1: De Novo Assembly using Velvet</h4>
+          <p><i>De novo</i> assembly is one the most computationally demanding processes in bioinformatics.
+            Large genomes require many hours or days of processing. A small bacterial genome may
+            take up to several hours to assemble. Here we will assemble <i>M. tuberculosis</i> genomes
+            using Velvet (Zerbino & Birney, 2008). We will compute assembly statistics to check
+            the quality, and review how resulting contigs can be aligned, ordered and orientated
+            along the reference genome using Abacas (Assefa, Keane, Otto, Newbold, & Berriman, 2009).</p>
+          <p><b>Quick start and data checks</b></p>
+          <p>Change to the data directory:</p>
+          <pre><code>cd ~/data/tb</pre></code>
+          <p>And list the files there:</p>
+          <pre><code>ls</pre></code>
+          <p>There are 6 fastq files in this directory; these are the input data for this practical.
+            There are paired-end reads for three samples. To view the first 8 lines of a fastq
+            file type:</p>
+          <pre><code>head -8 sample1_1.fastq</pre></code>
+          <p>This gives:</p>
+<div class="alert alert-info" style="white-space:pre-wrap;"><samp>@HS3_5961:1:2207:17088:52965#1/1
+GCCGGTTGTTCGGCTGGAAGGTCCTTTTGCCCTTGGTCACGGGCGTCTCCTCGCTATGTCTGGCAACATCACCAT
++
+GGGGGGEGFGFGGGFGDBEBF:AFDEFG?CFFDD:FBEE?EFEDFDEFEAEBFB8CCC?A@CD;ADDD86CCC><
+@HS3_5961:1:1208:19785:88067#1/1
+CTTAGGGTCGCCGTTAAGTTCGGAGACGACCGCGTTCCACACTGTGGTGAAGCCTGAACCGGGGTCATCGGTCAA
++
+HHHHFFHBHHHHHHHEGDDDGGEGFHHHHHHGHHHDFFEFFFDD>DB@CDAEFF?FBFGDDCCC.=?5=<@@;DA</samp></div>
+        <p>Each read consists of 4 lines, the first is the read name, the second are the bases read,
+          the third line is ignored and the fourth is the encoded quality of each read (one character
+          per base).</p>
+        <p>The number of lines in each file is reported by:</p>
+        <pre><code>wc -l *</pre></code>
+        <p>and therefore the number of reads can be calculated by dividing by 4.
+          The length of the first read can be calculated by running:</p>
+        <pre><code>head -2 sample1_1.fastq | tail -1 | wc -c</pre></code>
+        <p>This gives the number of characters in the line including the new line character,
+          so it gives a number one greater than the first read length.</p>
+        <p><b>Running Velvet</b></p>
+        <p>Velvet is implemented in two different programs that must be executed
+          sequentially: <i>velveth</i> and <i>velvetg</i>.</p>
+        <p><i>velveth</i> analyses the sequence files and produces an hash table
+          that is used as input for <i>velvetg</i>. The options are explained by
+          running the command with no parameters (<i>velveth</i>):</p>
+        <p><i>velveth directory hash_length {[-file_format][-read_type][-separate|-interleaved]
+          filename1 [filename2 ...]} {...} [options]</i></p>
+        <p>An example invocation that takes the fastq formatted paired end files
+          (Mtb_sample1_1.fastq and Mtb_sample1_2.fastq) and creates the hash table
+          for K-mer length 51 in directory sample1_k51 is:</p>
+        <pre><code>velveth sample1_k51 51 -fastq -shortPaired ~/data/tb/sample1_1.fastq ~/data/tb/sample1_2.fastq</pre></code>
+        <p><i>velveth</i> supports sequence files of fasta and fastq format, their
+          compressed versions fasta.gz and fastq.gz, alignment files in SAM/BAM format,
+           and eland/gerald files. The read library format is indicated by
+           <i>-short</i> (default), <i>-shortPaired</i> (i.e. short paired-end reads), <i>-short2</i> (same
+           as short, but for a separate insert-size library), <i>-shortPaired2</i> (same as
+           shortPaired, but for a different insert-size library), <i>-long</i> (longer reads
+           from PacBio and Sanger platforms) or <i>–longPaired</i> (long paired-end reads). The
+           hash_lengh is the k-mer length in base pairs employed for the de Bruijn
+           graph construction. This parameter is crucial to obtain good quality assemblies.
+           It must be an odd number, strictly less than the read length (otherwise we
+           cannot detect any overlaps between reads) and also less than the maximum k-mer
+           hash length allowed (which is chosen when compiling the software). Other than
+           that, we are can choose any k-mer value. We will find out more about how to
+           choose the right k-mer length in below.</p>
+        <p><i>velvetg</i> is the core of Velvet package where the de Bruijn graph is built and
+            manipulated. An example usage is:</p>
+        <pre><code>velvetg sample1_k51 -cov_cutoff 2 -ins_length 280 -ins_length_sd 80 -read_trkg no -min_contig_lgth 150 -exp_cov auto -scaffolding yes -min_pair_count 20 -unused_reads yes</code></pre>
+        <p>In the above example we are running <i>velvetg </i> on the output of <i>velveth</i>
+          (note, the same directory name is specified <i>sample1_k51</i>). The coverage cut-off
+          (<i>-cov_cutoff</i>) removes any nodes that have less than the specified coverage.
+          Low coverage nodes are likely to be erroneous but setting this too high will result
+          in misassemblies. For paired-end reads, the insert size (<i>-ins_length</i>) and
+          standard deviation (<i>-ins_length_sd</i>) specify the mean and standard deviation of the
+          (random) gap length between reads. It will try to scaffold neighbouring contigs that
+          could not be joined directly by making use of pair-end reads and their expected
+          distance (<i>-scaffolding</i>). A key scaffolding cut-off is the minimum number
+          of supporting pair reads needed to join two contigs (<i>-min_pair_count</i>). We can
+          also save reads that are unused in the assembly to a separate fasta file (<i>–unused_reads</i>).</p>
+        <p>Eventually, three files will be obtained in the directory:</p>
+        <ul class="list-group">
+          <li class="list-group-item">A fasta file (<i>contigs.fa</i>) containing all assembled contigs
+            longer than the chosen minimum contig length (<i>-min_contig_lgth</i>).</li>
+          <li class="list-group-item">Assembly stats file (<i>stats.txt</i>).</li>
+          <li class="list-group-item">The final de Bruijn graph in a special formatted
+            file (<i>LastGraph</i>).</li>
+          </ul>
+        <br>
+        <p><b>Assembly quality and parameter optimisation</b></p>
+        <p>The outcome of <i>de novo</i> assembly is a set of contigs. In a perfect assembly each
+          contig covers exactly one chromosome in its entirety. In practice many contigs are
+          created and the assembly quality is measured by examining their length; individually
+          and in combination. An assembly is considered to be of good quality if relatively
+          few long contigs are obtained covering the majority of the original or expected genome.
+          There are different metrics used to assess the quality of assemblies:</p>
+          <ul class="list-group">
+            <li class="list-group-item"><i>N50</i>. The length of the contig that contains the middle
+              nucleotide when the contigs are ordered by size. Note, N80 or N60 may also be used.</li>
+            <li class="list-group-item"><i>Genome coverage</i>. If a genome reference exists then the
+              genome coverage can be computed as the percentage of bases in the reference covered
+              by the assembled contigs.</li>
+            <li class="list-group-item"><i>Maximum/median/average contig size</i>. Usually computed after
+              removing the smallest contigs (e.g. discarding all contigs shorter than 150 bp).</li>
+            </ul>
+          <br>
+          <p>The last line output by Velvet gives the main summary of the analysis, for example:</p>
+          <div class="alert alert-info" style="white-space:pre-wrap;"><samp>Final graph has 305 nodes and n50 of 32787, max 93987, total 1000150, using 1332786/1513982 reads</samp></div>
+          <p>The summary line includes the number of resulting nodes in the final graph (305), the
+            N50 value (32,787 bp), the longest contig (93,987), the size of the assembly (1,000,150)
+            and the number of used reads out of the total.</p>
+          <p><b>Insert the summary statistics in the table below:</b></p>
+          <table class="table table-bordered">
+  <thead>
+      <tr>
+        <th>Sample</th>
+        <th>Read length</th>
+        <th># paired reads</th>
+        <th>Mean gap<br></th>
+        <th>Gap SD</th>
+        <th>k</th>
+        <th>Nodes</th>
+        <th>N50</th>
+        <th>Longest contig</th>
+        <th>Assembly size</th>
+        <th>% reads used</th>
+      </tr>
+  </thead>
+  <tr>
+    <td rowspan="3">1</td>
+    <td rowspan="3">75</td>
+    <td rowspan="3">756991</td>
+    <td rowspan="3">340</td>
+    <td rowspan="3">120</td>
+    <td>35</td>
+    <td>954</td>
+    <td>37484</td>
+    <td>110978</td>
+    <td>1034154</td>
+    <td>94.5%</td>
+  </tr>
+  <tr>
+    <td>45</td>
+    <td>479</td>
+    <td>37142</td>
+    <td>85601</td>
+    <td>1015194</td>
+    <td>91.0%</td>
+  </tr>
+  <tr>
+    <td>51</td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+</table>
+
+          <div class="alert alert-warning">Try to re-run velvetg and velveth lines for a k-mer length of 45
+            (k=45). Do you verify the results in the table?</div>
+          <p>Employing <i>paired-end</i> reads (rather than single-end) increases the assembly quality.
+            In general, libraries with smaller insert size produce more fragmented and shorter assemblies,
+            whilst the genome coverage does not increase that much. The combination of libraries with
+            different insert size always gives the best results.</p>
+          <p><i>De novo</i> assembly gives much better results if reads are aggressively pre-filtered
+            before passing them to the assembler. This is the same as we have seen for mapping and
+            variant detection earlier in the course.</p>
+          <p>Although anecdotal recommendations for the k-mer length range from lower than half of the
+            read length up to 80% of read length, the parameter is difficult to determine in advance
+            since it depends on coverage, read length, error rates and the sample properties (repeat
+            regions, etc). Therefore, it is advisable to perform several assemblies using different
+            values of k-mer length to decide a value.</p>
+          <p>We recommend using VelvetOptimiser (see further information) to automatically optimise
+            K-mer length, as well as <i>-exp_cov</i> and <i>-cov_cutoff</i> for the Velvet assembler. To run
+            VelvetOptimiser, testing every odd k-mer between 35 and 51 for the best k-mer run:</p>
+          <pre><code>VelvetOptimiser.pl --s 35 --e 51 -f '-fastq -shortPaired ~/data/tb/sample1_1.fastq ~/data/tb/sample1_2.fastq'</pre></code>
+          <p>The <i>–f</i> section (between the quotes) is exactly the options that you wish to pass
+            to <i>velveth</i>. Dependent on the data, this can be a computationally intensive task.</p>
+          <p>Further statistical information on the assembly is given in the <i>stats.txt</i> file.</p>
+          <div class="row">
+            <div class="col-sm-6 text-center"><div class="text-center"><img src="img/assembly_4.jpg" class="img-fluid"></div></div>
+            <div class="col-sm-6"><p><i>High depth of coverage</i> is essential to obtain high quality assembled
+              genomes. It is always the case that contig sizes drop when coverage decreases under a certain
+              value, generally considered to be 50x, although such threshold will depend on the size and
+              repeat content of the sequenced genome. A coverage limit is reached above which no improvement
+              on assembly metrics is observed. As shown to the left, coverage greater that 50x does
+              not significantly improve N50 in an assembly of <i>E. coli</i>. Although such thresholds will
+              not necessary be the same for other genomes, the principles apply for all.</p>
+            </div>
+          </div>
+          <p>More data requires more memory too, as the lower graph demonstrates. Again the figures are genome
+            specific but it is easy to see how large computers can quickly become necessary as coverage and
+            genome size increase. (Illumina, 2009)</p>
+        <h4>Exercise 2: Contig Ordering</h4>
+          <p><b>Ordering with ABACAS</b></p>
+          <p>To align, order and orientate contigs along the reference genome we will be using ABACAS (Assefa et
+            al., 2009). The output will be in the form of a pseudo molecule, where all of the contigs will be
+            joined by N’s. To display the complete list of possible parameters by typing:</p>
+          <pre><code>abacas.pl –h</pre></code>
+          <p>The basic usage (for this exercise) is:</p>
+          <pre><code>cd sample1_k45
+cp ~/data/tb/tb.fasta .
+abacas.pl -r tb.fasta -q contigs.fa -p nucmer -b -d -a -m -N -g sample1 -o k45</pre></code>
+          <p>This will create a pseudomolecule (into <i>sample1/k45.fasta</i>) from the assembled contigs
+            (in <i>contigs.fa</i>). The program creates a number of files with the same base filename for
+            the other requested processing output, including gap information (<i>-g</i>, <i>k45.gaps</i>,
+            <i>k45.gaps.tab</i>), a comparison file (<i>k45.crunch</i>), no padding version (<i>-n</i>,
+            <i>k45.NoNs.fasta</i>), etc.</p>
+          <p><b>Visualisation with ACT</b></p>
+          <p>Artemis Comparison Tools (ACT) (Carver et al., 2005) is a tool for displaying pair-wise
+            comparison between two or more DNA sequences. It was developed to help identify and analyse
+            regions of similarity and difference between genomes along their entire sequences and their
+            annotation. ABACAS produces the required files to compare the original reference genome with
+             the pseudo molecule resulting after ordering assembled contigs.</p>
+          <p>Launch ACT by running:</p>
+          <pre><code>act</pre></code>
+          <p>Click <i>File</i> > <i>Open</i>. Select the reference fasta file (<i>tb.fasta</i>) and the pseudomoelcule
+            (<i>k45.fasta</i>) as the two sequence files with the associated comparison
+            file (<i>k45.crunch</i>) – you will have to navigate the directories. Then press Apply. A map between
+            the two sequences will be displayed. To load annotation click on <i>File > tb.fasta > Read An
+            Entry...</i> and select the <i>tb.embl</i> file. To make stop codons disappear (represented as black
+            vertical lines) right-click on the reference and the pseudo molecule panels and deselect <i>Stop
+            Codons</i> option in the right-click menu.</p>
+          <p>Right-click on a contig and select <i>View Selected Sequences</i> to find out the first and last position
+            the contig maps to the reference and to the pseudo molecule. The percentage of identity between them
+            is also shown.</p>
+            <div class="text-center"><img src="img/assembly_5.png" class="img-fluid"></div>
+            <br>
+            <div class="row">
+              <div class="col-sm-3 text-center"></div>
+              <div class="col-sm-6"><p>An example ACT screen with the Mtb reference at the top and sample1
+                at the bottom, with genes and annotations for the reference shown.</p>
+              </div>
+              <div class="col-sm-3 text-center"></div>
+            </div>
+            <p><b>Task</b></p>
+            <p>Run abacas on the best k-mer for each sample. As you’ve used previously, the Mtb reference
+              fasta is located in a file called <i>tb.fasta</i>.</p>
+            <p>In ACT find the reference regions around 54kb, 73kb, 203kb, 338kb and 1100kb in sample1;
+              80kb, 336k and 840k in sample2; and 336k, 745k and 840kb in sample3 investigate what is
+              happening in nearby regions. Use the annotations and the Internet to find out the properties
+              of the genes in these areas.</p>
+            <p>View the <i>.gaps</i> files (more <i>k45.gaps</i>) and <i>.crunch</i> files (more <i>k45.crunch</i>).
+              The columns related to the length and the start/stop positions of gaps and overlaps between the
+              reference and pseudomolecule.</p>
+            <div class="alert alert-warning">Do you find it easier to read these files in the graphical
+              interface of ACT?</div>
+            <h4>Exercise 3: Mapping back to the Reference</h4>
+              <p>Contigs aligning with large internal gaps or low confidence indicate either structural variants or
+                misassemblies, and should be carefully monitored. If paired-end reads are available then mapping
+                them back onto the contigs (pseudo molecule) is another source of information. Large deviations in
+                the mapping distance or read pairs in which only one read maps against the contigs may hint at
+                misassemblies rather than structural variation</p>
+              <p>The following commands maps the raw reads against the pseudo molecules from the previous exercise.
+                This is a similar process to those you have used in the previous classes.</p>
+              <pre><code>cd ~/data/tb/sample1_k45
+bwa index -a is k45.fasta
+bwa mem -k 20 -c 100 -L 20 -U 20 -M -T 50 k45.fasta ~/data/tb/sample1_1.fastq ~/data/tb/sample1_2.fastq > k45.sam
+samtools faidx k45.fasta
+samtools view -bt k45.fasta.fai k45.sam > k45.unsorted.bam
+samtools sort -o k45.bam k45.unsorted.bam
+samtools index k45.bam</pre></code>
+              <p>This process indexes, maps and stores the fastq paired-end reads against the ABACAS
+                ordered pseudomolecule (<i>sample1/k45.fasta</i>) for sample1 created by velvet with k-mer
+                of 45. The output is a BAM file (<i>sample1/k45.bam</i>).</p>
+              <p>This script can be modified to create a BAM file for the sequence data mapped against
+                any reference genome, just as you have done in the previous class.</p>
+              <p>These files can be visualised in ACT. <i>Select File > k45.fasta > Read BAM/VCF...</i> and
+                choose the remapped.bam file (<i>k45.bam</i>). Do the same for tb.fasta and choose the originally
+                mapped BAM file (<i>sample1.bam</i>). These BAM data are represented as pileup data – each read
+                stacked up over the section of the reference that it has been mapped to. Extra information can
+                be presented by right-clicking on the pileups and selecting <i>Graph > Coverage or View >
+                  Inferred Size</i>.</p>
+              <p>The graph shown gives a good insight into the quality and depth of the assembly and is
+                very useful for finding regions that have been misaligned (<i>i.e.</i> joined in error) is the
+                coverage is very low or very high.</p>
+                <div class="text-center"><img src="img/assembly_6.png" class="img-fluid"></div>
+                <br>
+                <div class="row">
+                  <div class="col-sm-3 text-center"></div>
+                  <div class="col-sm-6"><p>The ACT screen with coverage for the reference (top) and
+                    pseudomolecule (bottom) graphed</p>
+                  </div>
+                  <div class="col-sm-3 text-center"></div>
+                </div>
+                <p><b>Task</b></p>
+                <p>Remap the sequence data each sample, again using the optimal k-mer previously chosen.
+                  Load it into ACT with the mapped and remapped BAM files as described above.</p>
+                <p>In ACT find the same regions as above.</p>
+                <div class="alert alert-warning">How does the coverage vary across the pseudo molecule?</div>
+                <div class="alert alert-warning">How does this compare to the coverage across the matching
+                  regions mapped against the reference?</div>
+                <div class="alert alert-warning">What is causing the fragmented assemblies?</div>
+                <div class="alert alert-warning">Is there any kind of structural variant involved?</div>
+                <div class="alert alert-warning">Compare to the previous results in practical 2. What makes
+                  that region different from others in terms of annotation?</div>
+                <h4>Exercise 4: Structural Variant Validation</h4>
+                <p>Structural variant (SV) software aims to detect signatures left by changes in chromosome
+                  material and chromosome rearrangements. However, reads mapping to repetitive or highly
+                  polymorphic regions may mimic the same signatures (false positives).</p>
+                <p>Here we describe a <i>de novo</i> assembly approach that we call <i>targeted assembly of
+                  candidate SV regions</i>. It consists of obtaining the reads from the predicted SV region,
+                  performing <i>de novo</i> assembly and mapping the resulting contig back to the reference. The
+                  nature of the contig alignment can reveal the SV.</p>
+                <p>We have previously identified a deletion in sample2 in the region 79570-83050 using <i>delly</i>.
+                  This region has been investigated above, in the context of a large assembly, and interesting
+                  mapping and assembly results have been found.</p>
+                <p>The reads are extracted from the BAM file using <i>samtools</i>. Extracting a wider range (by at
+                  least 400bp) than the candidate region enables velvet to construct good contigs either side
+                  of the possible SV.</p>
+                <pre><code>cd ~/data/tb
+samtools view sample1.bam Chromosome:79000-84000 -o sample1_candidate.bam -b -h</pre></code>
+                <p>The next step is to perform de novo assembly of the extracted reads:</p>
+                <pre><code>velveth target51 51 -shortPaired -bam sample1_candidate.bam
+velvetg target51 -ins_length 340 -ins_length_sd 120 -read_trkg no -exp_cov auto</pre></code>
+                <p>We map the output contigs back to the reference by a technique known as <i>blasting</i> it.
+                  This is available as an online tool that uses a cluster to perform blasts for
+                  researchers around the world. It is also available to download as a command line tool,
+                  in the same way as <i>velvet</i>, <i>samtools</i> and <i>bwa</i>. The web address
+                  is <a href="http://blast.ncbi.nlm.nih.gov/Blast.cgi" target="_blank">http://blast.ncbi.nlm.nih.gov/Blast.cgi</a>
+                  and navigate to the <i>Nucleotide</i> BLAST page. Check the <i>“Align two or more sequences”</i> box.
+                  Upload the contigs file (<i>~/data/tb/target51/contigs.fa</i>) as the subject and the tb reference
+                  (<i>~/data/tb/tb.fasta</i>) as the query. Enter an appropriate region of the reference to
+                  blast against as there is little point in searching the entire genome when we are
+                  only interested in a small range (<i>79100-83900</i>).</p>
+                <p>See screenshots below.</p>
+                <div class="text-center"><img src="img/assembly_8.jpg" class="img-fluid"></div>
+                <br>
+                <div class="row">
+                  <div class="col-sm-3 text-center"></div>
+                  <div class="col-sm-6"><p>Blast Alignment input screen. Choose the appropriate reference and
+                    sample sequences, enter the range of interest and click Blast</p>
+                  </div>
+                  <div class="col-sm-3 text-center"></div>
+                </div>
+                <br>
+                <div class="text-center"><img src="img/assembly_10.jpg" class="img-fluid"></div>
+                <br>
+                <div class="row">
+                  <div class="col-sm-3 text-center"></div>
+                  <div class="col-sm-6"><p>Once the server has blasted your data, it will create a web page for
+                    the results with graphical and textual information on how well the sequences aligned.</p>
+                  </div>
+                  <div class="col-sm-3 text-center"></div>
+                </div>
+                <p><b>Task</b></p>
+                <div class="alert alert-warning">Is it a deletion? Or was it a false positive? Investigate the
+                  same range in the other two samples. Using the output from delly in the variant detection
+                  practical investigate over SVs.</div>
+                <h4>Advanced Topics</h4>
+                <p><b>Annotation Transfer</b></p>
+                <p>Once the contigs ordered are against the reference, it is useful to determine the position
+                  and function of possible genes. It is possible to implement ab initio gene finding, but an
+                  alternative approach is to use the annotation of the reference and adapt it to the new assembly.
+                  A tool called RATT (Otto et al., 2011 “Rapid annotation transfer tools”) has been developed
+                  to transfer the annotation from a reference to a new assembly. In the first step the similarity
+                  between the two sequences is determined and a synteny map is constructed. This map is used to
+                  align the annotation of the reference onto the new sequence. In a second step, the algorithm
+                  tries to correct gene models. One advantages of RATT is that the complete annotation is
+                  transferred, including descriptions. Thus careful manual annotation from the reference becomes
+                  available in the newly sequenced genome. Where no synteny exists, no transfer can be performed.
+                  An outputted combined “embl” format file with sequence and inferred annotation can be viewed in
+                   <i>artemis</i> to assess the quality of the transfer.</p>
+                <p><b>Improving assemblies</b></p>
+                <p>The quality of the assembly is determined by a number of factors, including the type of software
+                  used, the length of reads and the repetitive nature or complexity of the genome. For example,
+                  assembly of <i>Plasmodium</i> is more difficult than that of most bacteria (due to the high AT content
+                  and repeats). A good assembly of a bacterial genome will return 20-100 supercontigs. It is
+                  possible to manually / visually improve assemblies and annotation within <i>Artemis</i>. To improve
+                  the assembly in a more automated fashion, there is other software:</p>
+                <p><b>SSPACE</b>: This tool can scaffold contigs. Although velvet can also scaffold contigs, SSPACE
+                  generally performs better.</p>
+                <p><b>Abacas</b>:  has the option to design primers that can be used to generate a PCR product to
+                  span a possible gap. The resulting new sequence can then be included in the assembly. This
+                  process is called finishing.</p>
+                <p><b>Image</b>: is a tool that can close gaps in the assembly automatically. First the reads are
+                  mapped against the assembly. Using all reads that map close to a gap and with their mate pairs
+                  within the gap, it is possible to perform a local assembly. This process is repeated iteratively.
+                  This procedure can close up to 80% of the sequencing gaps (Tasi et al, 2010).</p>
+                <p><b>iCORN</b> (Otto et al, 2010) can correct base errors in the sequence. Reads are mapped
+                  against the reference and differences are called. Those differences or variants that surpass
+                  a specified quality threshold are corrected. A correction is accepted if the amount of perfect
+                  mapping reads does not decrease. This algorithm also runs iteratively. Here, perfect mapping
+                  refers to the read and its mate pair mapping in the expected insert size without any difference
+                  to the iteratively derived reference.</p>
+                <p>All these programs are available through the PAGIT suite (post assembly genome improvement
+                  toolkit, <a href="http://www.sanger.ac.uk/resources/software/pagit/" target="_blank">http://www.sanger.ac.uk/resources/software/pagit/</a>).
+                <p><b>References</b></p>
+                <p>Assefa, S., Keane, T. M., Otto, T. D., Newbold, C., & Berriman, M. (2009). ABACAS: algorithm-based automatic contiguation of assembled sequences. Bioinformatics (Oxford, England), 25(15), 1968-9. doi:10.1093/bioinformatics/btp347</p>
+                <p>Butler, J., MacCallum, I., Kleber, M., Shlyakhter, I. A, Belmonte, M. K., Lander, E. S., Nusbaum, C., et al. (2008). ALLPATHS: de novo assembly of whole-genome shotgun microreads. Genome research, 18(5), 810-20. doi:10.1101/gr.7337908</p>
+                <p>Carver, T. J., Rutherford, K. M., Berriman, M., Rajandream, M.-A., Barrell, B. G., & Parkhill, J. (2005). ACT: the Artemis Comparison Tool. Bioinformatics (Oxford, England), 21(16), 3422-3. doi:10.1093/bioinformatics/bti553</p>
+                <p>Compeau, P.E.C., Pevzner, P.A., Tesler, G. (2007) How to apply de Bruijn graphs to genome assembly. Nature Biotechnology 29(11) 987-991</p>
+                <p>Dohm, J. C., Lottaz, C., Borodina, T., & Himmelbauer, H. (2007). SHARCGS, a fast and highly accurate short-read assembly algorithm for de novo genomic sequencing. Genome research, 17(11), 1697-706. doi:10.1101/gr.6435207</p>
+                <p>Illumina, I. (2009). De Novo Assembly Using Illumina Reads. Analyzer. Retrieved from http://scholar.google.com/scholar?hl=en&btnG=Search&q=intitle:De+Novo+Assembly+Using+Illumina+Reads#0</p>
+                <p>Jeck, W. R., Reinhardt, J. a, Baltrus, D. a, Hickenbotham, M. T., Magrini, V., Mardis, E. R., Dangl, J. L., et al. (2007). Extending assembly of short DNA sequences to handle error. Bioinformatics (Oxford, England), 23(21), 2942-4. doi:10.1093/bioinformatics/btm451</p>
+                <p>Li, R., Zhu, H., Ruan, J., Qian, W., Fang, X., Shi, Z., Li, Y., et al. (2010). De novo assembly of human genomes with massively parallel short read sequencing. Genome research, 20(2), 265-72. doi:10.1101/gr.097261.109</p>
+                <p>Margulies, M., Egholm, M., Altman, W. E., Attiya, S., Bader, J. S., Bemben, L. a, Berka, J., et al. (2005). Genome sequencing in microfabricated high-density picolitre reactors. Nature, 437(7057), 376-80. doi:10.1038/nature03959</p>
+                <p>Miller, J. R., Koren, S., & Sutton, G. (2010). Assembly algorithms for next-generation sequencing data. Genomics, 95(6), 315-27. Elsevier Inc. doi:10.1016/j.ygeno.2010.03.001</p>
+                <p>Pevzner, P. a, Tang, H., & Waterman, M. S. (2001). An Eulerian path approach to DNA fragment assembly. Proceedings of the National Academy of Sciences of the United States of America, 98(17), 9748-53. doi:10.1073/pnas.171285098</p>
+                <p>Simpson, J. T., Wong, K., Jackman, S. D., Schein, J. E., Jones, S. J. M., & Birol, I. (2009). ABySS: a parallel assembler for short read sequence data. Genome research, 19(6), 1117-23. doi:10.1101/gr.089532.108</p>
+                <p>Warren, R. L., Sutton, G. G., Jones, S. J. M., & Holt, R. a. (2007). Assembling millions of short DNA sequences using SSAKE. Bioinformatics (Oxford, England), 23(4), 500-1. doi:10.1093/bioinformatics/btl629</p>
+                <p>Zerbino, D. R., & Birney, E. (2008). Velvet: algorithms for de novo short read assembly using de Bruijn graphs. Genome research, 18(5), 821-9. doi:10.1101/gr.074492.107</p>
+                <p><b>Acknowledgements</b>: Thomas Otto and Wellcome Trust.</p>
+      </div>
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="jquery-3.3.1.slim.min.js" crossorigin="anonymous"></script>
+    <script src="popper.min.js"  crossorigin="anonymous"></script>
+    <script src="bootstrap.min.js"  crossorigin="anonymous"></script>
+    <script src="d3.v3.min.js"></script>
+    <script src="stack.v1.min.js"></script>
+  </body>
+</html>

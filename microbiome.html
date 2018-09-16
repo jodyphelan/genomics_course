@@ -1,0 +1,508 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="bootstrap.min.css" type="text/css">
+
+    <style>
+
+    @import url(http://fonts.googleapis.com/css?family=PT+Serif|PT+Serif:b|PT+Serif:i);
+
+
+    #follow {
+      background: none;
+    }
+
+    .grey {
+      color: #777;
+    }
+
+    a:link,
+    a:visited {
+      color: black;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    </style>
+
+	<style>
+	pre {
+		display: block;
+		padding: 9.5px;
+		margin: 0 0 10px;
+		font-size: 13px;
+		line-height: 1.42857143;
+		color: white;
+		word-break: break-all;
+		word-wrap: break-word;
+		background-color: black;
+		border: 1px solid black;
+		border-radius: 4px;
+	}
+
+    .jumbotron-head{
+        background:linear-gradient(rgba(0, 0, 250, 0.15), rgba(125, 250, 250, 0.55)),url(img/Head_microbiome.jpg);
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-position: top right;
+        color:black !important;
+    }
+
+	</style>
+
+
+    <title>Microbiomes - Pathogen 'Omics</title>
+  </head>
+  <body>
+      <div class="jumbotron jumbotron-fluid jumbotron-head">
+        <div class="container">
+          <h1 class="display-4">Microbiomes</h1>
+          <p class="lead">A case study: Bacterial Vaginosis</p>
+        </div> <!-- Container -->
+      </div>
+        <div class="container">
+      <h4>Microbiomes lecture</h4><br>
+      <object data="presentations/microbiome_lecture_2018.pdf#page=1" type="application/pdf" width="100%" height=700px>
+          <p><b>Example fallback content</b>: This browser does not support PDFs. Please download the PDF to view it:
+          <a href="presentations/microbiome_lecture_2018.pdf">Download PDF</a>.</p>
+      </object>
+      <hr>
+        <h4>Microbiomes Practical</h4><br>
+        <p>Bacterial vaginosis (BV) is a disease of the vagina caused by excessive growth of bacteria. Common symptoms include increased
+           vaginal discharge that often smells like fish. The discharge is usually white or gray in color and burning with urination may
+           occur, as well as itching. However, in some cases there may be no symptoms. Having BV can double the risk of infection by a number
+           of other sexually transmitted infections including HIV/AIDS. It also increases the risk of early delivery among pregnant women.</p>
+        <p>BV is caused by an imbalance of the naturally occurring bacteria in the vagina. This change presents itself as a change in the
+           most common type of bacteria in the vaginal microbiome and a hundred to thousand-fold increase in total numbers of bacteria present.</p>
+        <p>For this practical we are considering 6 samples of vaginal swab that were taken at the polyclinic by a GP in a setting of high
+          transmission of HIV. DNA was extracted from the swabs and amplified using primers specific for the Region V1 and V2 of the 16S
+          rRNA gene of the bacteria (positions: 1148bp – 5716bp). These samples were then sequenced using the MiSeq Illumina machine producing
+          PAIRED END data of 300 bp. The 6 pairs of files generated are found in the <b>metagenomics/fastq</b> folder. The patients’
+          phenotype was determined by the doctors at the time of the sample collection giving the following results:</p>
+          <div class="row">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-8">
+              <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Sample</th>
+            <th scope="col">BV +/-</th>
+            <th scope="col">pH</th>
+            <th scope="col">HIV +/-</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">BB_1</th>
+            <td>BV(-)</td>
+            <td>4.1</td>
+            <td>HIV(-)</td>
+          </tr>
+          <tr>
+            <th scope="row">BB_2</th>
+            <td>BV(+)</td>
+            <td>4.7</td>
+            <td>HIV(-)</td>
+          </tr>
+          <tr>
+            <th scope="row">BB_3</th>
+            <td>BV(+)</td>
+            <td>5.3</td>
+            <td>HIV(-)</td>
+          </tr>
+          <tr>
+            <th scope="row">BB_4</th>
+            <td>BV(-)</td>
+            <td>4.4</td>
+            <td>HIV(-)</td>
+          </tr>
+          <tr>
+            <th scope="row">BB_5</th>
+            <td>BV(+)</td>
+            <td>5.5</td>
+            <td>HIV(-)</td>
+          </tr>
+          <tr>
+            <th scope="row">BB_6</th>
+            <td>BV(-)</td>
+            <td>4.4</td>
+            <td>HIV(-)</td>
+          </tr>
+        </tbody>
+      </table>
+          </div>
+          </div>
+
+
+
+
+
+        <h4>Analysing the microbiome samples with <i>mothur</i></h4>
+        <p>The software we will use for analysing the samples is mothur which was created by Dr. Patrick Schloss
+           and his software development team in the Department of Microbiology & Immunology at The University of
+           Michigan. Its objective was to create a single piece of open-source, expandable software to fill the
+           bioinformatics needs of the microbial ecology community.</p>
+        <p>In order to open mothur, open a new terminal and navigate to the folder ~/metagenomics.</p>
+        <pre><code>cd ~/data/metagenomics</pre></code>
+        <p>FOr this practical we will be using an old version of python so in order to use it run the commnad:</p>
+        <pre><code>source activate mothur_env</pre></code>
+        <p>Now, to start the software type in the command:</p>
+        <pre><code>mothur</pre></code>
+        <p>You should see a screen like this:</p>
+         <div class="text-center"><img src="img/microbiome_1.svg" class="img-fluid" alt="Microbiome_1"></div>
+         <br>
+      <p>So far so good, now to initiate the analysis we only need a database, to which we will map
+        our dataset (it has been provided to you in the folder database under the name
+        silva.bacteria.fasta, here you can find more information about the database
+        <a href="https://www.arb-silva.de/" target="_blank">https://www.arb-silva.de/</a>). The second thing is the fastq files (they are stored
+        in fastq folder) and finally we need a file that links the files together,
+        called in this case BV.files.</p>
+      <p>To check how this file looks like type in:</p>
+      <pre><code>system(cat BV.files)</pre></code>
+      <p><b>Note that in mothur the commands that are not specifically developed in the framework
+        will need to be typed under the command <i>system()</i>.</b></p>
+      <p>Once we are ready let us start with the analysis, the first step will be to reconstruct
+        the reads by assembling the paired reads into contigs. In this step we are assembling the
+        reads that should overlap due to the design of our primers. In the following example,
+        check how the reads should map against a contig:</p>
+        <div class="text-center"><img src="img/Microbiome_2_1.jpg" class="img-fluid"></div>
+        <p>To generate these contigs we run the following command:</p>
+        <pre><code>make.contigs(file=BV.files, processors=1)</pre></code>
+        <p>Note that we are using 4 processors to speed things up, and it will take at most 5-10
+          minutes. Once finished you will see a list of the samples with the amount of reads in
+          each sample:</p>
+
+        <div class="row">
+          <div class="col-sm-6"><div class="alert alert-info" style="white-space:pre-wrap;"><samp>
+            Group count:
+            BB_1		56715
+            BB_2		53890
+            BB_3		61157
+            BB_4		72766
+            BB_5		2193
+            BB_6		989
+
+            Total of all groups is 247710</samp>
+          </div></div>
+          <div class="col-sm-6 text-center">
+            <div class="alert alert-warning">
+          What can you infer from the number of groups (contigs) in each sample breakdown? Are
+          samples 5 and 6 directly comparable to the rest of the samples? Do you think this will
+          have an impact on the representativeness of the microbial community in these samples?
+        </div>
+        <p><b>NOTE: The 247710 number refers to the number of total conitgs.</b></p>
+        </div>
+        </div>
+
+        <p>In the output you will also have a list of the output files. You can check what they look
+          like using the following commands:</p>
+        <pre><code>system(head BV.trim.contigs.fasta)</pre></code>
+        <div class="text-center"><img src="img/Microbiome_3.jpg" class="img-fluid"></div><br>
+        <p>The BV.trim.contigs.qual will store all the sequence reads for all the samples.</p>
+        <pre><code>system(head BV.trim.contigs.qual)</pre></code>
+        <div class="text-center"><img src="img/Microbiome_4.jpg" class="img-fluid"></div><br>
+        <p>The BV.trim.contigs.qual stores the quality of the bases called in each contig.</p>
+        <pre><code>system(head BV.contigs.report)</pre></code>
+        <div class="text-center"><img src="img/Microbiome_5.jpg" class="img-fluid"></div><br>
+        <p>The BV.contigs.report stores the summary of the contig quality and the file BV.contigs.groups
+          links the individual reads with the different samples.</p>
+        <p>A good way to summarize the overall quality of the reads is by running the command:</p>
+        <pre><code>summary.seqs(fasta=BV.trim.contigs.fasta)</pre></code>
+        <div class="alert alert-info" style="white-space:pre-wrap;"><samp>
+          Start	End	NBases	Ambigs	Polymer	NumSeqs
+Minimum:	1	298	298	0	3	1
+2.5%-tile:	1	305	305	0	4	6193
+25%-tile:	1	308	308	0	4	61928
+Median: 	1	320	320	0	4	123856
+75%-tile:	1	339	339	0	4	185783
+<b>97.5%-tile:	1	340	340	8	5</b>	241518
+<b>Maximum:	1	600	600	203	282</b>	247710
+Mean:		1	323.44	323.44	0.758968	4.11695
+<b># of Seqs:	247710</b>
+</samp></div>
+  <p>Interestingly, the longest read in the dataset is 600 bp. Be suspicious of this. Recall that
+    the reads are supposed to be 300 bp each. This read clearly did not assemble well (or at all).
+     Also note that at least 2.5% of our sequences had some ambiguous base calls and that the
+     maximum homopolymer, the same base repeated over (i.e AAAAAAAA is a homopolymer of 8 Adenine)
+      is 282 bp in a row, these sequences are normally errors created in the sequencing process.
+      We will take care of these issues in the next step when we run screen.seqs.</p>
+      <pre><code>screen.seqs(fasta=BV.trim.contigs.fasta, group=BV.contigs.groups, summary=BV.trim.contigs.summary, maxambig=0, maxlength=340, maxhomop=6)</pre></code>
+    <p>With this command we are telling mothur to select only the reads with a <b>maximum length
+      of 340 bp</b>, with a number of <b>maximum homopolymers of 6</b> and with <b>0 ambiguous
+        calls</b>.</p>
+      <p>We anticipate that many of our sequences are duplicates of each other because of the
+        amplification. Because it is computationally wasteful to align the same thing a million
+        times, we'll analyse only the unique sequences and infer the result to the rest using the
+        unique.seqs command:</p>
+        <pre><code>unique.seqs(fasta=BV.trim.contigs.good.fasta)</pre></code>
+        <p>If two sequences have the same identical sequence, then they are considered duplicates
+          and will get merged. In the screen output there are two columns - the first is the number
+          of sequences characterized and the second is the number of unique sequences remaining. So
+          after running <i>unique.seqs</i><b> the number of sequences reduces from 204,240 to 13,611</b>.
+          This will make the analysis easier and faster.</p>
+        <p>The next command will rename the sequences to make the processing faster and generate a
+          file called <i>BV.trim.contigs.good.count_table</i>. In subsequent commands we will use it by
+          applying the count option:</p>
+        <pre><code>count.seqs(name=BV.trim.contigs.good.names, group=BV.contigs.good.groups)</pre></code>
+        <p>Now that our reads are ordered and clean is the time to align our reads to the reference
+          database and check what we have in there.</p>
+        <pre><code>align.seqs(fasta=BV.trim.contigs.good.unique.fasta, reference=database/silva.bacteria.fasta, flip=T)
+summary.seqs(fasta=BV.trim.contigs.good.unique.align, count=BV.trim.contigs.good.count_table)</pre></code>
+        <div class="alert alert-info" style="white-space:pre-wrap;"><samp>
+          Start	End	NBases	Ambigs	Polymer	NumSeqs
+Minimum:	<b>1044	6330</b>	275	0	3	1
+2.5%-tile:	<b>1044	6333</b>	305	0	4	5107
+25%-tile:	<b>1044	6333</b>	308	0	4	51061
+Median: 	<b>1044	6333</b>	315	0	4	102121
+75%-tile:	<b>1044	6333</b>	339	0	4	153181
+97.5%-tile:	<b>1044	6333</b>	339	0	5	199135
+Maximum:	<b>1462	6443</b>	340	0	6	204240
+Mean:	1044.05	6333.36	321.816	0	4.08212
+# of unique seqs:	13611
+total # of seqs:	204240
+</samp></div>
+        <p>So what does this mean? You will see that the bulk of the sequences start at position
+          1044 and end at position 6333. Some sequences start at position 1044 and end at 6330
+          or 6443. These deviants from the mode positions are likely due to an insertion or
+          deletion at the terminal ends of the alignments. Sometimes you will see sequences that
+          start and end at the same position indicating a very poor alignment, which is generally
+          due to non-specific amplification. To make sure that everything overlaps the same region
+          we will re-run <i>screen.seqs</i> to obtain sequences that start at or before position 1148
+          and end at or after position 5716.</p>
+          <pre><code>screen.seqs(fasta=BV.trim.contigs.good.unique.align, count=BV.trim.contigs.good.count_table, summary=BV.trim.contigs.good.unique.summary, start=1148, end=5716, maxhomop=6)</pre></code>
+          <p>Now we know our sequences overlap the same alignment coordinates, we want to make
+            sure they only overlap that region. So we will filter the sequences to remove the
+            overhangs at both ends. In addition, there are many columns in the alignment that
+            only contain gap characters (i.e. "-"). These can be pulled out without losing any
+            information. We will do all this with <i>filter.seqs</i>:</p>
+            <pre><code>filter.seqs(fasta=BV.trim.contigs.good.unique.good.align, vertical=T, trump=.)</pre></code>
+            <div class="alert alert-info" style="white-space:pre-wrap;"><samp>Length of filtered alignment: 570
+Number of columns removed: 49430
+Length of the original alignment: 50000
+Number of sequences used to construct filter: 13610</samp></div>
+        <p>This means that our initial alignment was 50000 columns wide and that we were able to
+          remove 49430 terminal gap characters using <i>trump=.</i> and vertical gap characters using
+          <i>vertical=T</i>. The final alignment length is 570 columns. Because we have perhaps created
+          some redundancy across our sequences by trimming the ends, we can re-run <i>unique.seqs</i>:</p>
+          <pre><code>unique.seqs(fasta=BV.trim.contigs.good.unique.good.filter.fasta, count=BV.trim.contigs.good.good.count_table)</pre></code>
+          <p>This identified 3182 duplicate sequences that we have now merged with previous unique
+            sequences. The next thing we want to do to further de-noise our sequences is to pre-cluster
+            the sequences using the pre.cluster command allowing for up to 3 differences between
+            sequences. This command will split the sequences by group and then sort them by abundance
+            and go from most abundant to least and identify sequences that are within 2 nt of each other.
+            If they are then they get merged. We generally favour allowing 1 difference for every 100 bp
+            of sequence:</p>
+            <pre><code>pre.cluster(fasta=BV.trim.contigs.good.unique.good.filter.unique.fasta, count=BV.trim.contigs.good.unique.good.filter.count_table, diffs=3)</pre></code>
+            <p>At this point we have removed as much sequencing error as we can and it is time to turn
+              our attention to removing chimeras(<a href="http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3044863/"
+              target="_blank">http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3044863/</a>). We will do this using the
+              <i>UCHIME</i> algorithm that is called within <i>mothur</i> using the <i>chimera.uchime</i>
+               command. Again, this command will split the data by sample and check for chimeras. Our
+               preferred way of doing this is to use the abundant sequences as our reference. In addition,
+               if a sequence is flagged as chimeric in one sample, the default <i>dereplicate=F</i> is to
+               remove it from all samples. We have found that this is a bit aggressive since we have seen
+               rare sequences get flagged as chimeric when they're the most abundant sequence in another
+               sample. This is how we do it:</p>
+               <pre><code>chimera.uchime(fasta=BV.trim.contigs.good.unique.good.filter.unique.precluster.fasta, count=BV.trim.contigs.good.unique.good.filter.unique.precluster.count_table, dereplicate=T)</pre></code>
+               <p>Running <i>chimera.uchime</i> with the count file will remove the chimeric sequences from that
+                 file. But we still need to remove those sequences from the fasta file. We do this using
+                 <i>remove.seqs</i>:</p>
+               <pre><code>remove.seqs(fasta=BV.trim.contigs.good.unique.good.filter.unique.precluster.fasta, accnos=BV.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.accnos)</pre></code>
+               <p>You should see the following line:</p>
+               <div class="alert alert-info" style="white-space:pre-wrap;"><samp>Removed 785 sequences from your fasta file.</samp></div>
+               <p>Let us see what we have left:</p>
+               <pre><code>summary.seqs(fasta=current, count=current)</pre></code>
+               <div class="alert alert-info" style="white-space:pre-wrap;"><samp>		Start	End	NBases	Ambigs	Polymer	NumSeqs
+Minimum:	1	570	235	0	3	1
+2.5%-tile:	1	570	266	0	4	5036
+25%-tile:	1	570	269	0	4	50351
+Median: 	1	570	276	0	4	100701
+75%-tile:	1	570	300	0	4	151051
+97.5%-tile:	3	570	300	0	5	196366
+Maximum:	3	570	303	0	6	201401
+Mean:	1.26688	570	282.837	0	4.08113
+# of unique seqs:	<b>613</b>
+total # of seqs:	<b>201401</b>
+</samp></div>
+            <p>Note that we went <b>from 204,240 to 201,401 sequences</b> for a reduction of 0.01%; this is a
+              reasonable number of sequences to be flagged as chimeric (it can go up to around
+              10%).</p>
+            <p>As a final quality control step, we need to see if there are any "undesirables"
+              in our dataset. Sometimes when we pick a primer set they will amplify other stuff
+              that gets to this point in the pipeline such as 18S rRNA gene fragments or 16S
+              rRNA from <i>Archaea</i>, chloroplasts, and mitochondria. There is also just the random
+              stuff that we want to get remove (we will provide you with the list, no worries).</p>
+            <p>Let us go ahead and classify those sequences using the Bayesian classifier
+                with the <i>classify.seqs</i> command:</p>
+                <pre><code>classify.seqs(fasta=BV.trim.contigs.good.unique.good.filter.unique.precluster.pick.fasta, count=BV.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.count_table, reference=database/silva.bacteria.fasta, taxonomy=database/silva.bacteria.silva.tax, cutoff=80)</pre></code>
+            <p>And then remove the undesirable ones:</p>
+            <pre><code>remove.lineage(fasta=BV.trim.contigs.good.unique.good.filter.unique.precluster.pick.fasta, count=BV.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.count_table, taxonomy=BV.trim.contigs.good.unique.good.filter.unique.precluster.pick.silva.wang.taxonomy, taxon=Chloroplast-Mitochondria-unknown-Archaea-Eukaryota-unknown-Bradyrhizobium-Paracoccus-Comamonas-Moraxella-Pseudomonas-Acidobacteria-Cyanobacteria-Deinococcus-Thermus-Acidobacteria-Chloroplast-Cyanobacteria-Deinococci-ML635J-21-Sphingobacteriia-Deinococcales-Sphingobacteriales-Subgroup_2-Subgroup_3-Subgroup_4-Subgroup_5-Subgroup_6-SubsectionI-SubsectionII-SubsectionIII-Chitinophagaceae-Comamonadaceae-env.OPS_17-FamilyI-FamilyI-FamilyII-mitochondria-Moraxellaceae-NS9_marine_group-Sphingobacteriaceae-Trueperaceae-Unknown_Family-Unknown_Family-Acinetobacter-Afipia-Alicycliphilus-Alteromonas-Aquabacterium-Aquamicrobium-Azospira-Azospirillum-Blastocatella-Bosea-Bradyrhizobium-Brevundimonas-Bryobacter-Candidatus_Solibacter-Caulobacter-Chroococcidiopsis-Chroogloeocystis-Chryseobacterium-Cloacibacterium-Comamonas-Craurococcus-Crinalium-Cupriavidus-Curvibacter-Delftia-Diaphorobacter-Enhydrobacter-Flavisolibacter-Flavobacterium-Globicatella-Hydrotalea-Lautropia-Leptolyngbya-Marinobacter-Massilia-Mesorhizobium-Methylobacillus-Methylobacterium-Methylophilus-Methyloversatilis-Moraxella-Nitrosospira-Noviherbaspirillum-Novosphingobium-Paracoccus-Pedobacter-Pedomicrobium-Pelagibacterium-Phenylobacterium-Propionibacterium-Propioniciclava-Propioniferax-Propionimicrobium-Pseudomonas-Psychrobacter-Ralstonia-Rhizobium-Roseomonas-Salinimicrobium-Schlegelella-Sediminibacterium-Sphingobacterium-Sphingomonas-Stenotrophomonas-Sulfuritalea-Terrimonas-Tessaracoccus-Truepera-Undibacterium-Variovorax-Weeksella)</pre></code>
+            <p>To see the output of this classification we will use another software called
+              <i>KronaTools</i>. For this open a new command line and type:</p>
+            <pre><code>system(python mothur_krona_XML.py BV.trim.contigs.good.unique.good.filter.unique.precluster.pick.silva.wang.tax.summary > BV_krona.xml)</pre></code>
+
+            <p>This will create and output in XML format that can then be loaded into
+              <i>KronaTools</i> to create an interactive plot to navigate through.
+              To do this type:</p>
+            <pre><code>system(ktImportXML BV_krona.xml -o BV_krona.html)</pre></code>
+            <p>This will create the file <i>BV_krona.html</i> that you can open by navigating
+              to the folder <b>~/metagenomics/</b> and double clicking in it. It should open in
+              the Web browser.</p>
+              <div class="text-center"><img src="img/Microbiome_6.jpg" class="img-fluid"></div>
+              <br>
+              <div class="alert alert-warning">
+                Using the table with the phenotypes (provided below) and using the plots just generated
+                for the samples, what conclusions could you extract from it? What do you think is the
+                role of the <i>Lactobacillus</i> genus?
+              </div>
+              <div class="row">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-8 text-center">
+                  <table class="table">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">Sample</th>
+                <th scope="col">BV +/-</th>
+                <th scope="col">pH</th>
+                <th scope="col">HIV +/-</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">BB_1</th>
+                <td>BV(-)</td>
+                <td>4.1</td>
+                <td>HIV(-)</td>
+              </tr>
+              <tr>
+                <th scope="row">BB_2</th>
+                <td>BV(+)</td>
+                <td>4.7</td>
+                <td>HIV(-)</td>
+              </tr>
+              <tr>
+                <th scope="row">BB_3</th>
+                <td>BV(+)</td>
+                <td>5.3</td>
+                <td>HIV(-)</td>
+              </tr>
+              <tr>
+                <th scope="row">BB_4</th>
+                <td>BV(-)</td>
+                <td>4.4</td>
+                <td>HIV(-)</td>
+              </tr>
+              <tr>
+                <th scope="row">BB_5</th>
+                <td>BV(+)</td>
+                <td>5.5</td>
+                <td>HIV(-)</td>
+              </tr>
+              <tr>
+                <th scope="row">BB_6</th>
+                <td>BV(-)</td>
+                <td>4.4</td>
+                <td>HIV(-)</td>
+              </tr>
+            </tbody>
+          </table>
+              </div>
+              <div class="col-sm-2"></div>
+            </div>
+              <div class="alert alert-warning">
+                Why do you think sample 6 is not present in the plots?
+              </div>
+              <div class="alert alert-warning">
+                What information can be taken from the pH distribution of the samples? Is this correlated with the Bacteria we find in the samples?
+              </div>
+              <hr>
+              <h4>OTU Classification</h4><br>
+              <p>Now we are going to cluster the sequences into OTUs.</p>
+              <p><b>So what is an OTU?</b></p>
+              <p>OTU's are used to categorize bacteria based on sequence similarity. In 16S metagenomics
+                approaches, OTUs are clusters of similar sequence variants of the 16S rDNA marker gene
+                sequence. Each of these cluster is intended to represent a taxonomic unit of a bacteria
+                species or genus depending on the sequence similarity threshold. Typically, OTU cluster
+                are defined by a 97% identity threshold of the 16S gene sequence variants, but also the
+                use of 99% identity is suggested for species separation.</p>
+                <p>OTU classification resolution depends on the 16S approach which has some limits in
+                  distinguishing at the species level, for example, <i>Escherichia coli</i> and
+                  <i>Shigella spp.</i> share almost identical 16S rRNA gene sequences.</p>
+                  <p>To do the classification we will use <i>dist.seqs</i>:</p>
+              <pre><code>dist.seqs(fasta=BV.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.fasta, cutoff=0.20)</pre></code>
+              <pre><code>cluster(column=BV.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.dist, count=BV.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.pick.count_table)</pre></code>
+              <p>Do not worry if you see a lot of 0's populating your screen this is normal, once finished we want
+                 to know how many sequences are in each OTU from each group, and we can do this using the
+                 <i>make.shared</i> command. Here we tell mothur that we are really only interested in the
+                 0.03 cut-off level.</p>
+              <pre><code>make.shared(list=BV.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.opti_mcc.list, count=BV.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.pick.count_table, label=0.03)</pre></code>
+              <p>Finally we will classify the OTU's obtained based on our database taxonomy.</p>
+              <pre><code>classify.otu(list=BV.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.opti_mcc.list, count=BV.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.pick.count_table, taxonomy=BV.trim.contigs.good.unique.good.filter.unique.precluster.pick.silva.wang.pick.taxonomy, label=0.03)</pre></code>
+              <p>To see the output like the one below type:</p>
+              <pre><code>system(head BV.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.opti_mcc.0.03.cons.taxonomy)</pre></code>
+              <div class="text-center"><img src="img/Microbiome_7.jpg" class="img-fluid"></div>
+              <br>
+              <p>This is telling you that Otu001 was observed 82356 times in your samples and that
+                all of the sequences (100%) were classified as being members of the
+                <i>Lactobacillus</i> genus.</p>
+                <hr>
+                <h4>Assessing alpha diversity</h4><br>
+                <p>To make this part is easier, rename the shared file as follows:</p>
+                <pre><code>system(cp BV.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.opti_mcc.shared BV.an.shared)</pre></code>
+                <p>Then run the following command:</p>
+                <pre><code>rarefaction.single(shared=BV.an.shared, calc=sobs, freq=100)</pre></code>
+                <p>This will produce the file <i>BV.an.groups.rarefaction</i>. that includes the rarefaction curves for the 6
+                 samples. To plot this rarefaction curves we will use the statistical software <i>R</i>. Open a new
+                 command line and navigate to <i>~/metagenomics/</i> and type <i>R</i>.</p>
+                 <pre><code>cd ~/data/metagenomics/
+R</pre></code>
+                <p><b>This will start <i>R</i> then copy the following scripts to plot the graphics.</b></p>
+                <pre><code>data<-read.table("~/data/metagenomics/BV.an.groups.rarefaction",sep="\t",header=T)
+data_all<-c(data$X0.03.BB_1,data$X0.03.BB_2,data$X0.03.BB_3,data$X0.03.BB_4,data$X0.03.BB_5,data$X0.03.BB_6)
+max_all<-max(data_all,na.rm=TRUE)
+plot(data$numsampled,data$X0.03.BB_1,main="Rarefaction curves",xlab="Number of Reads Sampled",ylab="Number of Different OTUs", ylim=c(0,max_all),col=1,type="l")
+points(data$numsampled,data$X0.03.BB_2,type="l",col=2)
+points(data$numsampled,data$X0.03.BB_3,type="l",col=3)
+points(data$numsampled,data$X0.03.BB_4,type="l",col=4)
+points(data$numsampled,data$X0.03.BB_5,type="l",col=5)
+points(data$numsampled,data$X0.03.BB_6,type="l",col=6)
+legend("topright", c("BB_1","BB_2","BB_3","BB_4","BB_5","BB_6"), lty=c(1,1,1,1,1,1), lwd=c(2.5,2.5,2.5,2.5,2.5,2.5),col=c(1:6))</pre></code>
+                <p>The output should look like this:</p>
+                <div class="text-center"><img src="img/Microbiome_8.jpg" class="img-fluid"></div>
+                <br>
+                <p><b>Rarefaction</b> is a technique to assess species richness from the results of sampling.
+                  Rarefaction allows the calculation of species richness for a given number of individual
+                  samples, based on the construction of so-called rarefaction curves. This curve is a plot
+                  of the number of species as a function of the number of samples. On the left, the steep
+                  slope indicates that a large fraction of the species diversity remains to be discovered.
+                  If the curve becomes flatter to the right, a reasonable number of individual samples
+                  have been taken: more intensive sampling is likely to yield only few additional species.</p>
+                <div class="alert alert-warning">Knowing this, what are your conclusions about sample BB_5 and
+                  BB_6? Also, what other important information can be spotted between the BV positive samples
+                  and the Healthy samples?
+                </div>
+                <p><b>Acknowledgements:</b> Dr. Suzanna Francis</p>
+
+      </div>
+
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="jquery-3.3.1.slim.min.js" crossorigin="anonymous"></script>
+    <script src="popper.min.js"  crossorigin="anonymous"></script>
+    <script src="bootstrap.min.js"  crossorigin="anonymous"></script>
+    <script src="d3.v3.min.js"></script>
+    <script src="stack.v1.min.js"></script>
+
+  </body>
+</html>

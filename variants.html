@@ -1,0 +1,712 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="bootstrap.min.css" type="text/css">
+
+    <style>
+
+    @import url(http://fonts.googleapis.com/css?family=PT+Serif|PT+Serif:b|PT+Serif:i);
+
+
+    #follow {
+      background: none;
+    }
+
+    .grey {
+      color: #777;
+    }
+
+    a:link,
+    a:visited {
+      color: black;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    </style>
+
+	<style>
+	pre {
+		display: block;
+		padding: 9.5px;
+		margin: 0 0 10px;
+		font-size: 13px;
+		line-height: 1.42857143;
+		color: white;
+		word-break: break-all;
+		word-wrap: break-word;
+		background-color: black;
+		border: 1px solid black;
+		border-radius: 4px;
+	}
+
+    .jumbotron-head{
+        background:linear-gradient(rgba(0, 0, 250, 0.15), rgba(125, 250, 250, 0.55)),url(img/Head_variants.jpg);
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-position: top right;
+        color:black !important;
+    }
+	</style>
+
+
+    <title>Variant Detection - Pathogen 'Omics</title>
+  </head>
+  <!-- hello ernest! -->
+  <body>
+
+      <div class="jumbotron vertical-center jumbotron-fluid jumbotron-head">
+        <div class="container">
+          <h1 class="display-4">Variant Detection</h1>
+          <p class="lead">Advanced variant calling methods</p>
+        </div> <!-- Container -->
+      </div>
+
+
+
+      <div class="container">
+    <h4>Variant Detection lecture</h4>
+    <object data="presentations/variants_lecture_2018.pdf#page=1" type="application/pdf" width="100%" height=700px>
+        <p><b>Example fallback content</b>: This browser does not support PDFs. Please download the PDF to view it:
+        <a href="presentations/variants_lecture_2018.pdf">Download PDF</a>.</p>
+    </object>
+    <hr>
+      <h4>Variant Detection Practical</h4>
+      <h4>Introduction</h4>
+      <p>New sequencing technologies are mostly used for re-sequencing, namely when a well-assembled
+        reference genome from the same organism or one very similar is available. Instead of assembling
+        the reads to produce a new genome sequence, re-sequencing projects aim to compare the sampled
+        genome with the reference by read mapping. Short read alignment was considered in the previous
+        practical. Here, we will focus on downstream analyses aiming to identify Single Nucleotide
+        Polymorphisms (SNPs), insertions and deletions (indels) and large structural variants (SVs)
+        in the sequenced sample.</p>
+      <p>Most of the software for variant detection and calling require alignment files (e.g. BAM
+        format) as input. We will be using <i>samtools/bcftools</i> and GATK for SNP and small
+        indel discovery.</p>
+      <p>Historically, structural variation refers to relatively large polymorphisms that alter the
+        chromosome structure. Indels belong to this group of genetic variation. Among the early
+        methods for discovering structural variants (SVs), whole-genome array comparative hybridisation
+        (Carter, 2007) and SNP arrays (Cooper, Zerr, Kidd, Eichler, & Nickerson, 2008) have been
+        successfully applied despite their resolution limitations</p>
+      <p>The advent of high-throughput sequencing platforms has opened new possibilities in this area.
+        New tools have been developed to detect unusual patterns of reads, or pairs of reads, left by
+        SVs. Such signatures can be broadly grouped into three categories of signature: discordant
+        mapping of read pairs, read splitting, and depth of coverage. SV detection programs implement
+        algorithms aiming to identify such signatures, or combinations of them, from sequence alignment
+        files (Medvedev, Stanciu, & Brudno, 2009)</p>
+      <p><b>SNP detection and calling</b></p>
+      <p>Some differences between the reference and the mapped reads are due to sequencing errors. By
+        definition, a quality score of 30 (Q30), refers to, on average, 1 in every 1000 bases in the
+        reads is expected to be incorrect (Q20 1/100, Q40 1/10000 etc.). Nevertheless, the high depth
+        of coverage achieved by current sequencing platforms SNPs can be distinguished from sequencing
+        errors. True SNPs are expected to be shown as mismatches occurring consistently across multiple
+        reads at the same reference position, whereas mismatches found at spurious locations are likely
+        to be caused by sequencing errors (<b>Figure 1</b>). SNP calling tools make use of this fact to calculate
+        statistical significance and filter out false positives</p>
+        <div class="text-center"><img src="img/variants_1.jpg" class="img-fluid"></div>
+        <br>
+        <div class="row">
+          <div class="col-sm-12 text-center"><p><b>Figure 1</b>: BAM file visualisation with Tablet. Real SNP
+            and sequencing errors.</p>
+          </div>
+        </div>
+        <h4>Exercise 1: Identifying Single Nucleotide Polymorphisms (SNPs)</h4>
+        <p>Open up a new session of Tablet:</p>
+        <pre><code>tablet</pre></code>
+        <p><b>Click under the “Home” tab in the Top Bar</b> <i>Open assembly</i>. Fill in all required fields including
+          ‘Primary Assembly file’ and ‘Reference/Consensus file’. You can use the “<i>Browse…</i>” buttons to
+          navigate and select the <i>~/data/tb/sample1.bam</i> and <i>~/data/tb/tb.fasta</i> files respectively
+          (<b>Figure 2</b>).</p>
+          <div class="text-center"><img src="img/variants_2.jpg" class="img-fluid"></div>
+          <br>
+          <div class="row">
+            <div class="col-sm-12 text-center"><p><b>Figure 2</b>: Selecting your files.</p>
+            </div>
+          </div>
+          <p>Once loaded do not forget to click on the contig to display the reads. You can load the annotation
+            file as explained in previous exercises with the <i>Import Features</i> button.</p>
+          <p>We are going to check at positions 187,503 and 587,585 in the genome.</p>
+          <p>To go to a specific region, we will use the <i>Jump to Navigator</i> from Tablet. To show it, press <i>Ctrl+J</i>
+            and the window in <b>Figure 3</b> will appear. If it does not appear ask for help from a demonstrator.</p>
+            <div class="text-center"><img src="img/variants_3.jpg" class="img-fluid"></div>
+            <br>
+            <div class="row">
+              <div class="col-sm-12 text-center"><p><b>Figure 3</b>: <i>Jump to Navigator</i> window.</p>
+              </div>
+            </div>
+          <p>Once this appears enter the position to which you want to go (187503 first)
+            and click on <i>Padded Jump</i>. The pane shown in <b>Figure 4</b> should appear.</p>
+            <div class="text-center"><img src="img/variants_4.jpg" class="img-fluid"></div>
+            <br>
+            <div class="row">
+              <div class="col-sm-12 text-center"><p><b>Figure 4</b>: SNP at position 187,503 bp found in <i>sample1.bam</i>.</p>
+              </div>
+            </div>
+            <h4>Exercise 2: Calling SNPs and short indels using SAM/BCFtools</h4>
+            <p>In previous exercises raw reads were mapped onto the reference genome using BWA (Li & Durbin, 2010)
+               for several Mtb samples, resulting in alignment files of BAM format. The combination of SAMtools
+               (Li et al., 2009) and BCFtools (Danecek et al., 2011) is a widely established approach to call
+               SNPs and small indels (Li, 2011). SAMtools gathers information from input BAM files and computes
+               the likelihood of each possible genotype. BCFtools takes SAMtools output and performs the actual
+               genotype calling. Results are stored in files of VCF format (Variant Call Format).</p>
+            <p>We had an insight into the SNP detection in the previous practical, using a single c. Let us
+              start by looking at again at <i>bcftools mpileup</i> command options that we will need to change to
+              optimise SNP calling.</p>
+            <p>Open up a new terminal window and type:</p>
+            <pre><code>bcftools mpileup</pre></code>
+            <p><b>Table 1 Some <i>bcftools</i> mpileup parameters.</b></p>
+            <div class="row">
+            <div class="col-sm-12">
+                <table class="table">
+            <thead class="thead-dark">
+            <tr>
+              <th scope="col"></th>
+              <th scope="col">Option</th>
+              <th scope="col">Type</th>
+              <th scope="col">Default</th>
+              <th scope="col">Description</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <th scope="row" rowspan="5">Input Options</th>
+              <td>-C</td>
+              <td>INT</td>
+              <td>0</td>
+              <td>Coefficient for downgrading mapping quality for reads containing excessive mismatches.
+                Given a read with a phred-scaled probability q of being generated from the mapped
+                position, the new mapping quality is about sqrt((INT-q)/INT)*INT. A zero value disables
+                this functionality; if enabled, the recommended value for BWA is 50.</td>
+            </tr>
+            <tr>
+              <td>-d</td>
+              <td>INT</td>
+              <td>250</td>
+              <td>Max per-BAM depth to avoid excessive memory usage.</td>
+            </tr>
+            <tr>
+              <td>-f</td>
+              <td>FILE</td>
+              <td>null</td>
+              <td>The faidx-indexed reference file in the FASTA format. The file can be optionally
+                 compressed by razip.</td>
+            </tr>
+            <tr>
+              <td>-q</td>
+              <td>INT</td>
+              <td>0</td>
+              <td>Minimum mapping quality for an alignment to be used.</td>
+            </tr>
+            <tr>
+              <td>-Q</td>
+              <td>INT</td>
+              <td>13</td>
+              <td>Minimum base quality for a base to be considered.</td>
+            </tr>
+            </tbody>
+            </table>
+            </div>
+            </div>
+          <p>Read through the following command (we will execute them later):</p>
+          <p><i>bcftools mpileup -B -Q 23 -d 2000 -C 50 -f ~/data/tb/tb.fasta
+            ~/data/tb/sample1.bam</i></p>
+          <p>Note that we are considering many more reads (depth) per position (-d) and imposing more
+            strict quality thresholds (-Q). <i>bcftools mpileup</i> output must be piped to the <i>bcftools
+            call</i> command, the second step in SNP calling. To display all available parameters type:</p>
+          <pre><code>bcftools call</pre></code>
+          <p>There is no need to understand every single parameter; the options we will need to use are listed
+          in <b>Table 2</b>.</p>
+          <p><b>Table 2 Some <i>bcftools call</i> parameters.</b></p>
+          <div class="row">
+          <div class="col-sm-12">
+              <table class="table">
+          <thead class="thead-dark">
+          <tr>
+            <th scope="col"></th>
+            <th scope="col">Option</th>
+            <th scope="col">Description</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <th scope="row">File Format Options</th>
+            <td>--ploidy</td>
+            <td>Predefined ploidy of the organism/data.</td>
+          </tr>
+          <tr>
+            <th scope="row" rowspan="4">Input/Output Options</th>
+            <td>-A</td>
+            <td>Keep all possible alternate alleles at variant sites.</td>
+          </tr>
+          <tr>
+            <td>-f</td>
+            <td>Output format fields.</td>
+          </tr>
+          <tr>
+            <td>-V</td>
+            <td>Skip indels/snps.</td>
+          </tr>
+          <tr>
+            <td>-v</td>
+            <td>Output variant sites only.</td>
+          </tr>
+          <tr>
+            <th scope="row" rowspan="5">Consensus/variant Calling Options</th>
+            <td>-c</td>
+            <td>The original calling method (conflicts with -m)</td>
+          </tr>
+          <tr>
+            <td>-m</td>
+            <td>Alternative model for multiallelic and rare-variant calling.</td>
+          </tr>
+          <tr>
+            <td>-n</td>
+            <td>Likelihood of novel mutation for constrained trio calling (conflicts with –c).</td>
+          </tr>
+          <tr>
+            <td>-p</td>
+            <td>Variant if P(ref|D)<FLOAT with –c [0.5].</td>
+          </tr>
+          <tr>
+            <td>-P</td>
+            <td>Mutation rate (use bigger for greater sensitivity) use qith –m [1.1 e-3].</td>
+          </tr>
+          </tbody>
+          </table>
+          </div>
+          </div>
+
+          <p>The complete bcftools call command would be as follows (it will be run later):</p>
+          <p><i>bcftools call –m –v –O v > sample1.raw.vcf</i></p>
+          <p>or</p>
+          <p><i>bcftools call –mvO v > sample1.raw.vcf</i></p>
+          <p>Having understood <i>bcftools mpileup</i> and <i>bcftools call</i> parameters,
+            we can combine both instructions to perform SNP and short indel calling as follows:</p>
+          <pre><code>mkdir ~/data/tb/variants
+cd ~/data/tb/variants/
+bcftools mpileup -B -Q 23 -d 2000 -C 50 -f ~/data/tb/tb.fasta ~/data/tb/sample1.bam | bcftools call --ploidy 1 -mvO v - > sample1.raw.vcf
+</pre></code>
+          <p>As we saw in the Introduction to Linux Practical the character ‘|’ is used to ‘pipe’ <i>bcftools
+             mpileup</i> output into <i>bcftools call</i> as input. We can further filter the resulting variant calls
+             using the <i>vcfutils varFilter</i> command, which like <i>bcftools</i>, is installed as part of the
+              <i>samtools</i> package. Parameters within this tool can be reviewed when executing:</p>
+          <pre><code>vcfutils.pl varFilter</pre></code>
+          <div class="alert alert-info" style="white-space:pre-wrap;">
+<samp>Usage:   vcfutils.pl varFilter [options] <in.vcf>
+
+Options: -Q INT    minimum RMS mapping quality for SNPs [10]
+         -d INT    minimum read depth [2]
+         -D INT    maximum read depth [10000000]
+         -a INT    minimum number of alternate bases [2]
+         -w INT    SNP within INT bp around a gap to be filtered [3]
+         -W INT    window size for filtering adjacent gaps [10]
+         -1 FLOAT  min P-value for strand bias (given PV4) [0.0001]
+         -2 FLOAT  min P-value for baseQ bias [1e-100]
+         -3 FLOAT  min P-value for mapQ bias [0]
+         -4 FLOAT  min P-value for end distance bias [0.0001]
+         -e FLOAT  min P-value for HWE (plus F<0) [0.0001]
+         -p        print filtered variants
+
+Nb: Some of the filters rely on annotations generated by SAMtools/BCFtools.</samp></div>
+        <p>The -D option of <i>varFilter</i> controls the maximum read depth, which should be adjusted at least to
+          approximately twice the average read depth.  Finally, type the following commands to obtain a
+          high quality set of variants in VCF format:</p>
+        <pre><code>cat sample1.raw.vcf | vcfutils.pl varFilter -d 10 -D 2000 > sample1.filt.vcf</pre></code>
+        <p>Run the code above for <i>sample2</i>. The bam has already been preprocessed so all you have to do
+          is replace “<i>sample1</i>” in the command with “<i>sample2</i>”</p>
+        <h4>Exercise 3: Calling SNPs and short indels using GATK</h4>
+        <p>The Genome Analysis Toolkit (GATK) includes a wide variety of tools, with a primary focus on
+          variant discovery and genotyping. The standard GATK data processing pipeline starts by applying
+          the <i>HaplotypeCaller</i> to identify variable sites with respect to the reference.
+          <i>HaplotypeCaller</i> will be set up by default to work on diploid organisms, therefore we will use
+          the <i>--ploidy</i> 1 for bacterial genomes like <i>Mycobacterium tuberculosis</i>.
+            We will run GATK for SNPs and small indel calling to complement samtools/bcftools output.</p>
+        <p>Run the following four commands to call SNPs and indels using GATK instead of Samtools:</p>
+        <pre><code>cd ~/data/tb/variants/
+gatk HaplotypeCaller -R ~/data/tb/tb.fasta -I ~/data/tb/sample1.bam -O sample1.gatk.raw.vcf -ploidy 1</pre></code>
+        <p>Be sure to read the output to make sure that the <i>tb.dict</i> file has been created correctly.</p>
+        <h4>Exercise 4: Visualisation of variants (in VCF files) using Tablet</h4>
+        <p>We can open the resulting VCF files within the terminal window with the <i>more</i>
+           (or <i>less</i> or <i>head</i> or <i>cat</i>) command:</p>
+        <pre><code>more sample1.filt.vcf</pre></code>
+        <p>The output should look like:</p>
+<div class="alert alert-info" style="white-space:pre-wrap;"><samp>#CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO	FORMAT	sample1
+Chromosome	1595	.	G	T	58	.	DP=16;VDB=1.106034e-02;RPB=2.849794e+00;AF1=0.5;AC1=1;DP4=8,4,2,2;MQ=39;FQ=61
+;PV4=0.6,0.11,1,0.027	GT:PL:GQ	0/1:88,0,202:91
+Chromosome	1849	.	C	A	222	.	DP=148;VDB=3.647138e-01;AF1=1;AC1=2;DP4=0,0,77,66;MQ=44;FQ=-282	GT:PL:GQ	1/1:255,255,0:99
+Chromosome	1977	.	A	G	222	.	DP=70;VDB=1.915965e-02;AF1=1;AC1=2;DP4=0,0,14,54;MQ=44;FQ=-232	GT:PL:GQ	1/1:255,205,0:99</samp></div>
+        <p>Press enter to scroll down to the end of the file or ‘q’ to exit back to the prompt.</p>
+        <p><b>VCF format</b></p>
+        <p>VCF (Variant Call Format) is a text file format employed to store genetic variation with
+          respect to a reference genome. It contains meta-information lines (beginning with ##), a
+          header line (starting with #) and then data lines each containing information about a
+          variable position in the genome. All variants, including SNPs and indels, are defined
+          by the chromosome (CHROM), position (base pairs) in the reference genome (POS), ID, reference
+          allele (REF), alternative allele (ALT) and a quality score for the detected variant (QUAL).
+          The FILTER field contains information about the filters applied, and INFO gathers additional
+          information. A detailed description of VCF format specification can be found at:</p>
+        <p><a href="http://samtools.github.io/hts-specs/VCFv4.3.pdf" target="_blank">http://samtools.github.io/hts-specs/VCFv4.3.pdf</a></p>
+        <p>VCF files can be opened and visualised in genome browsers such as Artemis and Tablet
+          but first need to be indexed.</p>
+        <p>To index the resulting VCF files type the following lines of code:</p>
+        <pre><code>cd ~/data/tb/variants/
+bgzip sample1.filt.vcf
+tabix -p vcf sample1.filt.vcf.gz
+bgzip sample2.filt.vcf
+tabix -p vcf sample2.filt.vcf.gz</pre></code>
+        <p>Launch 2 Tablet instances and load sample1.bam and sample2.bam in each of them as
+          explained in Exercise 1.</p>
+        <p>In the tool bar, select Import features as if we were going to load an annotation
+          file. But this time select the compressed VCF files in <i>~/data/tb/variants</i> (i.e.
+          <i>sample1.filt.vcf.gz</i> for the instance with <i>sample1</i> loaded and <i>sample2.filt.vcf.gz</i>
+          for the instance with <i>sample2</i> loaded).</p>
+        <p>Making use of <i>Jump to Navigator</i> visit the two regions we visited in Exercise 1
+          (containing positions 187,503 and 587,585 respectively). Remember that we were
+          trying to distinguish real SNPs from sequencing errors. Having loaded the VCF file,
+          right click on the tracks below the nucleotide sequence to display the VCF track. Then
+          the SNPs should appear in the VCF track above the reads panel (<b>Figure 5</b>). On the other
+          hand, sequencing errors are not called SNPs at those positions.</p>
+          <div class="text-center"><img src="img/variants_5.jpg" class="img-fluid"></div>
+          <br>
+          <div class="row">
+            <div class="col-sm-12 text-center"><p><b>Figure 5</b>: SNP at position 187,503 found in <i>sample1</i> and absent in <i>sample2</i>.</p>
+            </div>
+
+          </div>
+          <p>Zoom out to visualise more variants. Double-click on the reads panel to zoom in.
+            Go back to the VCF terminal view, take note of any indels found and try to locate them
+            using Tablet. Note that insertions (<b>Figure 6</b>) and deletions (<b>Figure 7</b>) are represented
+            in a different way in Tablet.</p>
+          <p>The SNPs called from GATK can be examined in the same way, using <i>bgzip</i> and <i>tabix</i>
+            and opening them in Tablet or Artemis.</p>
+            <div class="text-center"><img src="img/variants_6.jpg" class="img-fluid"></div>
+            <br>
+            <div class="row">
+              <div class="col-sm-12 text-center"><p><b>Figure 6</b>: Insertion at position 859,131 in <i>sample2</i>.</p></div>
+            </div>
+            <div class="text-center"><img src="img/variants_7.jpg" class="img-fluid"></div>
+            <br>
+            <div class="row">
+              <div class="col-sm-12 text-center"><p><b>Figure 7</b>: Deletion at position 485,810 in <i>sample1</i>, note that
+                because of how the deletion is labelled in each case (Tablet or VCF) they appear shifted
+                by one position.</p>
+              </div>
+            </div>
+            <p><b>Drug resistance in <i>Mycobacterium tuberculosis</i></b></p>
+            <p>One area where polymorphisms are elevated in <i>Mycobacterium tuberculosis</i> is in genes relating to
+              antibiotic action. Resistance to anti-tuberculosis drugs is caused predominantly by point mutations
+              (i.e. SNPs) that arise spontaneously and offer the bacterium survival advantage during (incomplete)
+              drug treatment. Since SNPs conferring drug resistance have been characterised (Sandgren et al.,
+              2009) it has been proposed that drug susceptibility can be inferred based on the presence/absence
+              of such markers (Peacock, 2013). In this exercise we will be looking at Rifampicin resistance-conferring
+              mutations found in the <i>rpoB</i> gene.</p>
+              <div class="row">
+              <div class="col-sm-12">
+                  <table class="table">
+              <thead class="thead-dark">
+              <tr>
+                <th scope="col">Position</th>
+                <th scope="col">gene</th>
+                <th scope="col">Reference Nucleotide</th>
+                <th scope="col">Alternative Nucleotide</th>
+                <th scope="col">Reference Codon</th>
+                <th scope="col">Alternative Codons</th>
+                <th scope="col">Reference Amino Acid</th>
+                <th scope="col">Alternative Amino Acid</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <th scope="row">761095</th>
+                <td>rpoB</td>
+                <td>T</td>
+                <td>C</td>
+                <td>CTG</td>
+                <td>CCG</td>
+                <td>L</td>
+                <td>P</td>
+              </tr>
+              <tr>
+                <th scope="row">761101</th>
+                <td>rpoB</td>
+                <td>A</td>
+                <td>T</td>
+                <td>CAA</td>
+                <td>CTA</td>
+                <td>Q</td>
+                <td>L</td>
+              </tr>
+              <tr>
+                <th scope="row">761109</th>
+                <td>rpoB</td>
+                <td>G</td>
+                <td>T</td>
+                <td>GAC</td>
+                <td>TAC</td>
+                <td>D</td>
+                <td>Y</td>
+              </tr>
+              <tr>
+                <th scope="row">761110</th>
+                <td>rpoB</td>
+                <td>A</td>
+                <td>T</td>
+                <td>GAC</td>
+                <td>GTC</td>
+                <td>D</td>
+                <td>V</td>
+              </tr>
+              <tr>
+                <th scope="row">761128</th>
+                <td>rpoB</td>
+                <td>C</td>
+                <td>T</td>
+                <td>TCG</td>
+                <td>TTG</td>
+                <td>S</td>
+                <td>L</td>
+              </tr>
+              <tr>
+                <th scope="row">761139</th>
+                <td>rpoB</td>
+                <td>C</td>
+                <td>T;G;A</td>
+                <td>CAC</td>
+                <td>TAC;GAC;AAC</td>
+                <td>H</td>
+                <td>Y;D;N</td>
+              </tr>
+              <tr>
+                <th scope="row">761140</th>
+                <td>rpoB</td>
+                <td>A</td>
+                <td>G;T</td>
+                <td>CAC</td>
+                <td>CGC;CTC</td>
+                <td>H</td>
+                <td>R;L</td>
+              </tr>
+              <tr>
+                <th scope="row">761155</th>
+                <td>rpoB</td>
+                <td>C</td>
+                <td>T;G</td>
+                <td>TCG</td>
+                <td>TTG;TGG</td>
+                <td>S</td>
+                <td>L;W</td>
+              </tr>
+              <tr>
+                <th scope="row">761161</th>
+                <td>rpoB</td>
+                <td>T</td>
+                <td>C</td>
+                <td>CTG</td>
+                <td>CCG</td>
+                <td>L</td>
+                <td>P</td>
+              </tr>
+              </tbody>
+              </table>
+              </div>
+              </div>
+          <p>Load the Annotation track and go to the <i>rpoB</i> (<i>Rv0667</i>) gene region, to do so in the left side information
+            table where the Chromosome is listed click on the tab <i>“Features”</i> then at the bottom from the list
+            <i>Select filter by</i> select <i>“Name”</i> (type ‘<i>Rv0667</i>’ in the <i>Search Box</i>) and try to spot one of the above
+            SNPs in the gene (<b>Figure 8</b>).</p>
+            <div class="text-center"><img src="img/variants_8.jpg" class="img-fluid"></div>
+            <br>
+            <div class="row">
+              <div class="col-sm-12 text-center"><p><b>Figure 8</b>: <i>RpoB</i> gene region.</p>
+              </div>
+            </div>
+          <div class="alert alert-warning">Based on your observations, what can you conclude about Rifampicin resistance
+            for the two samples being displayed?</div>
+          <h4>Large structural variant (SV) detection and calling</h4>
+          <p>While small indels can be detected by finding gaps within mapped reads, larger structural variation requires
+            alternative approaches. When working with short reads and high depth of coverage,
+            <i>samtools/bcftools</i> and GATK are established pipelines for detection and calling of SNPs
+            and small indels. However, there are other algorithms and software for the identification of
+            larger SVs (Medvedev et al., 2009). In the following exercises, we will introduce the main
+            approaches and employ representative tools deploying such strategies. The software’s quality
+            is measured in terms of sensitivity, specificity and accuracy of predicting breakpoint
+            locations.</p>
+          <p>Depth of coverage (DOC) methods assume that the number of mapped reads in a given region follow a
+            (modified) Poisson distribution, and are expected to be proportional to the number of times such a
+            region occurs in the sequenced genome. Deleted regions will have much fewer or no reads mapping to
+            it, whereas a duplicated region will have more reads (Chiang, Getz, Jaffe, & O’Kelly, 2008;
+            Sepulveda et al, 2013). The larger the event, the stronger the detected signal for these signatures.
+             The main disadvantages of this approach are its inefficacy at detecting weaker signals caused
+             by small events, breakpoint resolution and that gain signatures do not localise where the
+             insertion occurred.</p>
+          <h4>Exercise 5: SV detection using discordant paired-end mapping (PEM) and split read
+            approaches (Delly software)</h4>
+          <p>Mapping of paired-end reads (PEM) and DOC methods were the first to be implemented when reads
+            were much shorter (~35bp). PEM is the most prominent method to detect large SVs (Medvedev et
+            al., 2009). DOC signatures also support SVs including a copy number change in the sequenced
+            genome, namely deletions and tandem duplications. Nevertheless, with longer (paired) reads
+            achieved nowadays (up 150bp with Illumina HiSeq machines), read split methods outperform PEM
+            software in terms of breakpoint resolution, higher discovery rates and lower false positives
+            (Suzuki, Yasuda, & Shiraishi, 2011; Wang, Mullighan, Easton, & Roberts, 2011). Recently published
+            tools, such as PRIMS (Jiang, Wang, & Brudno, 2012) and Delly (Rausch et al., 2012) make use of
+            a complementary strategy under the assumption that SVs supported by different signatures are
+            called with higher confidence. Both aforementioned tools use a split read approach assisted
+            by the PEM. This exercise will combine paired-end and split-read alignment methods to increase
+            sensitivity and specificity in SV calling. In particular we will be using Delly software to
+            detect large structural variants.</p>
+          <p>Change to variants directory and run the following commands:</p>
+          <pre><code>cd ~/data/tb/variants/
+delly call -o sample1.delly.bcf -q 20 -s 3 -g /home/user/data/tb/tb.fasta /home/user/data/tb/sample1.bam
+delly call -o sample2.delly.bcf -q 20 -s 3 -g /home/user/data/tb/tb.fasta /home/user/data/tb/sample2.bam</pre></code>
+          <p>It should take no longer than 5 minutes per file. Type the program name to display all options:</p>
+          <pre><code>delly</pre></code>
+          <p>The screen output should look like this:</p>
+<div class="alert alert-info" style="white-space:pre-wrap;"><samp>**********************************************************************
+Program: Delly
+This is free software, and you are welcome to redistribute it under
+certain conditions (GPL); for license details use '-l'.
+This program comes with ABSOLUTELY NO WARRANTY; for details use '-w'.
+
+Delly (Version: 0.7.8)
+Contact: Tobias Rausch (rausch@embl.de)
+**********************************************************************
+
+Usage: delly <command> <arguments>
+
+Commands:
+
+    call         discover and genotype structural variants
+    merge        merge structural variants across VCF/BCF files and within a single VCF/BCF file
+    filter       filter somatic or germline structural variants</samp></div>
+           <p>The software has two sequential steps. First, structural variants are predicted based on PEM
+             signatures (<b>Figure 9</b>), in other words, when mapped pair insert size happens
+             to be greater than expected.</p>
+             <div class="text-center"><img src="img/variants_9.jpg" class="img-fluid"></div>
+             <br>
+             <div class="row">
+               <div class="col-sm-12 text-center"><p><b>Figure 9</b>: Discordant paired-end signatures
+                 for insertion (a), deletion (b) and inversion (b).</p>
+               </div>
+             </div>
+            <p>Paired-end options include, like all PEM-based software, the insert size cut-off
+               (<i>-s</i>). The minimum paired-end mapping quality (<i>-q</i>) has been set to 20, therefore all
+               reads with mapping quality below this threshold will be discarded. Structural variants detected
+               by PEM will be outputted to the file indicated with ‘<i>-o</i>’.</p>
+            The specification of the standard deviation units (<i>-s</i>) is probably the most important cut-off for
+            PEM methods. A deletion is detected when the pair mapped distance exceeds the upper threshold
+            defined as <i>s</i> times (<i>s</i> = 3) the standard deviation (&sigma;) over the mean (&mu; + 3&sigma;).
+            <p>Second, Delly makes use of soft-clipped information to find exact breakpoints. <b>Read splitting
+              approaches</b> rely on mapping broken reads that span breakpoints and are located in nearby locations.
+              The structural variant signature in this case consists of one of the reads mapping to the reference and its
+              split mate mapping with one of its parts approximately one insert size away. For insertions,
+              the broken read will have its splits parts adjacent to each other, with a missing middle part
+              of the read (<b>Figure 10</b>). In both cases, breakpoints can be resolved with base-pair precision.</p>
+              <div class="text-center"><img src="img/variants_10.jpg" class="img-fluid"></div>
+              <br>
+              <div class="row">
+                <div class="col-sm-12 text-center"><p><b>Figure 10</b>: Split-red signatures for deletion (a),
+                  insertion (b) and inversion (b).</p>
+                </div>
+              </div>
+              <p>Split-read options include the reference genome file name (<i>-g</i>), the output file name containing
+                structural variants inferred by split-read method (<i>-b</i>) and other parameters.</p>
+              <p>Delly software produces one output file per run, called sample1.delly.bcf and sample2.delly.bcf in our two runs.
+                These are in a BCF-style format.Therefore you should run the following commands to get the VCF formatted files:</p>
+<pre><code>bcftools view sample1.delly.bcf > sample1.delly.vcf
+bcftools view sample2.delly.bcf > sample2.delly.vcf</pre></code>
+              <p>Now you should be able to open them in your favourite text viewer/editor (<i>cat</i>, <i>less</i>, <i>nano</i>,
+                 <i>more</i> or <i>vim</i>):</p>
+              <p><i>Chromosome      79569   DEL00000002     C       &lt;DEL&gt;   .       PASS
+                PRECISE;SVTYPE=DEL;SVMETHOD=EMBL.DELLYv0.7.8;
+                CHR2=Chromosome;END=83036;PE=73;MAPQ=60;CT=3to5;CIPOS=-6,6;
+                CIEND=-6,6;INSLEN=0;HOMLEN=5;SR=10;SRQ=1;
+                CONSENSUS=CCCGGTGGACCCGGTGGACCCGGTGGACCCGGTGGACGCCGTGGTC
+                GCCGTGGGACGGGCGCGACGGCACGCCGCGGCCGCGTTGCGCTCCGG;CE=1.67548
+                GT:GL:GQ:FT:RCL:RC:RCR:CN:DR:DV:RR:RV
+                1/1:-112.094,-9.62652,0:96:PASS:1230:199:1027:0:1:80:0:32</i></p>
+             <p>Showing the start (79569), end (83035), type (DEL), mapping quality (60) and how many
+               PE reads were utilised (73).</p>
+               <h4>Exercise 6: Visualisation of predicted variants using Tablet</h4>
+               <p>So far we have use Artemis and Tablet to visualise SNPs. In this exercise we will run it again to
+                 manually annotate larger deletions predicted by Delly tools in Exercise 5.</p>
+              <p><b>Confidently called events versus likely false positives</b></p>
+              <p>SV detection tools output not only potential structural differences, but also
+                a confidence value attach to them. An important threshold is the minimum number of supporting reads
+                (found in Delly output) for an event to be retained. Hits with very few supporting reads (column 5)
+                are expected to be false positives (FP). Repetitive and highly polymorphic regions in the genome are
+                the main sources of such FP events.</p>
+              <p>Launch 2 Tablet instances and load sample1.bam and sample2.bam in each of them as explained in Exercise 1.</p>
+              <p>In the tool bar, select Import features as if we were going to load an annotation file. But this
+                time select the compressed VCF files in <i>~/data/tb/</i> (i.e. <i> sample1.filt.vcf.gz</i> for the instance with
+                <i>sample1</i> loaded and <i>sample2.filt.vcf.gz</i> for the instance with <i>sample2</i> loaded).</p>
+              <p>Find RD105 (79,570-83,050) and establish whether differences in the alignment can be visually
+                identified between samples (<b>Figure 11</b>). Zoom out and change to the <i>Packed</i> view (Under the <i>Home</i>
+                tab > <i>Read packing</i>) to get an overview of the region. (Note: The coverage plot can also give you
+                a clear insight).</p>
+                <div class="text-center"><img src="img/variants_11.jpg" class="img-fluid"></div>
+                <br>
+                <div class="row">
+                  <div class="col-sm-12 text-center"><p><b>Figure 11</b>: RD105 and neighbouring regions in <i>sample2</i>
+                    and <i>sample1</i>.</p>
+                  </div>
+                </div>
+                <div class="alert alert-warning">Which characteristic signatures of deletions (gap of coverage, long-spanning read pairs and split-reads)
+                can be identified? (Read the notes below to help answer this question)</div>
+                <i><b>Notes</b></i>:
+                <ul class="list-group">
+                  <li class="list-group-item">A gap of coverage means no or few alignments cover a region
+                    with respect to its neighbouring ones.</li>
+                  <li class="list-group-item">If you change to Packed reads (Paired) the read pairs having greater
+                    insert sizes than expected will be displaying a dashed line linking them that will span a big
+                    distance. Insert size values are also shown in the read information box when placing the mouse
+                    over the reads.</li>
+                  <li class="list-group-item">Tablet does not colour split-reads differently. Nevertheless, the
+                    Cigar field in the read information box (shown when placing the cursor over the read) informs
+                     about how many bases in the read are mapped and soft-clipped. For instance, a Cigar field like
+                     ‘75M’ means all positions in a 75 bp read have been mapped to the reference. A string like
+                     ‘12S63M’ means the first 12-bp region of the read was soft-clipped, namely aligned somewhere
+                     else, while the remaining 63 bp were mapped. Make use of the Cigar information to identify
+                     soft-clipped reads</li>
+                  </ul>
+                <br>
+                <p>Browse regions where likely false positive deletions have been found, namely Delly hits with very
+                  few supporting reads (column 5).</p>
+                  <div class="alert alert-warning">Are deletion alignment signatures identified in those cases?</div>
+                  <p><b>References</b></p>
+                  <p>Carter, N. (2007). Methods and strategies for analyzing copy number variation using DNA microarrays. Nature genetics, 39, 1–11. doi:10.1038/ng2028.Methods</p>
+                  <p>Chiang, D., Getz, G., Jaffe, D., & O’Kelly, M. (2008). High-resolution mapping of copy-number alterations with massively parallel sequencing. Nature methods, 6(1), 99–103. doi:10.1038/nmeth.1276.High-resolution</p>
+                  <p>Comas, I., Coscolla, M., Luo, T., Borrell, S., Holt, K. E., Kato-Maeda, M., … Gagneux, S. (2013). Out-of-Africa migration and Neolithic coexpansion of Mycobacterium tuberculosis with modern humans. Nature Genetics, (August). doi:10.1038/ng.2744</p>
+                  <p>Cooper, G. M., Zerr, T., Kidd, J. M., Eichler, E. E., & Nickerson, D. a. (2008). Systematic assessment of copy number variant detection via genome-wide SNP genotyping. Nature genetics, 40(10), 1199–203. doi:10.1038/ng.236</p>
+                  <p>Danecek, P., Auton, A., Abecasis, G., Albers, C. a, Banks, E., DePristo, M. a, … Durbin, R. (2011). The variant call format and VCFtools. Bioinformatics (Oxford, England), 27(15), 2156–8. doi:10.1093/bioinformatics/btr330</p>
+                  <p>Jiang, Y., Wang, Y., & Brudno, M. (2012). PRISM: Pair read informed split read mapping for base-pair level detection of insertion, deletion and structural variants. Bioinformatics (Oxford, England), 1–7. doi:10.1093/bioinformatics/bts484</p>
+                  <p>Li, H. (2011). A statistical framework for SNP calling, mutation discovery, association mapping and population genetical parameter estimation from sequencing data. Bioinformatics (Oxford, England), 27(21), 2987–93. doi:10.1093/bioinformatics/btr509</p>
+                  <p>Li, H., & Durbin, R. (2010). Fast and accurate long-read alignment with Burrows–Wheeler transform. Bioinformatics, 26(5), 589–595. Retrieved from http://www.ncbi.nlm.nih.gov/pubmed/20080505</p>
+                  <p>Li, H., Handsaker, B., Wysoker, A., Fennell, T., Ruan, J., Homer, N., … Durbin, R. (2009). The Sequence Alignment/Map format and SAMtools. Bioinformatics, 25(16), 2078–2079. Retrieved from http://www.ncbi.nlm.nih.gov/pubmed/19505943</p>
+                  <p>Medvedev, P., Stanciu, M., & Brudno, M. (2009). Computational methods for discovering structural variation with next-generation sequencing. nature methods, 6(11), S13–S20. doi:10.1038/NMEtH.1374</p>
+                  <p>Rausch, T., Zichner, T., Schlattl, a., Stutz, a. M., Benes, V., & Korbel, J. O. (2012). DELLY: structural variant discovery by integrated paired-end and split-read analysis. Bioinformatics, 28(18), i333–i339. doi:10.1093/bioinformatics/bts378</p>
+                  <p>Sandgren, A., Strong, M., Muthukrishnan, P., Weiner, B. K., Church, G. M., & Murray, M. B. (2009). Tuberculosis drug resistance mutation database. PLoS medicine, 6(2), e2. doi:10.1371/journal.pmed.1000002</p>
+                  <p>Sharon J. Peacock, P. D. (2013). Whole-Genome Sequencing for Rapid Susceptibility Testing of M. tuberculosis. The New England Journal of Medicine.</p>
+                  <p>Suzuki, S., Yasuda, T., & Shiraishi, Y. (2011). ClipCrop: a tool for detecting structural variations with single-base resolution using soft-clipping information. BMC, 12(Suppl 14), S7. doi:10.1186/1471-2105-12-S14-S7</p>
+                  <p>Tsolaki, A., & Gagneux, S. (2005). Genomic deletions classify the Beijing/W strains as a distinct genetic lineage of Mycobacterium tuberculosis. Journal of clinical …, 43(7), 3185–3191. doi:10.1128/JCM.43.7.3185</p>
+                  <p>Wang, J., Mullighan, C., Easton, J., & Roberts, S. (2011). CREST maps somatic structural variation in cancer genomes with base-pair resolution. Nature Methods, 8(8), 652–656. doi:10.1038/Nmeth.1628</p>
+    </div>
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="jquery-3.3.1.slim.min.js" crossorigin="anonymous"></script>
+    <script src="popper.min.js"  crossorigin="anonymous"></script>
+    <script src="bootstrap.min.js"  crossorigin="anonymous"></script>
+    <script src="d3.v3.min.js"></script>
+    <script src="stack.v1.min.js"></script>
+  </body>
+</html>

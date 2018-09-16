@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="course.css" type="text/css">
+
+    <style>
+
+
+    .jumbotron-head{
+    	background:linear-gradient(rgba(107, 131, 165, 0.90), rgba(146, 153, 163, 0.90)),url(img/Head_intro.jpg);
+        color:white !important;
+        text-outline: black;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }
+
+	</style>
+
+
+    <title>Introduction to Linux and 'Omics data - Pathogen 'Omics</title>
+  </head>
+  <body>
+
+<div class="jumbotron vertical-center jumbotron-fluid jumbotron-head">
+    <div class="container">
+        <h1 class="display-4">Introduction to Linux and 'Omics data</h1>
+        <p class="lead">How to explore 'Omics data in a Linux environment</p>
+    </div> <!-- Container -->
+</div>
+
+
+<div class="container">
+    <h4>Assembly lecture</h4>
+    <object data="presentations/introduction_lecture_2018.pdf#page=1" type="application/pdf" width="100%" height=700px>
+    <b>Example fallback content</b>: This browser does not support PDFs. Please download the PDF to view it:
+    <a href="presentations/introduction_lecture_2018.pdf">Download PDF</a>.</p>
+    </object>
+    <hr>
+    <h4>Introduction</h4>
+    <p>
+        Almost all bioinformatic software is written for command line. This means they are intended to be used by
+        typing in commands and don't have a graphical user interface (GUI). There are many reasons for this, but one
+        of the most important ones is that command line programs are very easy to automate. To get from raw sequences
+        to final results often requires many steps. Imagine processing thousands of isolates: this would potentially
+        involve hundreds of hours and even more mouse clicks if performed with a GUI. Using a command line tool, a
+        workflow can be defined by chaining a series of commands together and can be rapidly applied to thousands
+        of isolates without much effort.
+    </p>
+    <p>
+        Over the duration of this course you will be learning the skills required to independently undertake
+        bioinformatic projects. By the end of this course you should be comfortable to go all the way from raw data to biological
+        insights.
+    </p>
+    <p>
+        In order to learn how to use bioinformatic programs we must first become comfortable with how to use the terminal.
+        This may be daunting if you have never used a command line environment before, but hopefully by the end of this
+        practical session you should have a basic understanding which will be reinforced over the next few sessions.
+    </p>
+    <p>
+        Let's start by opening a terminal by clicking on the icon on the sidebar.
+        Your screen should now look like the one below:
+    </p>
+    <img src="img/omics_intro_1.jpg" class="img-fluid" alt="Responsive image">
+    <p>
+        The terminal is very similar to the file explorer in other operating systems. It allows you to see files and
+        interact with them. The only difference is that we have to do this by typing a command into the terminal window.
+        To demonstrate this, let's open up Linux's file explorer by clicking on the icon in the side-bar on the left-hand
+        side of the screen. When you open the file explorer it will go to your home folder and show you all the sub-folders
+        and files present. The home folder is simply the root folder which contains all your files and folders.
+    </p>
+    <p>
+        You can see a number of sub-folders and files present in the file explorer. Let's see if we can find them in the
+        terminal. To do this, we have to type <kbd>ls</kbd> into the terminal and hit enter. You should now see a
+        screen similar to the one below. Now you can see the same files and folders in the terminal.
+    </p>
+    <img src="img/omics_intro_2.jpg" class="img-fluid" alt="Responsive image">
+    <p>
+        In the file explorer double click on the <strong>data</strong> folder. You will see several new folders which
+        hold the data for the proceeding practicals. Let's try find them using the terminal!
+    </p>
+    <p>
+        When we double clicked on the <strong>data</strong> folder we effectively moved from the home folder to the
+        data folder. We will have to do the same using the terminal. To do this, type in <kbd>cd data</kbd> and hit enter.
+        Now try using <kbd>ls</kbd> again to produce the same list of folders that you see in the file explorer.
+    </p>
+    <div class="alert alert-primary" role="alert">
+        Note: Folders are often referred to as <strong>directories</strong> in Linux. We will use
+        <strong>directory</strong> from now on, but the two words are synonymous.
+    </div>
+    <img src="img/omics_intro_3.jpg" class="img-fluid" alt="Responsive image">
+    <p>
+        You will notice that text in front of the <kbd>$</kbd> sign changed when you moved from
+        <strong>home</strong> to <strong>data</strong>. You should see something similar to what is shown below:
+    </p>
+    <div class="alert alert-info" role="alert">
+        <samp> <font color="#88e42b">user@user-VirtualBox</font>:<font color="#739fcc">~/data</font>$ </samp>
+    </div>
+    <p>
+        The blue text shows the location where the terminal is currently. In this case we are in <kbd>~/data</kbd>.
+        Another name for this is the current directory. The <kbd>~</kbd> character is a special character which
+        symbolises your home directory. So, we can interpret this as <i>"We are currently in the data directory which
+        is in the home directory"</i>
+    </p>
+    <div class="alert alert-warning" role="alert">
+        Another way of finding the current location of the terminal is by using <kbd>pwd</kbd> which stands for <i>print working
+            directory</i>. Try using this command. Does it produce a similar output to what we have seen above?
+    </div>
+    <div class="alert alert-primary" role="alert">
+        We have now successfully used the terminal and the <kbd>ls</kbd>, <kbd>cd</kbd> and <kbd>pwd</kbd> commands.
+        It is as simple as that! Some commands can be used by themselves such as <kbd>ls</kbd>, however others such
+        as <kbd>cd</kbd> need additional information called <strong>arguments</strong> to do something useful. In
+        the example above, we need to tell <kbd>cd</kbd> that we wanted to go to the data directory, so we typed <kbd>data</kbd>
+         after <kbd>cd</kbd> separated by a space. While <kbd>cd</kbd> only took one argument, some programs take many more.
+         You will see examples of this in a bit.<br><br>
+
+        Now that you have mastered using the terminal you can close the file explorer, this is the last time we will
+        use it. We must face the long dark of the terminal!
+    </div>
+    <hr>
+    <h4>Useful commands/programs</h4>
+    <p>
+        Now that we are familiar with the terminal let's dive in and take a look at a couple of programs that we
+        will be using.
+    </p>
+    <hr>
+    <h5>head</h5>
+    <p>
+        Change to the tb directory and have a look at the files. Hopefully you will be able to see the
+        <strong>tb.fasta</strong> file. The file is just a very large text file which stores the sequence data of the
+        <i>M. tuberculosis</i> reference genome. We can use <kbd>head</kbd> to take a look at the first few lines
+        of a file. Let's try it:
+    </p>
+    <pre><code>cd tb
+ls
+head tb.fasta</code></pre>
+    <p>
+        Hopefully you will see something like this:
+    </p>
+    <div class="alert alert-info" role="alert">
+        <samp>>Chromosome
+TTGACCGATGACCCCGGTTCAGGCTTCACCACAGTGTGGAACGCGGTCGTCTCCGAACTTAACGGCGACC
+CTAAGGTTGACGACGGACCCAGCAGTGATGCTAATCTCAGCGCTCCGCTGACCCCTCAGCAAAGGGCTTG
+GCTCAATCTCGTCCAGCCATTGACCATCGTCGAGGGGTTTGCTCTGTTATCCGTGCCGAGCAGCTTTGTC
+CAAAACGAAATCGAGCGCCATCTGCGGGCCCCGATTACCGACGCTCTCAGCCGCCGACTCGGACATCAGA
+TCCAACTCGGGGTCCGCATCGCTCCGCCGGCGACCGACGAAGCCGACGACACTACCGTGCCGCCTTCCGA
+AAATCCTGCTACCACATCGCCAGACACCACAACCGACAACGACGAGATTGATGACAGCGCTGCGGCACGG
+GGCGATAACCAGCACAGTTGGCCAAGTTACTTCACCGAGCGCCCGCACAATACCGATTCCGCTACCGCTG
+GCGTAACCAGCCTTAACCGTCGCTACACCTTTGATACGTTCGTTATCGGCGCCTCCAACCGGTTCGCGCA
+CGCCGCCGCCTTGGCGATCGCAGAAGCACCCGCCCGCGCTTACAACCCCCTGTTCATCTGGGGCGAGTCC</samp>
+    </div>
+    <p>
+        We can see that by default <kbd>head</kbd> prints out the first 10 lines. We can modify this number by
+        providing an additional parameter.
+    </p>
+    <pre><code>head -5 tb.fasta</code></pre>
+    <p>
+        This command it will print out the first five lines instead. Here we have used an optional parameter (the program
+        will still function properly without it). Optional parameters are usually given by providing two values,
+        in this case <kbd>-n</kbd> and <kbd>5</kbd>. The first value specified what parameter we want to provide
+        (e.g. <kbd>-n</kbd> = number of lines) and the second value is that which the parameter must take (e.g.
+        <kbd>5</kbd> will tell the command to print the first <b>five</b> lines).
+    </p>
+    <hr>
+
+    <h5>less</h5>
+    <p>
+        Another tool that we can use to view text files is the <kbd>less</kbd> command. Let's try view the reference
+        file again with this method.
+    </p>
+    <pre><code>less tb.fasta</code></pre>
+    <p>
+        This will open an interactive viewer which fills up the screen. You can move up and down the file using the
+        up and down keys on the keyboard. When you are finished viewing, hit the <kbd>q</kbd> key to quit the
+        viewer.
+    </p>
+    <hr>
+    <h5>cp</h5>
+    <p>
+        If we need to copy a file we can use the <kbd>cp</kbd> command. We need to give two arguments: the file
+        we want to copy and the filename of the copy. Let's try it:
+    </p>
+    <pre><code>cp tb.fasta tb_copy</code></pre>
+    <div class="alert alert-primary" role="alert">
+        <div>Two things to note here:</div>
+        <ol>
+            <li><b>Spaces are not allowed in file names!</b> Always use an underscore instead of a space.</li>
+            <li>We have not given our new file an extension. Extensions are useful as they tell us something
+            about how a file is formatted and what it might contain. If we come back a year later, we might have
+            forgotten that tb_copy contained sequence data.</li>
+        </ol>
+
+
+    </div>
+    <hr>
+    <h5>mv</h5>
+    <p>
+        Let's give our file an extension. To do this we have to rename the file. The command for this is <kbd>mv</kbd>
+        which stands for <i>move</i>. This command allows you to both move and rename files. Try to add an extension
+        to the file by using the following code:
+    </p>
+    <pre><code>mv tb_copy tb_copy.fasta</code></pre>
+    <p>
+        <div>You can see that this command also required two parameters:</div>
+        <ol>
+            <li>The file we want to rename</li>
+            <li>The new file name</li>
+        </ol>
+    </p>
+    <hr>
+    <h5>rm</h5>
+    <p>
+        We now have two files with the same content. Let's remove our copy of the reference by using the <kbd>rm</kbd>
+        command:
+    </p>
+    <pre><code>rm tb_copy.fasta</code></pre>
+    <div class="alert alert-primary" role="alert">
+        <b>Be very careful with this command!</b> Once you remove a file using <kbd>rm</kbd> there is no way of
+        getting it back. Always double check you are removing the right file before hitting enter.
+    </div>
+    <hr>
+    <h4>Pipes</h4>
+    <p>
+        Imagine a cake factory production line. There are many steps that need to be taken to build the final
+        cake (different ingredients added). Let's say we have 5 people working to make 100 cakes per day and
+        each person specialises in adding a particular ingredient. We could get 100 bowls and add the flour
+        to each one, then add eggs to each one and repeat this with each ingredient until we have the complete mix
+        however we would be losing a lot of time as at any point there would be only one person working while the others
+        wait for their turn. A more efficient way to do this by installing in a conveyor belt and having the employees
+        sequentially add their ingredients to each bowl. This way everyone is working at the same time and the cakes
+        will be made a lot faster.
+    </p>
+    <img src="img/omics_intro_4.gif" class="img-fluid" alt="Responsive image">
+    <p>
+        The same principals apply to bioinformatic analyses. For example, take a look at the steps required  to
+        align raw data to a reference genome and storing it in a BAM file:
+        <ol>
+            <li>Find best location for each read</li>
+            <li>Convert the output into BAM format</li>
+            <li>Sort the reads by alignment position</li>
+        </ol>
+        We could do each step separately, however this would waste resources as only one command will be running at
+        any time. Instead we can create our own conveyor belt which in Linux is called <b>piping</b>. We can do this by using
+        the pipe character (<kbd>|</kbd>) to chain our commands together. Here is some simplified pseudocode:
+    </p>
+    <pre><code>mapping_command | sam->bam_command | sorting_command</code></pre>
+    <p>
+        This is the form pipes will take and we will see several examples over the next few practicals.
+    </p>
+    <hr>
+    <h4>Troubleshooting</h4>
+    <p>
+        Sometimes an error may occur while trying to run a command. There may be a number of different reasons
+        for this and troubleshooting is an important skill to master.
+    </p>
+    <p>
+        <div>There are a number of ways to check if your commands have failed including:</div>
+        <ol>
+            <li>
+                <b>Run time</b>: Some commands (such as alignment) are expected to run for at least a few
+                minutes. If the command finished instantly and you do not expect it to do so then something has
+                probably gone wrong.
+            </li>
+            <li>
+                <b>Error messages</b>: Usually if a command has failed it will print out an error message.
+                Check the last few lines of output from a program and check to see if you see any.
+            </li>
+        </ol>
+    </p>
+    <p>
+        There are some errors which are are commonly made. We have listed a few below.
+    </p>
+    <hr>
+    <h5>File or folder not present</h5>
+    <p>
+        These types of error may present in different ways depending on the command used. For example, let's try
+        change to a directory that doesn't exist.
+    </p>
+    <pre><code>cd fake_directory</code></pre>
+    <p>
+        You should see something like this:
+    </p>
+    <div class="alert alert-info" role="alert">
+        <samp>cd: fake_directory: No such file or directory</samp>
+    </div>
+    <p>
+        This tells us that <kbd>cd</kbd> could not find the directory called <b>fake_directory</b>.
+    </p>
+    <hr>
+    <h5>Missing a required argument</h5>
+    <p>
+        If you run a program and fail to specify a it may give an error. Alternatively, it may display the program usage
+        help and quit. For example, lets run <kbd>head</kbd> without passing the number of lines to the <kbd>-n</kbd>
+        flag:
+    </p>
+    <pre><code>head -n tb.fasta</code></pre>
+    <p>
+        You should see an error similar to that displayed below:
+    </p>
+    <div class="alert alert-info" role="alert">
+        <samp>head: illegal line count -- tb.fasta</samp>
+    </div>
+    <p>
+        The error is a bit cryptic but from the <i>illegal line count</i>, we can see that whatever parameter
+        we passed to <kbd>-n</kbd> (which determines how many lines are printed) is not a valid value. It turns
+        out that this value always has to be a number, however since we left out that parameter it parses <b>tb.fasta</b>
+        as the value and that causes the error.
+    </p>
+
+
+
+
+
+
+
+</div> <!-- Container -->
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="jquery-3.3.1.slim.min.js" crossorigin="anonymous"></script>
+    <script src="popper.min.js"  crossorigin="anonymous"></script>
+    <script src="bootstrap.min.js"  crossorigin="anonymous"></script>
+    <script src="d3.v3.min.js"></script>
+  </body>
+</html>

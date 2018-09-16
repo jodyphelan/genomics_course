@@ -1,0 +1,527 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="course.css" type="text/css">
+
+    <style>
+
+
+    </style>
+
+	<style>
+	pre {
+		display: block;
+		padding: 9.5px;
+		margin: 0 0 10px;
+		font-size: 13px;
+		line-height: 1.42857143;
+		color: white;
+		word-break: break-all;
+		word-wrap: break-word;
+		background-color: black;
+		border: 1px solid black;
+		border-radius: 4px;
+	}
+
+    .jumbotron-head{
+        background:linear-gradient(rgba(0, 0, 250, 0.15), rgba(125, 250, 250, 0.55)),url(img/Head_GWAS.jpg);
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-position: top right;
+        color:black !important;
+    }
+	</style>
+
+
+    <title>GWAS - Pathogen 'Omics</title>
+  </head>
+  <body>
+      <div class="jumbotron vertical-center jumbotron-fluid jumbotron-head">
+        <div class="container">
+          <h1 class="display-4">GWAS</h1>
+          <p class="lead">Genome Wide Association studies: from genomics to epidemiology</p>
+        </div> <!-- Container -->
+      </div>
+      <div class="container">
+      <h4>GWAS lecture</h4><br>
+      <object data="presentations/methylation_eqtl_lecture_2018.pdf#page=1" type="application/pdf" width="100%" height=700px>
+        <p><b>Example fallback content</b>: This browser does not support PDFs. Please download the PDF to view it:
+        <a href="presentations/methylation_eqtl_lecture_2018.pdf">Download PDF</a>.</p>
+      </object>
+      <hr>
+	  <h4>Objectives</h4>
+	  <p>
+		  By the end of this practical you should:
+		  <ul>
+		  	<li>Understand the file formats used to represent methylation data from PacBio technology</li>
+			<li>Know how to merge and perform quality control</li>
+			<li>Visualise methylation data</li>
+			<li>Analyse multi sample BCF files</li>
+		  </ul>
+	  </p>
+      <h4>Introduction</h4><br>
+	  <p>
+	  	Over the last few practicals we have dealt with Illlumina and MinION data. Now we are going to have a look at
+		another platform called <b>Pacific Biosciences Single Molecule Real Time Sequencing</b> (PacBio SMRT sequencing).
+		This is another third-generation platform which produces long reads, similar to minION. Like other long-read
+		platforms the error rate is much higher than short-read platforms such as Illumina. As a consequence, the methods
+		required to analyse the data also differ.
+	  </p>
+	  <img src="img/methylation_1.png" class="img-fluid" alt="Responsive image">
+	  <p>
+	  	The image above shows the results of mapping <i>M. tuberculosis</i> PacBio data to the reference. As you can
+		see there a lot of errors. The percent mismatch in this case is ~6%. The errors are randomly distributed, however,
+        making it easier to perform genome assembly.
+	  </p>
+      <p>
+          PacBio technology has many applications, but is particularly useful for:
+          <ol>
+              <li>Genome assembly</li>
+              <li>Analysing methylation</li>
+          </ol>
+          These applications are further examined below.
+      </p>
+      <hr>
+      <h4>Genome assembly</h4>
+      <p>
+          In the previous practical we looked at using Illumina data to assemble the genome of sever <i>M. tuberculosis</i>
+          isolates. Although this helped with reconstructing some of the regions for which mapping doesn't work, it
+          is not perfect. Genome reconstructions are often broken up into many contigs using and are subject to errors in highly
+          repetitive regions. Ultimately, the completeness of the assembly is limited by the size of the read. If the read
+          is less than the size of the repeat there is no way of resolving how many copies of the repeat are present. This is
+          where the read length of PacBio comes in handy.
+      </p>
+      <p>
+          PacBio produces read lengths averaging 15Kb, with some reads greater than 100Kb in size. For most microbial genomes the
+          read lengths will be much larger than any repeat sequence and therefor this often results in assemblies producing a
+          complete chromosome in one contig.
+      </p>
+      <p>
+          With complete genome assemblies, it is possible to identify
+          <ol>
+              <li>SNPs</li>
+              <li>Small indels</li>
+              <li>Large structural variants</li>
+              <li>Novel insertions</li>
+          </ol>
+      </p>
+      <hr>
+      <h4>Methylation</h4>
+      <p>
+          Methylation refers to the mechanism by which methyl groups (CH<sub>3</sub>) are added to DNA. This is often referred to as
+          epigenetic modification. Methylation of DNA is facilitated by DNA methyltransferases (MTase), which mostly are part of
+          restriction-modification systems. Restriction enzymes cut unmethylated DNA at a specific motifs (recognition sites), while the paired methyltransferase
+          methylates the same motif. Traditionally DNA methylation in bacteria has been seen as a primitive immune mechanism
+          to fight against invading phages. When a bacterium is invaded by foreign DNA, its restriction enzyme will cut it if the
+          enzymes recognition site is present on the DNA, thus neutralising the threat. There is one problem, however. The
+          restriction enzyme is not specific to foreign DNA and will also cut its own genome. The solution comes from the MTase.
+          The MTase will methylate the same motif on the bacterium's genome, preventing the restriction enzyme from cutting.
+      </p>
+      <p>
+          Although this is an important function of methylation, it is also thought to modulate the binding of other DNA-binding proteins
+          and play a role in gene expression which is important in the interaction of a pathogen with its environment.
+      </p>
+      <p>
+          PacBio technology works by recording light signals emitted as a DNA polymerase incorporates fluorescently labelled nucleotides
+          while replicating input DNA. The data from the PacBio platform is stored in a h5 format. This contains information on the
+          base calls and the time it takes to incorporate each base (inter pulse duration). The polymerase takes longer to incorporate nucleotides
+          on methylated input DNA than non-methylated. By comparing the time spent between each incorporation event and comparing
+          it to an <i>in-silico</i> control it is possible to calculate the inter pulse duration ratio (IPD ratio). Using this
+          it is possible to detect DNA modification to a single base precision.
+      </p>
+      <p>
+          After the location of all methylation sites have been found, the context of these sites are analysed to look for
+          enrichment of particular sequence motifs. If a particular motif is found more than expected by chance, then it is likely a
+          recognition site for an MTase.
+      </p>
+      <img src="img/methylation_2.jpg" class="img-fluid" alt="Responsive image">
+      <p>
+          In this practical we will have a look at how to discover new motifs using PacBio data and examine the variation of methylation pattern
+          found across different strains of <i>M. tuberculosis</i>. The raw data from a PacBio can be processed using the free SMRT analysis
+          portal software suite. The analysis pipelines are presented using a nice GUI and make it very easy to go all the way from
+          raw data to results with a few clicks. However, this analysis needs a high spec computer to run and takes a considerable amount
+          of time. We have provided pre-generated output files from these pipelines for this practical.
+      </p>
+      <hr>
+      <h4>Exercise 1: Analysing motif summary reports</h4>
+      <p>
+          Navigate to the methylation practical folder:
+      </p>
+      <pre><code>cd ~/data/methylation</code></pre>
+      <p>
+          There are several files present. We will first take a look at the file ending with<b>.motif_summary.csv</b>. We can open these files
+          using excel or a similar program. Linux has an open source package that is quite similar to Excel called LibreOffice Calc. Open the
+          program by clicking on the icon in the side-bar. Now select <kbd>File</kbd> -> <kbd>Open...</kbd> and navigate to <b>~/data/methylation/</b>
+          and double click on <b>tb_pb_1.motif_summary.csv</b>. Under '<b>Separator</b>' make sure only '<b>Comma</b>' if selected and click <kbd>OK</kbd>.
+      </p>
+      <p>
+          You should now see a spreadsheet containing a number of different columns:
+          <ol>
+              <li><b>motifString</b>: Detected motif sequence for this site such as “GATC”.</li>
+              <li><b>centerPos</b>: Position in motif of modification (0-based).</li>
+              <li><b>modificationType</b>: Modification type – a generic tag "modified_base" is used for unidentified bases. For identified bases, m6A, m4C, and m5C are used.</li>
+              <li><b>fraction</b>: The percent of time this motif is detected as modified in the genome. (Fraction of instances of this motif with modification QV or identification QV above the QV threshold.)</li>
+              <li><b>nDetected</b>: Number of instances of this motif that are detected as modified. (Number of instances of this motif with modification QV or identification QV above threshold.)</li>
+              <li><b>nGenome</b>: Number of occurrences   of this motif in the reference sequence genome.</li>
+              <li><b>groupTag</b>: A name identifying the complete double-strand recognition motif. For paired motifs this is “/”, for example “GAGA/TCTC”. For palindromic or unpaired motifs this is the same as motifString.</li>
+              <li><b>partnerMotifString</b>: motifString of paired motif (motif with reverse-complementary motifString).</li>
+              <li><b>meanScore</b>: Mean Modification QV of instances of this motif that are detected as modified.</li>
+              <li><b>meanIpdRatio</b>: Mean IPD ratio of instances of this motif that are detected as modified.</li>
+              <li><b>meanCoverage</b>: Mean coverage of instances of this motif that are detected as modified.</li>
+              <li><b>objectiveScore</b>: Score of this motif in the motif finder algorithm. The algorithm considers higher objective scores to be more confidently identified motifs in the genome based on several factors.</li>
+          </ol>
+      </p>
+      <p>
+          We can see that three unique motifs have been detected (CACGCAG, CTGGAG and CTCCAG). If you look at the second and third motifs you
+          may have noticed that the '<b>groupTag</b>' is the same. These sequences are actually palindromic sequences, i.e. the reverse
+          complement of 'CTGGAG' is 'CTCCAG' and vice versa. At these motifs, methylation occurs on both strands of DNA on the same motifs
+          at the A nucleotide. The 'CACGCAG' motif, on the other hand, is only methylated at one position.
+      </p>
+      <div class="alert alert-warning" role="alert">
+          <p>Take a look at the fraction column. Is the motif always methylated?</p>
+          Is there any relationship between the size of the motif and the number of times it was detected? Why do you think this is?
+      </div>
+      <p>
+          Using the same method as described above, open up '<b>tb_pb_3.motif_summary.csv</b>'. Can you see any new motifs? This isolate has many
+          more motifs that have been reported. You may notice that some motifs use symbols other than the standard nucleotides.
+          The motifs are represented using the IUPAC standard nomenclature for representing nucleotides. For example, in the 'GATNNNNRTAC' motif
+          the <b>N</b> represents any nucleotide and the <b>R</b> represents either an A or a G. This means that the MTase which methylates this
+          motif will 4th-7th position can be any
+          nucleotide and will
+      </p>
+      <div class="accordion" id="accordionExample">
+          <div class="card">
+            <div class = "card-header alert-warning"><strong>An MTase recognises the motif 'GATNNNNRTAC'. Which of these sequences will it methylate?</strong></div>
+          <div class="card-header" id="headingOne" data-toggle="collapse" data-target="#collapseOne">
+                CATGTCAATAC
+          </div>
+          <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+            <div class="card-body alert-danger">
+              <strong>False</strong>: The first position has to be a 'G'
+            </div>
+          </div>
+          <div class="card-header" id="headingTwo" data-toggle="collapse" data-target="#collapseTwo">
+                GATGTCAATAC
+          </div>
+          <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+            <div class="card-body alert-success">
+              <strong>True</strong>: Right answer, well done!
+            </div>
+          </div>
+              <div class="card-header" id="headingThree" data-toggle="collapse" data-target="#collapseThree">
+                GATGTCACTAC
+          </div>
+          <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+            <div class="card-body alert-danger">
+              <strong>False</strong>: 'R' in the 8th position can only be an 'A' or a 'G'
+            </div>
+          </div>
+        </div>
+      </div>
+      <p>
+          There several motifs with very low '<b>fraction</b>'. If an MTase is active it would be expected to methylate
+          most of the sites in the genome. Motifs with low fraction can potentially represent a false motif. As in variant
+          detection, with these noisy datasets false motifs can be introduced.
+      </p>
+      <div class="alert alert-warning" role="alert">
+          Take a look at the '<b>meanScore</b>' column. Are they all similar values? Do you see any relationship between
+          '<b>fraction</b>' and '<b>meanScore</b>'?
+      </div>
+      <p>
+          We can use the '<b>meanScore</b>' column to filter out false motifs. Take a look at a few more <b>.motif_summary.csv </b>
+          files and see if you can find any overlaps between the motifs found.
+      </p>
+      <p>
+          We can visualise the methylation by plotting the IPD ratio against the motif position. To do this we must:
+          <ol>
+              <li>Find the locations of the motif in the genome</li>
+              <li>Extract the IPD ratio for each motif base in the genome</li>
+              <li>Plot the IPD ratio against the position in the motif</li>
+          </ol>
+          The modifications and motifs pipeline also provides a CSV file containing all the positions in the genome as rows
+          and several columns of information for each position (including the IPD ratio). Take a look at an example:
+      </p>
+      <pre><code>head tb_pb_14.ipd.csv</code></pre>
+      <p>
+          This is a very large file, so we can't open it with LibreOffice Calc. The first
+          few lines should look like the example below.
+      </p>
+      <div class="alert alert-info" role="alert">
+          <samp>refName,tpl,strand,base,score,tMean,tErr,modelPrediction,ipdRatio,coverage,frac,fracLow,fracUp
+"WBB445_ARS7496|quiver",1,0,T,2,0.644,0.189,0.696,0.926,7,,,
+"WBB445_ARS7496|quiver",1,1,A,0,0.576,0.204,0.882,0.653,8,,,
+"WBB445_ARS7496|quiver",2,0,T,6,0.766,0.264,0.597,1.283,8,,,
+"WBB445_ARS7496|quiver",2,1,A,5,0.927,0.237,0.804,1.153,8,,,
+"WBB445_ARS7496|quiver",3,0,G,7,1.231,0.589,0.689,1.788,9,,,
+"WBB445_ARS7496|quiver",3,1,C,1,0.425,0.169,0.554,0.768,8,,,
+"WBB445_ARS7496|quiver",4,0,A,1,0.919,0.260,1.275,0.720,9,,,
+"WBB445_ARS7496|quiver",4,1,T,1,0.428,0.192,0.696,0.615,9,,,
+"WBB445_ARS7496|quiver",5,0,C,6,0.936,0.277,0.722,1.296,9,,,</samp>
+      </div>
+      <p>
+          We will use the <kbd>analyse_motif_ipd.py</kbd> extract the IPD ratios from this file. We need to provide
+          1) the ipd.csv file, 2) the motif you would like to analyse and 3) the genome assembly for the sample
+          (to find the motif locations). Let's analyse the '<b>CTCCAG</b>' motif for tb_pb_14 and tb_pb_16:
+      </p>
+      <pre><code>analyse_motif_ipd.py tb_pb_14 CTCCAG tb_pb_14.assembly.fa
+analyse_motif_ipd.py tb_pb_16 CTCCAG tb_pb_16.assembly.fa </code></pre>
+      <div class="alert alert-warning" role="alert">
+          The script will output the number of times the motif if found in the genome. Why do you think there are differences?
+      </div>
+      <p>
+          Now we can visualise this with the <kbd>plot_ipd.R</kbd> script. We need to provide 1) the sample names, 2)
+          the motif we are analysing and 3) the output file. The output will be in PDF format.
+      </p>
+      <pre><code>plot_ipd.R tb_pb_14,tb_pb_16 CTCCAG CTCCAG.pdf</code></pre>
+      <p>
+          Using the file browser, locate the PDF file ~/data/methylation/. Double click on the CTCCAG.pdf file and
+          it should open in a PDF viewer program. You should be able to see a figure similar to the one below.
+      </p>
+      <img src="img/methylation_3.jpg" class="img-fluid" alt="Responsive image">
+      <p>
+          You should be able to see that tb_pb_16 has elevated IPD ratios (indicating methylation) on the 5th position of the motif while
+          tb_pb_14 does not. You can check to see if this is concordant with the motif_summary CSV files for these samples.
+      </p>
+      <p>
+          Let's try and combine all the individual datasets into a merged dataset. We have created a script to take the CSV files
+          and create a matrix where the rows represent samples, the columns represent motifs and the cells represents the fraction
+          that the motif is methylated in a particular sample. It takes an input file with the names of all the CSV files which we must
+          first create.
+      </p>
+      <p>
+          To do this we can run the following command:
+      </p>
+      <pre><code>ls *.motif_summary.csv > files.txt</code></pre>
+      <p>
+          Take a look at the file you just created by running <kbd>head files.txt</kbd>
+      </p>
+      <p>
+          It should look something like this:
+      </p>
+      <div class="alert alert-info" role="alert">
+          <samp>tb_pb_1.motif_summary.csv
+tb_pb_10.motif_summary.csv
+tb_pb_11.motif_summary.csv
+tb_pb_12.motif_summary.csv
+tb_pb_13.motif_summary.csv
+tb_pb_14.motif_summary.csv
+tb_pb_15.motif_summary.csv
+tb_pb_16.motif_summary.csv
+tb_pb_17.motif_summary.csv
+tb_pb_2.motif_summary.csv</samp>
+      </div>
+      <p>
+          We can now pass this file to the <kbd>combine_motifs.py</kbd> script:
+      </p>
+      <pre><code>combine_motifs.py files.txt unfiltered_motifs.csv</code></pre>
+      <p>
+          Take a look at the '<b>unfiltered_motifs.csv</b>' file using <b>LibreOffice Calc</b>. There are many
+          motifs which are present in only one sample. These likely represent noise in the data and should be
+          filtered out. Rerun the command with a quality filter:
+      </p>
+      <pre><code>combine_motifs.py files.txt filtered_motifs.csv --min_qual 60</code></pre>
+      <p>
+          We have specified the minimum QV of the motif to be 60. Take a look at the filtered_motifs.csv
+          file using LibreOffice Calc and look at the difference. You should now have 5 motifs. This will serve
+          as out final high-quality list of motifs.
+      </p>
+      <p>
+          It is evident that some samples have methylation on certain motifs while others do not. We will now
+          try to understand if there is a particular pattern to the methylation seen in the data. The methylation
+          pattern can either be random or specific to a certain strain. To do this we will reconstruct the phylogeny
+          and overlay the methylation information.
+      </p>
+      <p>
+          Using the same raw data and the SMRT portal analysis suite we have generated whole genome assemblies
+          for the samples. These were then aligned to the reference and variants were called. The variants from all
+          the samples were merged to a single FASTA formatted file. We can use this file to create the phylogenetic
+          tree. <b>Try to remember the command to create the tree and run it in the terminal using 'PacBio.ML' as
+          the output name</b>. If you need the solution
+          click on the button below.
+      </p>
+      <div id="tree_solution">
+          <button id="solution_button" type="button" class="btn btn-primary" data-toggle="collapse" data-target="#collapseFour">Give me the solution</button>
+          <div id="collapseFour" class="collapse" aria-labelledby="solution_button" data-parent="#tree_solution">
+            <pre><code>raxmlHPC -m GTRGAMMA -s PacBio.fasta -n PacBio.ML -p 11334 -k -f a -x 13243 -N 100</code></pre>
+          </div>
+      </div>
+      <br>
+      <p>
+          Open up the tree by launching <kbd>figtree</kbd>. Open the tree by clicking on <kbd>Open...</kbd> and selecting the 'RAxML_bestTree.PacBio.ML'
+          tree. Midpoint root the tree by selecting <kbd>Midpoint Root</kbd> from the <kbd>Tree</kbd> menu. Finally, we
+          will load annotations allowing figtree to display which samples do or don't have methylation. Select <kbd>Import
+          annotations...</kbd> from the <kbd>File</kbd> menu and select the '<b>filtered_motifs.tsv</b>' file. This file was
+          created during the merging step and is simply a tab-separated file with the rows being samples and the columns being
+          motifs. The values in the file are either <b>0</b> (representing absence of methylation) or <b>1</b> (representing presence of
+          methylation).
+      </p>
+      <p>
+          Once the file has been loaded - we can colour the tips by selecting a motif sequence from the '<b>Colour by</b>' dropdown on the
+          '<b>Tip labels</b>' panel (shown below). Samples for which methylation is absent will be coloured <font color="red">red</font>.
+      </p>
+      <img src="img/methylation_4.jpg" class="img-fluid" alt="Responsive image">
+      <div class="alert alert-warning" role="alert">
+          Look at the different methylation patterns by colouring the tips. Is it random?
+      </div>
+      <h4>Associating methylation patterns with mutations</h4>
+       <p>
+
+      </p>
+      <p>
+          Methylation in the five motifs has been linked to the following genes:
+      </p>
+      <table class="table table-bordered">
+      <thead>
+          <tr>
+            <th>Motif</th>
+            <th>Genes</th>
+          </tr>
+      </thead>
+      <tr>
+        <td>CTCCAG/CTGGAG</td>
+        <td><i>mamA</i></td>
+      </tr>
+      <tr>
+        <td>GTAYNNNNATC/GATNNNNRTAC</td>
+        <td><i>hdsS.1</i>, <i>hsdM</i> and <i>hsdS</i></td>
+      </tr>
+      <tr>
+        <td>CACGCAG</td>
+        <td><i>mamB</i><br></td>
+      </tr>
+    </table>
+      <p>
+          Loss of function mutations in MTases can lead to the absence of methylation. We are going to take
+          a look at the CTCCAG/CTGGAG motif which is methylated by the mamA MTase. This protein is encoded by
+          the <i>Rv3263</i> gene. The methylation pattern it shown on the tree below:
+      </p>
+      <img src="img/methylation_5.jpg" class="img-fluid" alt="Responsive image">
+      <p>
+          The '<b>filtered_motifs.csv</b>' file and the phylogenetic tree indicates that three of the samples have
+          no methylation on the motif (tb_pb_10, tb_pb_11 and tb_pb_14). There are a few scenarios which may
+          be possible:
+          <ol>
+              <li>The isolates all have the same variant which has evolved convergently (where the same mutation has appeared multiple times independently on the tree).</li>
+              <li>The isolates all have different mutations</li>
+              <li>Some isolates share a common mutation</li>
+          </ol>
+      </p>
+      <p>
+          The variants found by aligning the whole genome assemblies to the reference are stored in the multi-sample VCF file
+          '<b>PacBio.vcf.gz</b>'. We will use bcftools to process this file and extract the relevant information we need .
+      </p>
+      <h6>1. Extracting sample-specific mutations</h6>
+      <p>
+          The first thing we need to do is extract variants which are only present in the three samples. We can do this using
+          the <kbd>bcftools view</kbd> command. First let find out how many variants are present in the VCF file:
+      </p>
+      <pre><code>bcftools view PacBio.vcf.gz -H | wc -l</code></pre>
+      <p>
+          The command can be broken down into several parts:
+          <ul>
+              <li><kbd>bcftools view PacBio.vcf.gz</kbd>: allows to view contents of the VCF file</li>
+              <li><kbd>-H</kbd>: This flag prevents header lines present in the file to be output</li>
+              <li><kbd>|</kbd>: The pipe passes the output from whatever command was written before it and passes it to the next.</li>
+              <li><kbd>wc -l</kbd>: This command counts the number of lines which are passed to it</li>
+          </ul>
+      </p>
+      <p>
+          After running the command we should see an output of <b>9229</b>, i.e. 9229 variants are present across all samples.
+          We will now add two more parameters to the command. We select only variants present in a select number of samples
+          using the <kbd>-s</kbd> flag. We can also restrict our analysis to variants which are present exclusively in our samples
+          using the <kbd>-x</kbd> flag. The command will be the following:
+      </p>
+      <pre><code>bcftools view PacBio.vcf.gz -H  -s tb_pb_10,tb_pb_14,tb_pb_11 -x | wc -l</code></pre>
+      <p>
+          The command will now count <b>780</b> variants.
+      </p>
+      <h6>2. Annotating the variants</h6>
+      <p>
+          In order to narrow down the number of variants we need to narrow down out search to only
+          variants in the Rv3263 gene. The VCF file currently only contains information on the position
+          of the variants on the chromosome but no information about genes. We can use <kbd>bcftools csq</kbd>
+          to perform the annotation:
+      </p>
+      <pre><code>bcftools view PacBio.vcf.gz -s tb_pb_10,tb_pb_14,tb_pb_11 -x | bcftools csq -f tb_genome.fasta -g tb_genome.gff  | grep Rv3263</code></pre>
+      <p>
+          We have dropped the <kbd>-H</kbd> we are no longer counting lines and the header is needed by the next command.
+          The following new parts have been added:
+          <ol>
+              <li><kbd>bcftools csq</kbd>: This bcftools function annotates a VCF file</li>
+              <li><kbd>-f tb_genome.fa</kbd>: Provides the reference fasta file</li>
+              <li><kbd>-g tb_genome.gff</kbd>: Provides the GFF file (contains information about gene locations)</li>
+              <li><kbd>grep Rv3263</kbd>: Looks for lines containing 'Rv3263' and prints them</li>
+          </ol>
+      </p>
+      <p>
+          We can see this command prints out a number of lines. The last two lines represent two variants in VCF format:
+      </p>
+      <div class="alert alert-info" role="alert">
+          <samp>Chromosome	3643985	.	A	C	225	PASS	VDB=0.702241;SGB=-0.693147;MQSB=0.911099;MQ0F=0;MQ=57;DP=308;DP4=0,0,150,158;MinDP=28;AN=6;AC=4;BCSQ=missense|Rv3263|gene3340|protein_coding|+|270E>270A|3643985A>C	GT:DP:PL:AD:BCSQ	1/1:144:255,255,0:0,144:3	1/1:164:255,255,0:0,164:3	0/0:117:.:.:0
+Chromosome	3644554	.	G	A	225	PASS	VDB=0.847222;SGB=-0.693147;MQSB=0.91807;MQ0F=0;MQ=57;DP=145;DP4=0,0,75,70;MinDP=14;AN=6;AC=2;BCSQ=missense|Rv3263|gene3340|protein_coding|+|460A>460T|3644554G>A	GT:DP:PL:AD:BCSQ	0/0:14:.:.:0	0/0:121:.:.:0	1/1:145:255,255,0:0,145:3</samp>
+      </div>
+      <h6>3. Customising output format</h6>
+      <p>
+          This format can be a little difficult to understand so the last part we will add to this command will
+          translate this to a more readable format:
+      </p>
+      <pre><code>bcftools view PacBio.vcf.gz -s tb_pb_10,tb_pb_14,tb_pb_11 -x | bcftools csq -f tb_genome.fasta -g tb_genome.gff  | bcftools query -f '[%POS\t%SAMPLE\t%TBCSQ{1}\n]' | grep Rv3263</code></pre>
+      <p>
+          We have moved the <kbd>grep</kbd> command to the end and added in the following parameters:
+          <ol>
+              <li><kbd>bcftools query</kbd>: This command allows conversion of VCF into custom formats</li>
+              <li><kbd>-f '[%POS\t%SAMPLE\t%TBCSQ{1}\n]'</kbd>: This specifies the format we want (Position, Sample name and annotations)</li>
+          </ol>
+      </p>
+      <div class="alert alert-info" role="alert">
+          <samp>3643985	tb_pb_10	missense|Rv3263|gene3340|protein_coding|+|270E>270A|3643985A>C
+3643985	tb_pb_14	missense|Rv3263|gene3340|protein_coding|+|270E>270A|3643985A>C
+3644554	tb_pb_11	missense|Rv3263|gene3340|protein_coding|+|460A>460T|3644554G>A</samp>
+      </div>
+      <p>
+          From the output (above) we can see that tb_pb_10 and tb_pb_14 both have the same mutation (270E>270A)
+          while tb_pb_11 has a different mutation (460A>460T). These mutations are good candidates to take towards
+          functional studies to validate the loss of function effect on the MTase.
+      </p>
+      <p>
+          You should now know how to analyse and interpret data from the PacBio platform and take it all the way
+          to discovering interesting mutations using BCFtools. This is the end of the practical, but if you want more
+          practice you can try find candidate mutations for the other motifs. Good luck!
+      </p>
+
+
+
+
+
+      </div>
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="jquery-3.3.1.slim.min.js" crossorigin="anonymous"></script>
+    <script src="popper.min.js"  crossorigin="anonymous"></script>
+    <script src="bootstrap.min.js"  crossorigin="anonymous"></script>
+    <script src="d3.v3.min.js"></script>
+
+	<script>
+        	$(function () {
+          $('[data-toggle="tooltip"]').tooltip()
+        })
+
+        tooltips = {"convergently":"Convergent evolution: where the same mutation has appeared multiple times independently on the tree"}
+        for (d in tooltips){
+            tmp = document.body.innerHTML
+            i = tmp.indexOf(d)
+            j = i+d.length
+            tmp2 = tmp.substr(0,i) + "<span class=\"tooltipinfo\" data-toggle=\"tooltip\" title=\"\" data-original-title=\"" + tooltips[d] +  "\">" + d + "</span>" + tmp.substr(j)
+            document.body.innerHTML = tmp2
+        }
+	</script>
+  </body>
+</html>

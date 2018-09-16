@@ -1,0 +1,1043 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="course.css" type="text/css">
+
+    <style>
+
+    .jumbotron-head{
+    			background:linear-gradient(rgba(0, 0, 250, 0.35), rgba(125, 250, 250, 0.55)),
+    			url(img/Head_Mapping.png);
+    			background-repeat: no-repeat;
+    			background-attachment: fixed;
+    			color:white !important;
+          background-size: 100%;
+    		}
+
+
+    </style>
+
+
+
+
+    <title>Mapping - Pathogen 'Omics Course</title>
+  </head>
+  <body>
+      <div class="jumbotron jumbotron-fluid jumbotron-head">
+        <div class="container">
+          <h1 class="display-4">Mapping</h1>
+          <p class="lead">
+              Next-generation sequencing data is being produced at an ever-increasing rate. The raw data is not
+              meaningful by itself and needs to be processed using various bioinformatic software. This practical
+              will focus on genomic resequencing data where the raw data is aligned to a reference genome.</p>
+        </div> <!-- Container -->
+      </div>
+
+
+      <div class="container">
+
+      <h4>Mapping lecture</h4>
+      <object data="presentations/mapping_lecture_2018.pdf#page=1" type="application/pdf" width="100%" height=700px>
+        <p><b>Example fallback content</b>: This browser does not support PDFs. Please download the PDF to view it:
+        <a href="presentations/mapping_lecture_2018.pdf">Download PDF</a>.</p>
+      </object>
+      <hr>
+      <h4>Introduction</h4>
+	  <p>Improvements in DNA sequencing technology have led to new opportunities for studying organisms at
+		  the genomic and transcriptomic levels . Applications include studies of genomic variation within
+		  species and gene identification . In this module we will concentrate on data generated using the
+		  Illumina Genome Analyzer II technology, although the techniques you will learn are applicable to
+		  other technologies (e . g . 454 GS FLX and ABI SOLiD ) . A single machine can produce around 20
+		  Gigabases of sequence data in a week . This is the equivalent to over 6 human genomes . The data
+		  from the Illumina machine comes as relatively short stretches of 35 - 250 base pairs ( bp ) of
+		  DNA - around 300 million of them . These individual sequences are called <strong>reads</strong> . The older
+		  capillary sequencing technology generates longer reads of ~ 500 bp, but the approach is much slower
+		  and more expensive.
+	  </p>
+	  <p>One of the greatest challenges of sequencing a genome is determining how to arrange
+		  sequencing reads into chromosomes. This process of determining how the reads fit together by looking
+		  for overlaps between them is called genome assembly. Capillary sequencing reads (~500bp) are
+		  considered a good length for genome assembly. Genome assembly using sequence reads of &lt;100bp is
+		   more complicated due to the high frequency of repeats longer than the read length. Assemblies for
+		   bacterial genomes can comprise of at least 50 pieces (called “contigs”), whilst for Eukaryotes more
+		   than 1000 pieces is common. Therefore new sequencing technologies are applied predominantly where a
+		   reference genome already exists. A reference genome is a well assembled genome from the same or a
+		   similar organism that is ungoing sequencing. Sequencing a genome with new technology when there is
+		   an existing reference is called re-sequencing.
+	   </p>
+	   <p>In this practical, we will focus on mapping reads to a reference genome, and visualising the resulting
+		   alignments using Tablet.
+	   </p>
+	   <h4>Sequencing/Mapping workflow</h4>
+	   <p>The diagram below describes the workflows for genomic resequencing and RNA sequencing. We will cover the
+		   in silico (computational) aspects of these workflows.
+	   </p>
+	   <img src="img/Mapping_1.jpg" class="img-fluid" alt="Responsive image">
+	   <p>When resequencing, instead of assembling the reads to produce a new genome sequence and then comparing
+		   the two genome sequences, we map the new sequence data to the reference genome. We can then identify
+		   Single Nucleotide Polymorphisms (SNPs), insertions and deletions (indels) and Copy Number Variants
+		   (CNVs) between two similar organisms.
+	   </p>
+	   <p>The first example we use here is a reference genome for Plasmodium falciparum (3D7 clone, size 23Mb,
+		   81% AT content) (Gardener et al., 2002). This parasite is the causative agent of malaria. Malaria is
+		   widespread in tropical and subtropical regions, including parts of the Americas, Asia, and Africa.
+		   Each year, there are approximately 350–500 million cases of malaria, killing between one and three
+		   million people, the majority of whom are young children in sub-Saharan Africa. Recently we sequenced
+		   two laboratory strains, IT and DD2, using 76 bp paired end read technology. The second example is using
+		   the reference genome for Mycobacterium tuberculosis (H37Rv, size 4.4Mb, GC content 65.6%) (Cole et al,
+		   1998). This bacterium causes tuberculosis disease.
+	   </p>
+	   <p>Rather than attempt to assemble these very short reads into a whole new genome, we will map these reads
+		   against the existing genome assembly of<i>P. falcipraum</i> 3D7 or<i>M. tuberculosis</i> H37Rv. Furthermore, we will
+		   identify differences between the genomes of the three clones, find mutations and CNVs associated to drug
+		   resistance, whilst determining how the reads fit together.
+	   </p>
+	   <div class="alert alert-primary">
+		   <div class="row">
+			   <div class="col-sm">
+				   <p>Here is the general workflow of mapping:</p>
+				   <p>The paired end reads (F – forward; R - reverse) are mapped against the reference. Different tools
+					   can be used for that. The results can be transformed with samtools to an ordered and indexed bam
+					   file. Those bam files can be read into programs like Artemis to visualize the alignments of the
+					   short sequences. From the bam file it is possible to call variants. The output format is BCF or
+					   VCF. VCF can be loaded easily into excel like tools.
+				   </p>
+				   <p>Quality control of the reads is always important, to correct for any GC content biases, possible
+					   contamination and read quality.
+				   </p>
+			   </div>
+			   <div class="col-sm">
+				   <img src="img/Mapping_2.jpg" class="img-fluid" alt="Responsive image"  style="border:1px solid #021a40; padding-bottom: 0px">
+			   </div>
+		   </div>
+	   </div>
+	   <hr>
+	   <h4>File formats</h4>
+	   <p>You have the <i>P. falciparum</i> 3D7 clone reference file (Pf3D7_05.fasta). This contains the assembled sequence
+		   of the 3D7 genome. You also have two files of sequence reads from the IT clone (IT.Chr5_1.fastq and
+		   IT.Chr5_2.fastq). Look in both the reference file and the read files.
+	   </p>
+	   <h5>FASTA format</h5>
+	   <p>Open up a terminal and navigate to the data directory, then type:</p>
+	   <pre><code>cd ~/data/malaria/
+head -n 5 Pf3D7_05.fasta</code></pre>
+	   <p><strong>Hover over the output below to get an explanation</strong></p>
+	   <div class="alert alert-info" role="alert">
+           <samp><div class="hover" data-toggle="tooltip" data-placement="left" data-original-title="Header line: Contains sequence name and additional information">>Pf3D7_05</div><div data-toggle="tooltip" data-placement="left" data-original-title="Sequence: Contains the nuceotide sequence">ctaaaccctgaaccctaaaccctgaaccctaaaccctaaaccctgaaccctaaaccctga
+accctaaaccctgaaccccctaaaccctaaaccctgaaccctaaaccctaaaaccctgaa
+ccctaaaccctgaaccctaaaccctgaaccctgaaccctaaaccctgaaccctaaaccct
+gaaccctaaaccctaaaccctaaaccctaaaccctaaaccctaaaccctaaaccctgaac</div></samp>
+		</div>
+		<h5>FASTQ format</h5>
+		<p>Now type the commands below to see what FASTQ format looks like.</p>
+		<pre><code>head -n 12 IT.Chr5_1.fastq</code></pre>
+		<div class="alert alert-info" role="alert">
+			<samp><div><div class="hover" data-toggle="tooltip" data-placement="left" data-original-title="The read name and additional info from the sequencing platform">@HS3_5961:1:2207:17088:52965#1/1</div><div class="hover" data-toggle="tooltip" data-placement="left" data-original-title="The read sequence">GCCGGTTGTTCGGCTGGAAGGTCCTTTTGCCCTTGGTCACGGGCGTCTCCTCGCTATGTCTGGCAACATCACCAT</div><div class="hover" data-toggle="tooltip" data-placement="left" data-original-title="Sequence/quality line separator">+</div><div class="hover" data-toggle="tooltip" data-placement="left" data-original-title="Sequence quality. There is one character for each nucleotide. The characters relate to a sequence quality score e.g. how likely is the nucleotide correct? ‘>’ is higher quality than ‘6’. Sequence reads tend to have more errors at the end than the start">GGGGGGEGFGFGGGFGDBEBF:AFDEFG?CFFDD:FBEE?EFEDFDEFEAEBFB8CCC?A@CD;ADDD86CCC><</div></div></samp>
+		</div>
+		<hr>
+
+		<div class="accordion" id="accordionExample">
+		  <div class="card">
+		    <div class = "card-header alert-primary"><strong>Q. Which format allows the storeage of base quality data?</strong></div>
+		    <div class="card-header" id="headingOne" data-toggle="collapse" data-target="#collapseOne">
+		          FASTA
+		    </div>
+		    <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+		      <div class="card-body alert-danger">
+		        <strong>False</strong>: FASTA just stores the sequence
+		      </div>
+		    </div>
+		    <div class="card-header" id="headingTwo" data-toggle="collapse" data-target="#collapseTwo">
+		          FASTQ
+		    </div>
+		    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+		      <div class="card-body alert-success">
+		        <strong>True</strong>: FASTQ can store quality per base which is useful when post-processing
+		      </div>
+		    </div>
+		  </div>
+		</div>
+
+		<hr>
+		<h4>Quality Control</h4>
+
+		<p>Prior to the analysis of these sequences, it is highly advisable to perform quality control checks and
+			filtering in order to minimise artefacts in reads including base calling errors, poor quality reads or
+			primer contamination. The difference in passing filtered data to downstream programs can be night-and-day
+			for processes like de novo assembly or SNP calling.
+		</p>
+		<p>FastQC is a tool written in Java to perform quality control checks on raw sequence data. It computes
+			several statistics and shows the results on summary graphs and tables. We will analyse several datasets
+			in order to check whether the samples look good or, on the contrary, they require further filtering.
+		</p>
+		<p>Open up a new terminal window and then type: <kbd>fastqc</kbd></p>
+		<p>Once the program is running, select <kbd>File > Open</kbd> to open one or more Sequence files (see below).
+			Browse to <strong>~/data/tb/</strong> to choose <strong>sample1_1.fastq</strong> and click <kbd>OK</kbd>.
+		</p>
+		<p>FastQC supports FASTQ files (all quality encoding variants), GZip compressed FastQ and alignment files
+			(SAM and BAM formats)
+		</p>
+		<p>Newly opened files will be immediately processed. Because of the size of FASTQ files it can take a couple
+			of minutes to open them
+		</p>
+
+		<p>
+
+	    <div class="accordion" id="accordionExample">
+	      <div class="card">
+	        <div class = "card-header"><strong>FastqQC metrics</strong></div>
+	        <div class="card-body">
+			  <div class="row">
+				  <div class="col-sm">
+					  <p>FastQC performs several analyses, described in modules on left hand side of the main window (see below). Note that these results
+					  should be taken as guidance in the context of our library and never as pass/fail results. Nevertheless, they will highlight major
+					  problematic aspects. Let us now interpret the output of some of the modules.
+				  	  </p>
+					  <p>Normal results are marked with green ticks, slightly abnormal with orange exclamation marks and very unusual with red
+						  crosses
+					  </p>
+				  </div>
+				  <div class="col-sm">
+					  <img src="img/Mapping_3.jpg" class="img-fluid" alt="Responsive image">
+				  </div>
+			  </div>
+
+
+		  	</div>
+
+	        <div class="card-header" id="hqc1" data-toggle="collapse" data-target="#bqc1">
+	              Basic sequence statistics
+	        </div>
+	        <div id="bqc1" class="collapse" aria-labelledby="hqc1" data-parent="#accordionExample">
+				<div class="card-body">
+					<div class="row">
+						<div class="col-sm">
+							<p>The Basic Statistics module provides overall information such as the total number of reads, read length and %GC content.</p>
+						</div>
+						<div class="col-sm">
+					  		<img src="img/Mapping_3.jpg" class="img-fluid" alt="Responsive image">
+						</div>
+				  	</div>
+	          	</div>
+	        </div>
+			<div class="card-header" id="hqc2" data-toggle="collapse" data-target="#bqc2">
+	              Per Base Sequence Quality
+	        </div>
+	        <div id="bqc2" class="collapse" aria-labelledby="hqc2" data-parent="#accordionExample">
+	          <div class="card-body">
+				  <div class="row">
+					  <div class="row">
+						  <div class="col-sm">
+							  <p>This view shows the quality values (y-axis) along the read at each nucleotide position (x-axis). The greater this
+								  value, the lower the probability that the corresponding base call is incorrect. At each position a Box-Whisker
+								  plot is drawn where the central read line is the median; the yellow box represents the inter-quartile range (25-75%);
+								  the upper and lower whiskers the 10% and 90% points; and the blue line correspond to the mean quality. This analysis
+								  computes the mean quality of each read and then displays for all observed values the number of reads having such quality.
+								  It is expected that a small subset will have universally poor quality. FastQC outputs a warning if the most frequently
+								  observed mean is below 27 (corresponding to a 0.2% error rate) and a failure if is below 20 (1% error rate).
+							  </p>
+						  </div>
+						  <div class="col-sm">
+							  <img src="img/Mapping_4.jpg" class="img-fluid" alt="Responsive image">
+						  </div>
+		          	  </div>
+	          	  </div>
+	        	</div>
+			</div>
+	        <div class="card-header" id="hqc3" data-toggle="collapse" data-target="#BQC3">
+	              Per Tile Sequence Quality
+	        </div>
+	        <div id="BQC3" class="collapse" aria-labelledby="hqc3" data-parent="#accordionExample">
+	          <div class="card-body ">
+				  <div class="row">
+					  <div class="col-sm">
+						  <p>This graph will only appear in your analysis results if you're using an Illumina library which retains its original sequence identifiers.
+							  Encoded in these is the flowcell tile from which each read came. The graph allows you to look at the quality scores from each tile
+							  across all of your bases to see if there was a loss in quality associated with only one part of the flowcell.
+						  </p>
+						  <p>The plot shows the deviation from the average quality for each tile. The colours are on a cold to hot scale, with cold colours being
+								positions where the quality was at or above the average for that base in the run, and hotter colours indicate that a tile had worse
+								qualities than other tiles for that base. In the example below you can see that certain tiles show consistently poor quality. A good
+								plot should be blue all over.
+						  </p>
+					  </div>
+					  <div class="col-sm">
+						  <img src="img/Mapping_5.jpg" class="img-fluid" alt="Responsive image">
+					  </div>
+	          	  </div>
+	          </div>
+	        </div>
+	        <div class="card-header" id="hqc4" data-toggle="collapse" data-target="#bqc4">
+	            Per base N content
+	        </div>
+	        <div id="bqc4" class="collapse" aria-labelledby="hqc4" data-parent="#accordionExample">
+	          <div class="card-body ">
+				  <div class="row">
+					  <div class="col-sm">
+						  <p>This module outputs the percentage of N base calls at each position. N is usually called when the sequencer is not confident enough to
+							  call a conventional base (A, T, C or G). Small proportion of Ns may appear especially towards the last positions.
+						  </p>
+					  </div>
+					  <div class="col-sm">
+						  <img src="img/Mapping_6.jpg" class="img-fluid" alt="Responsive image">
+					  </div>
+	          	  </div>
+
+	          </div>
+	        </div>
+	        <div class="card-header" id="hqc5" data-toggle="collapse" data-target="#bqc5">
+	            Sequence length distribution
+	        </div>
+	        <div id="bqc5" class="collapse" aria-labelledby="hqc5" data-parent="#accordionExample">
+	          <div class="card-body ">
+				  <div class="row">
+					  <div class="col-sm">
+						  <p>Current sequencers frequently produce reads of uniform length. Nevertheless, if reads are trimmed due to quality issues we will observe
+							  variable read lengths.
+						  </p>
+					  </div>
+					  <div class="col-sm">
+						  <img src="img/Mapping_7.jpg" class="img-fluid" alt="Responsive image">
+					  </div>
+	          	  </div>
+
+	          </div>
+	        </div>
+	        <div class="card-header" id="hqc6" data-toggle="collapse" data-target="#bqc6">
+	            Sequence duplication levels
+	        </div>
+	        <div id="bqc6" class="collapse" aria-labelledby="hqc6" data-parent="#accordionExample">
+	          <div class="card-body ">
+				  <div class="row">
+					  <div class="col-sm">
+						  <p>This module computes the degree of duplication of every read in the file by looking for exact matches over the whole length of the rest
+							  of reads. A dataset with high depth of coverage, namely an over-represented target genome, will report higher duplication levels than
+							  one would expect since multiple reads starting at the same position will be found by chance.
+						  </p>
+					  </div>
+					  <div class="col-sm">
+						  <img src="img/Mapping_8.jpg" class="img-fluid" alt="Responsive image">
+					  </div>
+	          	  </div>
+
+	          </div>
+	        </div>
+	        <div class="card-header" id="hqc7" data-toggle="collapse" data-target="#bqc7">
+	            Overrepresented sequences
+	        </div>
+	        <div id="bqc7" class="collapse" aria-labelledby="hqc7" data-parent="#accordionExample">
+	          <div class="card-body ">
+				  <div class="row">
+					  <div class="col-sm">
+						  <p>In a normal library, every individual sequence will make up a tiny fraction of the whole set. Therefore, overrepresented reads may
+							  be indicators of biologically significant sequences or contaminants. All reads representing more than 0.1% of the total amount
+							  will be listed. Primers and adaptors are the most common sources of contamination.
+						  </p>
+					  </div>
+					  <div class="col-sm">
+						  <img src="img/Mapping_9.jpg" class="img-fluid" alt="Responsive image">
+					  </div>
+	          	  </div>
+
+	          </div>
+	        </div>
+		</div>
+      </div>
+
+      <hr>
+
+      <p>
+          <div class="alert alert-warning" role="alert">
+              <p>At this point you should be able to open sequence files with FastQC and interpret the quality plots
+                  described. First, open sample <strong>IT.Chr5_1.fastq</strong> in <strong>~/data/malaria/</strong>. Second, open <strong>sample1_1.fastq</strong>,
+                  <strong>sample2_1.fastq</strong> and <strong>sample3_1.fastq</strong> in <strong>~/data/tb/</strong>.
+              </p>
+              <p>Questions:</p>
+              <ul>
+                  <li>Can you spot any quality issue with the reads we should be worried about?</li>
+                  <li>If so, what may be their source?</li>
+              </ul>
+          </div>
+      </p>
+      <hr>
+
+      <h5>Saving a report</h5>
+      <p>We can keep a record of the FastQC results. To create a report simply select File > Save Report from the
+          main menu. This will create a folder containing the images from the analyses, an HTML version of module
+          results and text files containing results numeric data.
+      </p>
+      <div>
+          <p><strong>Further information</strong></p>
+          <p>You may find useful the information in the following links:</p>
+          <ol>1. http://www.bioinformatics.babraham.ac.uk/projects/fastqc/</ol>
+          <ol>2. http://bioinfo-core.org/index.php/9th_Discussion-28_October_2010</ol>
+          <ol>3. http://www.youtube.com/watch?v=bz93ReOv87Y (FastQC video tutorial)</ol>
+      </div>
+      <p>We have used the FastQC tool to identify problems in raw sequence data. Nevertheless, bad quality issues
+          in our data are not a death sentence for the experiment; it can still be useful for downstream analyses
+          if we applied the right filtering before processing. In general, the problem in the sequence files is
+          the degradation in quality of bases at end of the reads, leading to the need to hard clip or trim them.
+      </p>
+      <h4>Trimming Illumina paired-end reads using Trimmomatic</h4>
+      <div class="alert alert-primary">
+          The quality of the last few bases of the read can be substantially lower than the rest of the sequence
+              read. In general, QC tools are unable to filter these reads out due to their overall high quality.
+              Besides, it is not advisable to discard the whole read just because of few low-quality bases at the
+              ends. Therefore, it is crucial to trim such bases before any further analysis. Trimmomatic
+              (Lohse et al., 2012) is a fast command line tool that can be used to trim and crop Illumina data as
+              well as to remove adapters (see Table below). We will be using the paired-end mode which will process
+              both forward and reverse reads simultaneously maintaining the correspondence of read pairs intact.
+
+      </div>
+
+      <table class="table">
+  <thead class="thead-dark">
+      <tr>
+    <th scope="col">Parameter</th>
+    <th scope="col">Description</th>
+  </tr>
+  <tr>
+    <td>ILLUMINACLIP</td>
+    <td>Cut adapter and other illumina specific sequences from the read</td>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>SLIDINGWINDOW</td>
+    <td>Performs a sliding window trimming approach. It starts scanning at the 5" end and clips the read once the average quality within the window falls below a threshold</td>
+  </tr>
+  <tr>
+    <td>MAXINFO</td>
+    <td>An adaptive quality trimmer which balances read length and error rate to maximise the value of each read</td>
+  </tr>
+  <tr>
+    <td>LEADING</td>
+    <td>Cut bases off the start of a read, if below a threshold quality</td>
+  </tr>
+  <tr>
+    <td>TRAILING</td>
+    <td>Cut bases off the end of a read, if below a threshold quality</td>
+  </tr>
+  <tr>
+    <td>CROP</td>
+    <td>Cut the read to a specified length by removing bases from the end</td>
+  </tr>
+  <tr>
+    <td>HEADCROP</td>
+    <td>Cut the specified number of bases from the start of the read</td>
+  </tr>
+  <tr>
+    <td>MINLEN</td>
+    <td>Drop the read if it is below a specified length</td>
+  </tr>
+  <tr>
+    <td>AVGQUAL</td>
+    <td>Drop the read if the average quality is below the specified level</td>
+  </tr>
+  <tr>
+    <td>TOPHRED33</td>
+    <td>Convert quality scores to Phred-33</td>
+  </tr>
+  <tr>
+    <td>TOPHRED64</td>
+    <td>Convert quality scores to Phred-64</td>
+  </tr>
+</tbody>
+</table>
+
+<p>Try to understand what the following command line specifies by looking at the Trimmomatic parameters in the
+    previous table, and run it for sample1.
+</p>
+<pre><code>cd ~/data/tb/
+trimmomatic PE sample1_1.fastq sample1_2.fastq -baseout sample1 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:20 MINLEN:36</code></pre>
+
+<h4>Alignment of short reads</h4>
+<div class="alert alert-primary" role="alert">
+    A major step in most sequence analysis pipelines involves the alignment of reads against the reference genome, a
+    requisite stage for downstream analyses. Traditional alignment software have become obsolete when dealing with
+    the large amounts of short reads (millions) produced by NGS platforms and, during the last few years, software
+    particularly designed to map short queries onto a long reference sequence have been produced.
+</div>
+<p>Current popular alignment tools are summarised in Li & Homer (2010). As shown in column 5 in the Table below, most
+    of them allow gaps in alignments. Effective gapped aligners avoid calling false SNPs predicted due to the presence
+    of insertions and deletions (indels). Furthermore, software including paired-end information are capable of mapping
+    repeat reads with uniquely mapped mates; they also correct alignment errors that are inconsistent with the
+    constraints imposed by mate pairs in terms of distance and orientation. Base quality in reads has also been
+    exploited by programs like MAQ improving alignment accuracy.
+</p>
+<p>All aforementioned programs output both aligned and unaligned reads in Sequence Alignment/Map (SAM) format
+    (H. Li et al. 2009), a standardised format widely supported by downstream bioinformatic tools (e.g. variant
+    callers, alignment viewers). The development and improvement of efficient short-read alignment algorithms has
+    made the fast processing of data produced by current sequencing platforms feasible which, initially, entailed
+    a bottleneck in the analysis of such high-coverage sequence dataset.
+</p>
+<h4>Sequence alignment Exercise 1</h4>
+<div class="alert alert-primary" role="alert">
+    In this exercise we will be running the Burrows-Wheeler Aligner (BWA), an efficient program that aligns
+    relatively short nucleotide sequences (i.e. short reads) against a long reference sequence. It implements
+    two algorithms, bwa-short and BWA-SW. The former works for query sequences shorter than ~200bp with low
+    error rate (&lt;3%) (e.g. reads produced by Illumina technology). It performs gapped global alignment, supports
+    paired- end reads, and is one the fastest short read alignment algorithms currently available. BWA- SW is
+     designed for longer sequences (e.g. 454 reads) with more errors.
+</div>
+
+
+
+<p>Open up a new terminal window and type <kbd>bwa</kbd></p>
+<p>All available BWA commands will appear on the terminal screen as shown below.</p>
+<div class="alert alert-info" role="alert">
+    <samp>Program: bwa (alignment via Burrows-Wheeler transformation)
+Version: 0.7.17-r1188
+Contact: Heng Li <lh3@sanger.ac.uk>
+
+Usage:   bwa <command> [options]
+
+Command: index         index sequences in the FASTA format
+         mem           BWA-MEM algorithm
+         fastmap       identify super-maximal exact matches
+         pemerge       merge overlapping paired ends (EXPERIMENTAL)
+         aln           gapped/ungapped alignment
+         samse         generate alignment (single ended)
+         sampe         generate alignment (paired ended)
+         bwasw         BWA-SW for long queries
+
+         shm           manage indices in shared memory
+         fa2pac        convert FASTA to PAC format
+         pac2bwt       generate BWT from PAC
+         pac2bwtgen    alternative algorithm for generating BWT
+         bwtupdate     update .bwt to the new format
+         bwt2sa        generate SA from BWT and Occ</samp>
+     </div>
+     <p>In order to map our paired-end reads we will use ‘index’ and ‘mem’ commands. The ‘index’ command takes the reference genome (the database) in FASTA format as input and indexes it, which typically will take a few hours. This command only needs to be executed once for a particular reference genome</p>
+     <p>To see all options for the ‘index’ command type:</p>
+     <div class="alert alert-info" role="alert">
+         <samp>Usage:   bwa index [options] <in.fasta>
+
+Options: -a STR    BWT construction algorithm: bwtsw, is or rb2 [auto]
+         -p STR    prefix of the index [same as fasta name]
+         -b INT    block size for the bwtsw algorithm (effective with -a bwtsw) [10000000]
+         -6        index files named as <in.fasta>.64.* instead of <in.fasta>.*
+
+Warning: `-a bwtsw' does not work for short genomes, while `-a is' and
+         `-a div' do not work not for long genomes.
+         </samp>
+     </div>
+    <p>Most options will be set automatically according to the data we are running it on so we do not have to worry about setting them.</p>
+    <p>Type the following line:<p>
+    <pre><code>bwa index ~/data/tb/tb.fasta</pre></code>
+    <p>Several aligning algorithms are implemented in BWA. We will be using the BWA-MEM, which is the latest and generally recommended for high-quality queries as it is faster and more accurate. To see which parameters can be tuned for the ‘mem’ command type: <kbd>bwa mem</kbd></p>
+    <p>We will be using the trimmed files output (from applying trimmomatic) as input for BWA:</p>
+    <pre><code>cd ~/data/tb/
+bwa mem -c 100 -R "@RG\tID:sample1\tSM:sample1\tPL:Illumina" -M -T 50 ~/data/tb/tb.fasta sample1_1P sample1_2P | samtools view -b - | samtools sort -o sample1.bam -
+samtools index sample1.bam
+    </code></pre>
+    <p>The previous commands transformed SAM files into binary format, sorted the reads by occurrence against the reference, and then indexed the bam files. At this point, we can use the ‘flagstat’ samtools command to print summary statistics from indexed bam files:</p>
+    <pre><code>samtools flagstat sample1.bam</code></pre>
+    <p>The 'flagstat' output sould look like this:</p>
+    <div class="alert alert-info" role="alert">
+        <samp>1345146 + 0 in total (QC-passed reads + QC-failed reads)
+0 + 0 secondary
+0 + 0 supplementary
+0 + 0 duplicates
+1330984 + 0 mapped (98.95% : N/A)
+1345146 + 0 paired in sequencing
+672573 + 0 read1
+672573 + 0 read2
+1312598 + 0 properly paired (97.58% : N/A)
+1318846 + 0 with itself and mate mapped
+12138 + 0 singletons (0.90% : N/A)
+0 + 0 with mate mapped to a different chr
+0 + 0 with mate mapped to a different chr (mapQ>=5)</samp>
+    </div>
+    <p>Where each line specifies:
+    <ol><li>Total number of reads;</li>
+    <li>Duplicates</li>
+    <li>Number of mapped reads;</li>
+    <li>Paired reads in sequencing</li>
+    <li>Number of forward reads;</li>
+    <li>Number of reverse reads</li>
+    <li>Number of properly mapped reads (same chromosome, opposite orientation, and within few deviations from the expected insert size);</li>
+    <li>Number of reads mapped along with their mates (7 is a subset of 8).</li>
+    <li>Singletons: number of reads mapped alone, i.e. mate not mapped (8+9=3).</li>
+    <li>Reads whose mates are mapped to a different chromosome.</li>
+    <li>Reads whose mates are mapped to a different chromosome with mapping quality greater than 5; note, (11) is a subset of (10).</li>
+    </ol></p>
+    <p><strong>Execute all previous commands for sample2 now, i.e. from trimmomatic to samtools flagstat, to obtain sample2.bam file.</strong></p>
+    <hr>
+    <h5>Viewing the alignment</h5>
+    <p>
+        Launch tablet by running the command <kbd>tablet</kbd> on a <b>New Terminal</b>. Click under the <kbd>Home</kbd> tab in the Top Bar Open
+        assembly. Fill in all required fields including <strong>Primary Assembly</strong> file and <strong>Reference/Consensus</strong> file. You
+        can use the <kbd>Browse…</kbd> buttons to navigate and select the <strong>~/data/tb/sample1.bam</strong> and <strong>~/data/tb/tb.fasta</strong> files
+        respectively.
+    </p>
+    <img src="img/Mapping_11.jpg" class="img-fluid" alt="Responsive image">
+    <p>MAke sure you click on the Chromosome you want to work on in the left panel to show the reads. Now, let us load the feature track showing gene coordinates and names using the <kbd>Import features</kbd>  button in the
+        <kbd>Home</kbd> tab. Once the dialog opens navigate to <strong>~/data/tb/</strong> and select the file called <strong>tb.gff</strong>.
+    </p>
+    <img src="img/Mapping_12.jpg" class="img-fluid" alt="Responsive image">
+    <p>If the annotation tracks do not display in below the sequence. Press right click in the tracks below the
+        DNA sequence and press <kbd>Select visible tracks…</kbd> and then select exon and CDS and click <kbd>OK</kbd>.
+    </p>
+    <p>
+        Tablet will display one alignment per window, so if more samples need to be viewed, open a new terminal and
+        type <kbd>tablet</kbd> and follow the steps described earlier with another sample.
+    </p>
+    <p>
+        Tablet loads and can display up to 25,000 bp at a time as default, delimited by the Overview window
+        (1). This can be changed using the Window Size button in the Advanced tab. The blue semi-transparent
+        square defines the region that is being displayed in the Read panel (2). To navigate through the chromosome
+        you will need to use the bar on top by dragging it. To navigate through the 25 Kb loaded you can click and
+        drag the Read panel or use the buttons on the Top Bar. Note that the red numbers in each corner of the Read
+        panel will display the region currently being shown (Blue squares).
+    </p>
+    <p>
+        Zooming into the sequence can be done using the Zoom button in the Top bar.
+    </p>
+    <p>
+        It is possible to change the Overview display to show a Coverage plot by using the <kbd>Coverage</kbd> button under
+        the <kbd>Advanced</kbd> tab.
+    </p>
+    <img src="img/Mapping_13.jpg" class="img-fluid" alt="Responsive image">
+    <p>
+        For paired-end alignments, the best way is to display the paired reads is by changing the Read Packing
+        option to Packed (Paired end).You are encouraged to investigate the differences on the visualization caused
+        by different read packing options.
+    </p>
+    <p>
+        The way Tablet allows you to navigate through your reads is combining different colour coding for your reads
+        and showing information about individual reads (and their mate reads) when hovering with your mouse over
+        them.
+    </p>
+    <p>
+        You will find the colouring key under the Colour Schemes tab in the Top Bar. When hovering over them it
+        will show an explanation of how the colour code works.
+    </p>
+    <img src="img/Mapping_14.jpg" class="img-fluid" alt="Responsive image">
+    <p>
+        The most useful options you will find are the Read Type option, to discover reads where the mate pair has
+        not been mapped and the Direction option to discover reads where the two mate pairs are oriented in the
+        same direction. Note that as paired reads they should always map one Forward and the other Reverse. You
+        can read the other options by hovering over the buttons.
+    </p>
+    <img src="img/Mapping_15.jpg" class="img-fluid" alt="Responsive image">
+    <p>
+        Tablet displays individual information about the read and its mate pair when the mouse is hovered over
+        them. This can help us identify interesting reads.
+    </p>
+    <p>
+        At higher resolutions, read bases that do not match the reference are colour coded with a lighter colour
+        shade than the original bases. The contrast between the reference bases and those that are different can
+        be adjusted using the Variants bar in the Top Bar under the “Home”. In addition, the Variants option under
+        the Colour Scheme tab can be used to show the variants and make their visualization more easy.
+    </p>
+    <img src="img/Mapping_16.jpg" class="img-fluid" alt="Responsive image">
+    <p>
+        To outline a read and its paired mate, right click on it and then click Outline > Read then right click on
+        it again and press Jump to > Read’s mate. This will move you to the position of the mate read and then you
+        can repeat the Outline step. A black outline will appear once you do this, and it can be a good way to track
+        long reads or highlight interesting reads.
+    </p>
+    <p>
+        Another feature from Tablet is the possibility to get the read name copied to your clipboard or  the whole
+information about the read (e.g. name, sequence and quality) in order to further investigate interesting reads. To
+try this click on the <kbd>Copy read name to clipboard</kbd> or <kbd>Copy read data to clipboard</kbd> from this same right click menu
+from a read, then open a plain text file and copy the results.
+    </p>
+    <div class="alert alert-warning">
+        Try to combine the <kbd>Jump to</kbd> with the <kbd>Copy read name…</kbd>
+        options, does the name of the mate reads match?
+    </div>
+    <img src="img/Mapping_17.jpg" class="img-fluid" alt="Responsive image">
+    <hr>
+    <h4>Exercise: Mapping the <i>P. falciparum</i> IT reads with BWA</h4>
+    <div class="alert alert-primary">
+        Now we will map the IT clone reads to the 3D7 reference, again using the short reads mapping program BWA
+        (Li et al, 2009).
+    </div>
+    <p>
+        First we need to index the reference (the algorithm needs to access specific positions in the reference
+        in an efficient way).
+    </p>
+    <pre><code>cd ~/data/malaria/
+bwa index ~/data/malaria/Pf3D7_05.fasta
+</code></pre>
+    <p>
+        Next, read files (both forward/reverse) are mapped against the reference
+    </p>
+    <pre><code>bwa mem ~/data/malaria/Pf3D7_05.fasta ~/data/malaria/IT.Chr5_1.fastq ~/data/malaria/IT.Chr5_2.fastq | samtools view -b - | samtools sort -o IT.Chr5.bam -</code></pre>
+    <p>The details of where each IT clone read has been mapped is now stored in the file <strong>IT.Chr5.bam</strong>.
+        We are going to view the mapped reads in Artemis using Artemis BAM view. Before we can proceed, however, we
+        must index the BAM file to allow programs suchh as Artemis quick access to different sections of the file.
+    </p>
+    <pre><code>samtools index IT.Chr5.bam</code></pre>
+    <p>Before we visualize the alignment of the reads in a Artemis, let us have a look at the sam/bam format.
+        SAMTOOLS was developed to have a standard format to store reads. It contains information about the
+        reference sequence, where a read is mapped, quality of mapping, and where it’s mate is mapped. Files
+        ending with .sam, are normally plain text,  but as they might take too much space, the file is compressed
+        into a bam file. All visualization tools will need the bam file. It has to be sorted (by chromosome and
+        position) and indexed. Indexing enables the fast processing of alignments.
+    </p>
+    <p>Here is an example of a read and its mate. We need to use <kbd>samtools</kbd> to convert to SAM format and then <kbd>grep</kbd>
+        to look for a specific read:
+    </p>
+    <pre><code>samtools view IT.Chr5.bam | grep "IL39_6014:8:61:7451:18170"</code></pre>
+    <img src="img/Mapping_18.jpg" class="img-fluid" alt="Responsive image">
+    <hr>
+    <h4>Viewing the mapped reads in Artemis</h4>
+    <p>We will now examine the read mapping in Artemis using the BAM view feature.</p>
+    <p>Open Artemis by typing <kbd>art</kbd> on your command line and load <strong>Pf3D7_05.embl</strong> from
+        the <strong>~/data/malaria/</strong> data directory. This contains exactly the same sequence as
+        <stong>Pf3D7_05.fasta</strong>, but also has genome annotation, allowing us to visualise the gene models.
+    </p>
+    <p>From the Artemis File menu, select <kbd>Read BAM / VCF</kbd>, then locate the file <strong>IT.Chr5.bam</strong>
+        from <strong>~/data/malaria/</strong> directory.
+    </p>
+    <p>You should see the BAM window appear as in the screen shot below. We want to change the view in order to better
+        see how the reads map to the genome.
+    </p>
+    <img src="img/Mapping_19.jpg" class="img-fluid" alt="Responsive image">
+    <div class="alert alert-warning" role="alert">
+        Scroll through the genome. Describe the coverage. Are there regions that are not covered?
+    </div>
+    <p>
+        Use the <kbd>Go to</kbd> button in the menu and select <kbd>Navigator</kbd>, select the <kbd>Go to Feature With Gene Name</kbd> and type the name: <strong>Pf3D7_0504700</strong> then zoom out once.
+    </p>
+    <img src="img/Mapping_20.jpg" class="img-fluid" alt="Responsive image">
+    <p>
+        Each view has its advantages:
+         <ul>
+             <li><strong>Inferred Size</strong>: (click also Use log scale) displays the mate pair on the
+             y-axis depending their distance. In this case, some reads map further apart compared to
+             others. Could this be a deletion?
+             </li>
+             <li><strong>Strand Stack</strong>: displays the strand where reads are mapping. This is useful
+                 for strand specific applications.
+             </li>
+             <li>
+                 <strong>Paired Stack</strong>: can be useful to visualise connected regions.
+             </li>
+         </ul>
+    </p>
+    <p>
+        Zoom in and position the mouse over a read until a window pops up. Then right click on the read and select
+        <kbd>Show details of…</kbd>
+    </p>
+    <img src="img/Mapping_21.jpg" class="img-fluid" alt="Responsive image" style="max-width: 75%">
+    <p>
+        These two windows provide information on the mapping of the reads, as it is stored in the bam file.
+        Notice the <strong>Mapping quality</strong>. The maximum value for this is 99. The mapping quality
+        depends on the accuracy of the sequence read and the number of mismatches with the reference. A value
+        of 0 means that the read maps equally well to at least one other location and therefore is unreliably
+        mapped. The flags describe the read’s mate pair mapping. Most of those values can be filtered, to do so,
+        right click in the BAM track and select the <kbd>Filter Reads...</kbd> option.
+    </p>
+    <img src="img/Mapping_22.jpg" class="img-fluid" alt="Responsive image" style="max-width: 75%">
+    <div class="alert alert-warning" role="alert">
+        Filter reads for repetitive regions and proper read pairing. Do you notice any difference? Can you
+        think of how this will assis in further analysis?
+    </div>
+
+    <hr>
+
+    <h4>Differences in read coverage between reference and resequenced genomes</h4>
+    <p>
+        It is thought that a duplication in the mdr1 gene of P. falciparum is associated with drug resistance
+        against the antimalarial mefloquine and that it may also modulate susceptibility to chloroquine, another
+        antimalarial drug. For more information have a look in PubMed, e.g. at Borges et al. (2011)
+        [PMID: 21709099] or at Mungthin et al. (2010) [PMID: 20449753]
+    </p>
+
+    <p>
+        Once Artemis has started running on your screen navigate to the mdr1 gene locus using e.g. the Navigator
+        (Goto –> Navigator… –> Goto Feature With Gene Name).
+    </p>
+    <div class="alert alert-warning" role="alert">
+        What can you say about the read coverage at this locus? (you may have to zoom out to get a good look).
+        So far you looked at the IT strain. What about the mdr1 locus in the Dd2 strain of the malaria parasite?
+    </div>
+
+    <p>
+         The Dd2 clone is known to be chloroquine resistant. Add its mapped reads (a file already prepared before
+         the course) by right-clicking on the BAMview and choosing <kbd>Add BAM…</kbd>. Select the file <strong>DD2.Chr5.bam</strong>
+    </p>
+    <img src="img/Mapping_23.jpg" class="img-fluid" alt="Responsive image">
+    <div class="alert alert-warning" role="alert">
+        It looks like that those two clones have a copy number variation (assuming the reference was assembled correctly). Is the
+        duplication the same in both clones?
+    </div>
+    <h4>Identifying Single Nucleotide Polymorphisms</h4>
+    <p>
+        Let us have a look at SNPs now. To do so, zoom in on the mdr1 gene and make sure you are in <strong>Strand Stack
+        view</strong> and have Show SNP marks selected. As mentioned before, in addition to true SNPs some differences
+        between the reference sequence and the mapped reads are due to sequencing errors. On average, 1 in every
+        100 bases in the reads is expected to be incorrect. In particular, some sequencing errors may be due to
+        a systematic problem as illustrated below.
+    </p>
+    <p>
+        Red marks appear on the stacked reads highlighting every base in a read which does not match to the reference. If
+        you zoom in you can distinguish real SNPs as vertical red lines, while the random sequencing errors are more
+        disperse.
+    </p>
+    <img src="img/Mapping_24.jpg" class="img-fluid" alt="Responsive image">
+
+    <div class="alert alert-warning" role="alert">
+        When you zoom in on position 958145 as far as you can go, you can see a SNP: here, both strain IT and Dd2
+        have a thymine where the reference (3D7) has an adenine.
+        What is the consequence of this SNP? Can we tell what effect it will have for the clones? Is this the mutation
+        N86Y (or also simply referred to as Y86) that may modulate the degree of resistance to chloroquine? (See e.g. Mula et al. (2011) [PMID: 21810256])
+    </div>
+    <img src="img/Mapping_25.jpg" class="img-fluid" alt="Responsive image">
+    <p>
+        To answer the just posed, right-click on the gene annotation of the mdr1 gene and then choose View – Amino
+        Acids Of Selection: here you can see which amino acids are normally coded for around amino acid position
+        86. Note also that AAT codes for Asn (N) and TAT codes for Tyr (Y).
+
+    </p>
+    <div class="alert alert-warning" role="alert">
+        Now consider the neighbouring position 958146. What could this be? Is it from IT or Dd2? To answer this
+        question, close the window and display the reads of only one or the other parasite strain in each window,
+        as demonstrated below.
+    </div>
+
+    <video controls>
+        <source src="img/Mapping_26.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <hr>
+    <p>
+        Now you have separeated the different BAM files you can easily compare the two isolates.
+    </p>
+    <img src="img/Mapping_27.jpg" class="img-fluid" alt="Responsive image">
+
+    <hr>
+    <div class="alert alert-primary" role="alert">
+        <h4>Important aspects of the mapping procedure</h4>
+
+        <p>
+            <strong>Non-unique/repeat regions</strong><br>
+            A sequence read may map equally well to multiple locations in the reference genome. In such cases it is
+            unclear where the read should be placed. Different mapping algorithms have alternative strategies for this
+            problem. Maq will randomly report only one of the mapping locations and give the read a score of 0.
+        </p>
+        <p>
+            <strong>GC content</strong><br>
+            Some organisms have genomes with extreme GC content. The Plasmodium genome, for instance, is 19% GC,
+            meaning 81% of bases are A or T. The result of this is that reads are more likely to map by chance to
+            multiple locations in the genome, when compared to a genome with neutral GC content (e.g. 40-60% GC).
+        </p>
+        <p>
+            <strong>Insert size</strong><br>
+            When mapping paired reads, the mapping algorithm (e.g. Maq) takes the expected insert (e.g. sequenced
+            DNA fragment) size into account. If the fragments are expected to be, on average 400bp and the sequence
+            reads are 150bp, then the paired reads should be ~100bp apart. If the paired reads are significantly
+            further apart then we can say that the reads do not map reliably and discard them. This information can
+            assist with improving the reliability of mapping.
+        </p>
+        <p><strong>Tips</strong><br>
+            It is always a good idea to try different programs for any particular problem in computational biology.
+            If they all produce the same answer you can be more certain it is correct. Alternative short read mappers
+            include SOAP (Li et al., 2008b), Ssaha (Ning et al., 2001), MAQ (Li et al., 2008), Bowtie(2)
+            (Langmead et al, 2009, 2012) and SMALT. As seen, TopHat (Trapnell et al., 2009) is particularly useful for
+            RNAseq mapping as it supports spliced mapping. New tools for mapping sequence reads are continually being
+            developed. This reflects improvements in mapping technology but it is also due to changes in the sequence
+            data to be mapped. The sequencing machines we are using now (e.g. Illumina Genome Analyzer II, HiSeq2000/2500,
+            454 GS FLX etc) will not be the ones we are using in a few years time and the data the new machines produce
+            are likely to be sub-optimally mapped with current tools.
+        </p>
+    </div>
+    <hr>
+    <h4>Extra Exercise: Identifying essential genes in a TraDIS analysis    </h4>
+    <div class="alert alert-primary" role="alert">
+        Mapping can be an initial step of a more complex bioinformatic pipeline, or can be a goal in itself if
+        sequencing is being used to assess targeted regions of the genome or in conjunction with other molecular
+        biology techniques. In this exercise we will analyze data from a run of the TraDIS (transposon directed
+        insertion-site sequencing) technique (Langridge et al 2009, PMID:19826075). This experimental technique
+        aims to uncover essential genes, genome-wide in an unbiased way. It relies on the use of a transposon to
+        generate a large mutant pool with transposon insertions covering the whole genome. The large size of the
+        transposon (>1Kb) will most likely disrupt the genomic region around its insertion site. Because we know
+        the sequence of the transposon, performing whole genome sequencing allows us to identify all the transposon
+        insertion sites within our library.<br><br>
+
+        When essential genes are disrupted by the presence of the transposon, the affected bacteria will not grow.
+        <strong>Therefore, genes with no detectable transposon insertions are likely essential</strong>. The exact likelihood of
+        this observation is dependent on the initial mutant library size versus genome size, that is, the transposon
+        coverage throughout the genome. The essentiality of the gene is dependent of the growth conditions of the
+        mutants, allowing for the detection of condition specific gene essentiality.
+    </div>
+    <p>
+        We will be using selected data from a recent TraDIS screen of Burkholderia pseudomallei (2 circular
+        chromosomes, 6,332 predicted coding sequences within 7.25 Mb). B. pseudomallei is the causative agent
+        of melioidosis, an often fatal infectious disease for which there is no vaccine. B. pseudomallei is
+        listed as a Tier 1 select agent, and current therapeutic options are severely limited due to a natural
+        resistance to many antibiotics. We will focus on reads from chromosome 1. The analysis goes through several
+        steps, culminating with viewing the mapped regions using Tablet to assess the evidence that loci are
+        essential:
+    </p>
+    <p>
+        The transposon sequence is identifiable, but it is not part of the reference genome. Furthermore, not
+        all sequenced reads will have the transposon in them. Prior to mapping the sequences should then be
+        filtered and the transposon sequences removed.
+    </p>
+    <p>
+        Change to the directory <strong>~/data/tradis</strong>. First let us consider at the raw fastq file
+        in the <strong>~/data directory</strong>. How many reads are there?
+    </p>
+    <pre><code>zcat TraDIS_reads_chr1.fastq.gz | wc -l</code></pre>
+    <div class="alert alert-warning" role="alert">
+        Can you determine what the transposon sequence is?
+    </div>
+    <pre><code>zcat TraDIS_reads_chr1.fastq | less</code></pre>
+    <p>
+        We are now going to run a Perl script to filter out the reads and create a new fastq file
+        (TraDIS_reads_chr1.fq)
+    </p>
+    <pre><code>perl remove_transposon_and_filter_FASTQ.pl ~/data/tradis/TraDIS_reads_chr1.fastq.gz 0 > TraDIS_reads_chr1.fq </code></pre>
+    <p>
+        This script removes the transposon from the reads, as well as those reads that did not have the transposon
+        signature sequence. The number of lines in the post QC file can be calculated by typing:
+    </p>
+    <pre><code>wc -l TraDIS_reads_chr1.fq</code></pre>
+    <div class="alert alert-warning" role="alert">
+        What proportion of the reads passed QC?
+    </div>
+    <h6>Mapping reads using Bowtie to detect genomic insertion sites</h6>
+    <p>
+        The filtered <strong>TraDIS_reads_chr1.fq</strong> file of the previous step can now be mapped back to the
+        reference genome (<strong>Bp.genome.fa</strong>). For this step we are going to use Bowtie (Langmead
+        et al 2010, bowtie-bio.sf.net).
+    </p>
+    <p>
+        Type <kbd>bowtie2</kbd> to see all the bowtie options, including those below:
+    </p>
+    <div class="alert alert-info" role="alert">
+        <samp>-y (higher sensitivity)
+-a (report all alignments found, instead of choosing just one randomly (bwa behaviour))
+-v (number of allowed mismatches, 0 = perfect match between the read and the genome).
+-S (produce output in SAM format)</samp>
+    </div>
+    <p>
+        We need to produce a BAM file. Now we will perform the mapping, by typing:
+    </p>
+    <pre><code>bowtie-build Bp.genome.fa Bp.genome.fa
+bowtie -y -a -v 0 -S Bp.genome.fa -q TraDIS_reads_chr1.fq 2> TraDIS_reads_chr1.bowtieLog.txt | samtools view -b - | samtools sort -o TraDIS_reads_chr1.bam -
+samtools index TraDIS_reads_chr1.bam
+</code></pre>
+    <p>
+        How many mismatches are we allowing? The file is in SAM format and needs to be indexed and converted
+        to BAM using the following code.
+    </p>
+
+    <h4>Visualizing the results in Tablet</h4>
+    <p>
+        Tablet supports the input of indexed BAM files directly. As opposed to the previous examples, no insertions
+        or deletions should be found in this dataset (single-end reads) and no mismatches/SNPs (because we are
+        requiring perfect matches when mapping). Read in the following files into Tablet:
+        <ul>
+            <li>Bp.genome.fa (reference in ~/data/tradis/)</li>
+            <li>Bp.genome.gff (annotation in ~/data/tradis/)</li>
+            <li>TraDIS_reads_chr1.bam (sorted BAM in ~/data/tradis/)</li>
+        </ul>
+
+    </p>
+    <img src="img/Mapping_28.jpg" class="img-fluid" alt="Responsive image">
+    <div class="alert alert-warning" role="alert">
+        Use samtools (flagstat) with the indexed BAM file to see how many reads are mapping. Given that the size
+        of chromosome 1 is 4074542 basepairs, what is the transposon insertion density? <br><br>
+
+        Please look at the following genes in the table, and decide whether they are essential:<br><br>
+        <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Chromosome</th>
+            <th scope="col">Gene name</th>
+            <th scope="col">Start</th>
+            <th scope="col">End</th>
+            <th scope="col">No. reads</th>
+            <th scope="col">Essential (Yes/No)</th>
+          </tr>
+          <tr>
+            <td>Chr1</td>
+            <td>BPSL0079</td>
+            <td>90207</td>
+            <td>90668</td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Ch1</td>
+            <td>BPSL0590</td>
+            <td>654016</td>
+            <td>660111</td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Chr1</td>
+            <td>BPSL0764</td>
+            <td>881805</td>
+            <td>886049</td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Chr1</td>
+            <td>BPSL1661</td>
+            <td>1925148</td>
+            <td>1934837</td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Chr1</td>
+            <td>BPSL1712</td>
+            <td>1998620</td>
+            <td>2017444</td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Chr1</td>
+            <td>BPSL2990</td>
+            <td>3563128</td>
+            <td>3563709</td>
+            <td></td>
+            <td></td>
+          </tr>
+        </table>
+
+    </div>
+    <p>
+        That concludes the Mapping practical. Next up you will learn how to use the alignment you have
+        generated to call variants.
+    </p>
+    <hr>
+    <p style="font-size: 10px;">
+        Acknowledgements: Thomas Otto, Brendan Wren, Wellcome Trust
+    </p>
+
+
+
+  </div> <!-- Container -->
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="jquery-3.3.1.slim.min.js" crossorigin="anonymous"></script>
+    <script src="popper.min.js"  crossorigin="anonymous"></script>
+    <script src="bootstrap.min.js"  crossorigin="anonymous"></script>
+    <script src="d3.v3.min.js"></script>
+	<script>
+    	$(function () {
+      $('[data-toggle="tooltip"]').tooltip()
+        })
+	</script>
+  </body>
+</html>

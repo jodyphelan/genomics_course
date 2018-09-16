@@ -1,0 +1,526 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="bootstrap.min.css" type="text/css">
+
+    <style>
+
+    @import url(http://fonts.googleapis.com/css?family=PT+Serif|PT+Serif:b|PT+Serif:i);
+
+
+    #follow {
+      background: none;
+    }
+
+    .grey {
+      color: #777;
+    }
+
+    a:link,
+    a:visited {
+      color: black;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    </style>
+
+	<style>
+	pre {
+		display: block;
+		padding: 9.5px;
+		margin: 0 0 10px;
+		font-size: 13px;
+		line-height: 1.42857143;
+		color: white;
+		word-break: break-all;
+		word-wrap: break-word;
+		background-color: black;
+		border: 1px solid black;
+		border-radius: 4px;
+	}
+
+    .jumbotron-head{
+        background:linear-gradient(rgba(0, 0, 250, 0.15), rgba(125, 250, 250, 0.55)),url(img/Head_assembly.jpg);
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-position: top right;
+        color:black !important;
+    }
+	</style>
+
+
+    <title>Transcriptomics - Pathogen 'Omics</title>
+  </head>
+  <!-- hello ernest! -->
+  <body>
+
+      <div class="jumbotron vertical-center jumbotron-fluid jumbotron-head">
+        <div class="container">
+          <h1 class="display-4">Transcriptomics</h1>
+          <p class="lead">RNA sequencing: from mapping to differential expression analysis</p>
+        </div> <!-- Container -->
+      </div>
+
+
+
+      <div class="container">
+    <h4>Transcriptomics lecture</h4>
+    <object data="presentations/transcriptomics_lecture_2018.pdf#page=1" type="application/pdf" width="100%" height=700px>
+        <p><b>Example fallback content</b>: This browser does not support PDFs. Please download the PDF to view it:
+        <a href="presentations/transcriptomics_lecture_2018.pdf">Download PDF</a>.</p>
+    </object>
+    <hr>
+      <h4>Transcriptomics Practical</h4>
+      <h4>Introduction</h4>
+      <p>An application of next-generation sequencing is <b>RNA sequencing</b> (Mortazavi et al., 2008;
+        Wang et al., 2009). In particular we will discuss transcriptome (messenger RNA) sequencing.
+        Transcriptome sequencing is a very useful addition to genome sequencing projects as it helps to
+        identify genes and thus aids in genome annotation. In this sense, it is similar to earlier transcriptome
+        sequencing using capillary methods (EST sequencing), but provides much higher coverage of the transcriptome.</p>
+      <p>Reads from RNA sequencing can be treated in much the same way as those from DNA sequencing. The exception
+        is in eukaryotes when there is splicing, where a single gene can code for multiple proteins through
+        transcription of determined exons.</p>
+      <p>Due to the vast number of reads produced by next generation sequencing technology, the transcriptome
+        is also sequenced very deeply. Each gene is sequenced in proportion to its abundance and the large number
+        of reads means that even low abundance genes are sequenced to some extent. This means that expression
+        levels of genes can be compared. One can visualise the "pile up" of reads in a particular region by looking
+        at coverage plots. The higher the signals in the plot, the more expressed a transcript is. It is important
+        to note that the sequences originate from transcriptome samples (mRNA) and therefore only contains information
+        about the exons and untranslated regions (UTRs).</p>
+      <p>Imagine the following transcript is present in the sample:</p>
+        <div class="text-center"><img src="img/rnaseq_1.png" class="img-fluid"></div>
+      <p>Reads belonging to the transcript are produced by the sequencing process. When the reads come out as raw
+        data, there is no information about where they belong in the reference genome. Furthermore, all reads from
+        several different transcripts come out together. An alignment algorithm localises them in the reference
+        genome based on similarity matches.</p>
+        <div class="text-center"><img src="img/rnaseq_2.jpg" class="img-fluid"></div>
+      <p>In the plot, the coverage line represents the number of reads that align to the genome at each base position.
+        This allows us to identify coding regions, here, the 3 exons (in yellow) that comprise the transcript above.</p>
+      <p>In this module we will use a similar approach used to map DNA sequencing data to map RNA sequencing data from
+        <i>Mycobacterium tuberculosis</i>.</p>
+      <p>Understanding an organism's genome goes beyond cataloging the genes that are present in the genome. Insight into the
+        biological stages in which each gene is expressed (potentially used) helps us to identify how organisms develop and respond to a particular external stimuli.
+        The first layer of such complex patterns involves the understanding of how the genome is being used is the transcriptome.
+         This is also the most accessible type of information because, like the genome, the transcriptome is made of nucleic acids
+         and can be sequenced relatively easily. Arguably the proteome is of greater relevance to understand cellular biology,
+         but it is chemically heterogenous making it much more difficult to assay.</p>
+      <p>Over the past two decades, microarray technology has been applied extensively for addressing the question of which
+        genes are expressed and when, enabling the performance of <b>differential expression analysis</b>. Despite its
+        success, this technology is limited in that it requires prior knowledge of the gene sequences for an organism
+        and has a limited dynamic range in detecting the level of expression, e.g. how many copies of a transcript are
+        made. RNA sequencing technology using, for instance Illumina HiSeq machines, can sequence all the genes that
+        are transcribed, and the results have a more linear relationship to the real number of transcripts generated.</p>
+      <p>The aim of <b>differential expression analysis</b> is to determine which genes are more or less expressed in different
+        situations. We could ask, for instance, whether a bacterium uses its genome differentially when exposed to stress,
+        such as heat or challenged by a drug. Alternatively, we could ask which genes make human livers different from
+        kidneys.</p>
+      <p>In this exercises, we will try to gain some understanding of differences between <i>M. tuberculosis</i> lineages.
+        The genome of <i>M. tuberculosis</i> was published in 1998 (Cole et al., 1998). It has 4.4 Mb and a high GC
+        content (~65%), comprising 4,111 genes. Although the variability of the <i>M. tuberculosis</i> genome has been
+        considered limited, it has been demonstrated a higher diversity than it was previously thought. Currently, <i>
+        M. tuberculosis</i> is classified in 7 different lineages with a different geographical distribution, and
+        also virulence or spreading capacity has been seen to vary between lineages. Strains from different lineages have
+        shown differences in virulence or in acquisition of drug resistance (Parwati et al., 2010), and these differences might
+        be caused by variable expression of determined genes.</p>
+        <p>Therefore, the aim of this Session is to become familiar with the
+        steps carried out in transcriptomics studies, from mapping RNA-seq reads to the performance of differential expression
+        analysis.</p>
+
+          <h4>Exercise 1: Mapping RNA-seq with BWA</h4>
+          <p>First, we will map RNA sequence reads from a <i>M. tuberculosis</i> lineage 1 strain to the reference
+          genome, in this case, the H37Rv <i>M. tuberculosis</i> strain.</p>
+          <p>You can find the <i>M. tuberculosis</i> H37Rv reference genome (called <i>H37Rv.fa</i>) as well as the two files
+            of RNA-seq reads from a lineage 1 strain (<i>Mtb_L1_1.fastq</i> and <i>Mtb_L1_2.fastq</i>) in the transcriptomics
+            directory.</p>
+          <p><b>Running BWA</b></p>
+          <p>To work with the command line of Linux, you will first need to open a terminal and go to the data and
+            transcriptomics directory:</p>
+          <pre><code>cd ~/data/transcriptomics</pre></code>
+          <p>And list the files there:</p>
+          <pre><code>ls</pre></code>
+          <p>You will find there the 4 fastq files, 2 of them from the lineage 1 sample, and the reference genome fasta file; these
+            are the input data for this practical.</p>
+          <p>For the mapping, first an index of the reference genome must be constructed with bwa index. On the command
+            line, you should type:</p>
+          <pre><code>bwa index H37Rv.fa</pre></code>
+          <p>This will generate 5 files which are needed for BWA. We will then align the RNA-seq reads to the
+            reference genome with bwa mem. We will therefore use the reference genome (in fasta format) and the two
+            fastq files that contain the RNA-seq reads, saving the output to a SAM file. To start you should type:</p>
+          <pre><code>bwa mem H37Rv.fa Mtb_L1_1.fastq Mtb_L1_2.fastq > ./Mapping_Mtb/Mtb_L1.sam</pre></code>
+          <p>The output will be located in the <i>Mapping_Mtb</i> folder, which is in the transcriptomics directory.</p>
+
+        <h4>Exercise 2: Converting BWA SAM output to BAM and indexing</h4>
+          <p><b>SAM to BAM using samtools</b></p>
+          <p>The details of where each <i>M. tuberculosis</i> read has been mapped are now stored in a file in the
+          directory <i>Mapping_Mtb</i>. We are going to view the mapped reads in Artemis using the Artemis BAM view. However,
+          the mapping result is not currently in BAM format. To make a BAM file from the BWA output we need to run
+          a short series of programs.</p>
+          <p>To convert the BWA output SAM file to BAM format we are going to use samtools. First, we go to the directory
+          where the output file from the BWA is and we will transform the sam file to bam (as we are already in the Transcriptomics
+          directory we just need to type):</p>
+          <pre><code>cd ~/data/transcriptomics/Mapping_Mtb
+samtools view -b Mtb_L1.sam > Mtb_L1.bam</pre></code>
+          <p>Once we have the BAM file, we need to sort it and index it. To do it, we will use samtools sort and
+          samtools index commands:</p>
+          <pre><code>samtools sort -o Mtb_L1.sorted.bam Mtb_L1.bam
+samtools index Mtb_L1.sorted.bam</pre></code>
+          <div class="alert alert-warning">What does the parameters -b in samtools view and -o in samtools sort mean?
+          </div>
+          <p>To see the list of options and parameters for the commands, type:</p>
+          <pre><code>samtools view
+samtools sort</pre></code>
+          <p>Now we are going to save our sorted file as <i>Mtb_L1.bam</i> and <i>Mtb_L1.bam.bai</i> for the index one.</p>
+          <pre><code>mv Mtb_L1.sorted.bam Mtb_L1.bam
+mv Mtb_L1.sorted.bam.bai Mtb_L1.bam.bai</pre></code>
+          <p>The resulting bam and index files will then be in the folder <i>Mapping_Mtb</i>. The alignment output could
+          now be visualised in Artemis, Tablet or a visualisation tool of your choice.</p>
+
+        <h4>Exercise 3: Visualisation of the BAM files</h4>
+          <p>Now we will examine the reads mapping in Artemis using the BAM view feature.</p>
+          <p><b>Viewing the mapped reads in Artemis</b></p>
+          <p>Open Artemis (type <i>art</i> in the terminal) and select: 'File', 'Open Project Manager', select '+' to add a new project you can call "Mtb"
+            and load <i>H37Rv.fa</i>, which contains the reference genome. We need also to add the genome features, so we can see the gene models. For
+            doing so, we will load the <i>Mtb.gtf</i> file (is in the <i>transcriptomics</i> directory) as the annotation track. Select 'annotation'
+            and then press 'new property'.</p>
+          <div class="text-center"><img src="img/rnaseq_3.png" class="img-fluid"></div>
+          <p>Now select 'open' and the artemis window should appear. From the Artemis 'File' menu, select 'Read BAM/VCF', and then select the
+            bam file you just generated from the L1 <i>Mtb</i> sample (i.e. <i>Mtb_L1.bam</i>).</p>
+          <p>You should see the BAM window appear (shown in the screen shot below). We want to change the view in order
+          to better see how the reads map to the genome.</p>
+          <div class="text-center"><img src="img/rnaseq_4.png" class="img-fluid"></div>
+          <p><b>Interpreting the mapping</b></p>
+          <p>This exercise is similar to the one performed before in the Visualisation module. Scroll along the genome
+            and examine the read coverage (the part of the genome mapped goes from position 2420631 to 2920631. To view
+            that part select 'Goto', 'Navigator' and write in 'Goto Base' 2420631). Notice how different genes have
+            different depths of coverage.</p>
+          <div class="alert alert-warning">Why do some genes have little or no coverage?</div>
+          <div class="alert alert-warning">Why do some reads map where there are no genes?</div>
+          <div class="text-center"><img src="img/rnaseq_5.png" class="img-fluid"></div>
+          <p><b>Including more lineages</b></p>
+          <p>One interesting feature of the Artemis viewer is the possibility to see more than one BAM file at the same
+            time, which enables to comapre coverage from different samples. Hence, next we want to include more lineages,
+            in this case we will add another sample belonging to the lineage 4 of <i>Mtb</i>.</p>
+          <p>To do it, we will need first to follow the previous steps in order to get the sorted and index bam
+            files. Therefore, map it with BWA as before, the fastq files are in the directory <i>transcriptomics</i>
+            and are called <i>Mtb_L4_1.fastq</i> and <i>Mtb_L4_2.fastq</i>.</p>
+          <p>Once we have the bam files, we can add it to the viewer.</p>
+          <div class="text-center"><img src="img/rnaseq_6.png" class="img-fluid"></div>
+          <p>In the BAM view of the reads, it might be difficult to distinguish the differences between the BAM files.
+            However, in the coverage plot, one can see the differences in coverage.</p>
+          <p>One reason to perform RNA-seq under different conditions or in different samples (in this case different
+            lineages of <i>Mtb</i>), is to see genes that are differentially expressed. For example, one gene may be more highly
+            expressed in one lineage that in the other.</p>
+          <div class="alert alert-warning">Can you find any genes that have differential expression?</div>
+          <div class="text-center"><img src="img/rnaseq_7.png" class="img-fluid"></div>
+          <p>Now go to gene Rv2161c (position 2422271).</p>
+          <div class="text-center"><img src="img/rnaseq_8.png" class="img-fluid"></div>
+          <div class="alert alert-warning">Would you think that this gene is differentially expressed?</div>
+
+          <h4>Exercse 4: Differential expression</h4>
+          <p>There are tools that calculate the differential expression, like the R packages DESeq or EdgeR. They take the reads mapped
+            to each gene, normalize the resulting quantities of mapped reads (coverage), and then estimate if any genes
+            are differentially expressed. In general, the results are more credible and significant if biological
+            replicates are included.</p>
+          <b>Counting reads with HTSeq-count</b>
+          <p>In order to perform a differential expression analysis, the first step is to count the reads mapped to each
+            of the genes so that we can make comparisons between the different samples.</p>
+          <p><b>HTSeq-count</b> is part of the HTSeq package which will quantify the number of reads mapping to gene
+            models in different RNA-seq experiments given a file with aligned sequencing reads (the bam file obtained
+            through BWA) and a list of genomic features (the <i>Mtb.gtf</i> file with the gene annotation).</p>
+          <p>We will run HTSeq-count with the RNA-seq data from the L1 and L4 strains we were using in the previous
+            exercises. To do it, we will go to the directory where we have the data and use the following command:</p>
+          <pre><code>cd ~/data/transcriptomics
+python -m HTSeq.scripts.count -f bam -r pos -s reverse -t gene ./Mapping_Mtb/Mtb_L1.bam Mtb.gtf > ./Mapping_Mtb/Mtb_L1_htseq_count.txt
+python -m HTSeq.scripts.count -f bam -r pos -s reverse -t gene ./Mapping_Mtb/Mtb_L4.bam Mtb.gtf > ./Mapping_Mtb/Mtb_L4_htseq_count.txt
+</pre></code>
+          <p>The parameters we have used in the HTSeq-count command are:</p>
+          <ul class="list-group">
+            <li class="list-group-item">-f: format of the input data</li>
+            <li class="list-group-item">-r: how is sorted the data</li>
+            <li class="list-group-item">-s: whether the data is from a strand-specific assay. The reverse option is
+              used for pair-end reads from HiSeq in order to mantain the strain-specificity (the reads have to map
+              to the gene in the corresponding strand to be counted)</li>
+            <li class="list-group-item">-t: feature type, in this case exon</li>
+          </ul>
+          <p>If you have any doubt about the parameters of the program, type:</p>
+          <pre><code>python -m HTSeq.scripts.count</pre></code>
+          <div class="alert alert-warning">What would -a parameter do?</div>
+          <p>We can now take a look at the results from the HTSeq-count typing the following in the command line:</p>
+          <pre><code>cd ~/data/transcriptomics/Mapping_Mtb
+less Mtb_L1_htseq_count.txt</pre></code>
+          <p>You should see two columns with the list of genes and the counts for each gene.</p>
+          <div class="alert alert-info" style="white-space:pre-wrap;"><samp>Rv2158c 0
+Rv2159c 22
+Rv2160A 11
+Rv2160c 0
+Rv2161c 193
+Rv2162c 753
+Rv2163c 6181
+Rv2164c 2169
+Rv2165c 6878
+Rv2166c 11357
+Rv2167c 0
+Rv2168c 0
+Rv2169c 3017
+Rv2170  235
+Rv2171  1779
+Rv2172c 9812
+Rv2173  1525
+Rv2174  1828
+Rv2175c 767
+Rv2176  1440
+Rv2177c 169
+Rv2178c 6200
+Rv2179c 205
+Rv2180c 319
+Rv2181  4288
+Rv2182c 10635
+Rv2183c 1197
+:
+</samp></div>
+          <p>To exit this view you just need to type 'q'.</p>
+          <p><b>Finding differentially expressed genes with DESeq2</b></p>
+          <p>Now we are going to perform a differential expression analysis in order to look for genes with variable
+            expression between lineages. To do it we will use 6 sequenced samples, 3 from lineage 1 and 3 from lineage 4.
+            Two of them will be the two analysed in the previous steps. We are going to use an R package for the anaylsis
+            of the differential gene expression called <b>DESeq2</b>.</p>
+          <p>A differential expression analysis is used to compare gene expression levels, given by the number
+            of reads per gene (obtained by HTSeq-count) between samples (for example, between 2 lineages of <i>Mtb</i>). In order
+            to accurately ascertain which genes are differentially expressed, and the amount of expression, it is necessary
+            to use replicated data. As with all biological experiments doing it once may simply not be enough. There is no
+            simple way to decide how many replicates to do, it is usually a compromise of statistical power and cost.
+            By determining how much variability there is in the sample preparation and sequencing reactions we can better
+            assess whether genes are really expressed and more accurately determine any differences. The key to this is performing
+            biological rather than technical replicates. This means, for instance in tuberculosis, growing up three
+            cultures of bacteria, treating them all identically, extracting RNA from each and sequencing the three samples
+            separately. Technical replicates, whereby the same sample is sequenced three times do not account for the
+            variability that really exists in biological systems or the experimental error between cultures of bacteria and
+            RNA extractions. More replicates will help to improve statistical power for genes that are already detected at high levels,
+            while deeper sequencing will improve power to detect differential expression for genes which are expressed at low
+            levels. In this exercise we will consider the 3 L1 and the 3 L4 samples as biological replicates.</p>
+          <p>To start, we firstly need a table with the counts. In the <i>Mapping_Mtb</i> directory (where we should be) we can
+            find a folder called <i>HTSeqCounts</i> with 6 files called:</p>
+          <pre><code>cd ~/data/transcriptomics/Mapping_Mtb/HTSeqCounts
+ls</pre></code>
+          <div class="alert alert-info" style="white-space:pre-wrap;"><samp>Mtb_1_L4_htseq_count.txt  Mtb_3_L1_htseq_count.txt  Mtb_5_L1_htseq_count.txt
+Mtb_2_L1_htseq_count.txt  Mtb_4_L4_htseq_count.txt  Mtb_6_L4_htseq_count.txt
+</samp></div>
+          <p>Now, to start, we need to open R in the terminal, just typing:</p>
+          <pre><code>R</pre></code>
+            <p>And then load the packages we are going to
+            need for the analysis:</p>
+          <pre><code>library(DESeq2)
+library(gplots)</pre></code>
+          <p>These 6 files are the results of the HTSeq-count of the two samples previously analysed plus 4 more <i>Mtb</i>
+            samples we will use to perform the analysis.</p>
+          <p>To prepare the data we are going to use the following scripts.</p>
+          <p>First we are going to set the directory where we have the files:</p>
+          <pre><code>directory <- "/home/user/data/transcriptomics/Mapping_Mtb/HTSeqCounts/" </pre></code>
+          <p>And now we can select the files and save them in the variable ‘sampleFiles’ by selecting all the files
+            that contain "Mtb" that are present in our directory:</p>
+          <pre><code>sampleFiles <- grep("Mtb", list.files(directory), value = TRUE)</pre></code>
+          <p>As we are comparing lineage 1 to lineage 4 samples, we are going to set up lineage as "condition".</p>
+          <pre><code>sampleCondition <- c("l4","l1","l1","l4","l1","l4")</pre></code>
+          <p>Now we construct the table with the sample information and convert it in a DESeq object:</p>
+          <pre><code>sampleTable <- data.frame(sampleName = sampleFiles,
+                          fileName = sampleFiles,
+                          condition = sampleCondition)
+dds <- DESeqDataSetFromHTSeqCount(sampleTable = sampleTable,
+                                      directory = directory,
+                                      design = ~ condition)</pre></code>
+          <p>Before doing the analysis, we are going to filter the dataset keeping only the genes with at least 10 counts,
+            so that we make sure that every gene considered for the analysis was transcribed.</p>
+          <p>To do it, type the following:</p>
+          <pre><code>keep <- rowSums(counts(dds)) >= 10
+dds <- dds[keep,]</pre></code>
+          <p>And we are going to set up the condition for the analysis in two levels which are 'lineage 1'
+            and 'lineage 4':</p>
+          <pre><code>dds$condition <- factor(dds$condition, levels = c("l1","l4"))</pre></code>
+          <p>We can then run the differential expression anaylisis by calling the function <i>DESeq()</i>,
+            which will normalise the data and compare between the two groups established (l1 and l4). We can store the
+            results in a variable called 'res':</p>
+          <pre><code>dds <- DESeq(dds)
+res <- results(dds)</pre></code>
+          <p>Let's take a look at the results. Type:</p>
+          <pre><code>res</pre></code>
+          <p>And you should get a table like this:</p>
+          <div class="alert alert-info" style="white-space:pre-wrap;"><samp>log2 fold change (MLE): condition l4 vs l1
+Wald test p-value: condition l4 vs l1
+DataFrame with 441 rows and 6 columns
+         baseMean log2FoldChange     lfcSE       stat       pvalue         padj
+        <numeric>      <numeric> <numeric>  <numeric>    <numeric>    <numeric>
+Rv2159c 1251.0885      6.5961892 0.5609037  11.759933 6.278432e-32 9.208368e-30
+Rv2160A  766.1015      6.6738839 0.5544491  12.036965 2.271613e-33 4.997548e-31
+Rv2161c 5336.3523      5.8122020 0.4210642  13.803600 2.424369e-43 1.066722e-40
+Rv2162c 4784.6386      3.8915692 0.3784335  10.283364 8.375204e-25 9.212724e-23
+Rv2163c 3616.8513     -0.5480522 0.3940154  -1.390941 1.642434e-01 9.243213e-01
+...           ...            ...       ...        ...          ...          ...
+Rv2586c  3828.546     0.16674016 0.3612166  0.4616071    0.6443631    0.9964280
+Rv2587c  5655.191     0.21607557 0.3636699  0.5941530    0.5524098    0.9964280
+Rv2588c  1305.013    -0.02030647 0.4871420 -0.0416849    0.9667499    0.9983353
+Rv2589   1665.930     0.25845265 0.3629410  0.7121064    0.4763989    0.9964280
+Rv2590   5873.482     0.42707857 0.6169747  0.6922141    0.4888029    0.9964280
+</samp></div>
+          <p>The first column represents the name of each gene analysed, which are represented in rows.</p>
+          <div class="alert alert-warning">How many genes did we analysed?</div>
+          <p>Let's take a look at the summary of the results we just obtained:</p>
+          <pre><code>summary(res)</pre></code>
+          <div class="alert alert-info" style="white-space:pre-wrap;"><samp>out of 441 with nonzero total read count
+adjusted p-value < 0.1
+LFC > 0 (up)     : 10, 2.3%
+LFC < 0 (down)   : 7, 1.6%
+outliers [1]     : 1, 0.23%
+low counts [2]   : 0, 0%
+(mean count < 2)
+[1] see 'cooksCutoff' argument of ?results
+[2] see 'independentFiltering' argument of ?results
+</samp></div>
+          <p>When asking whether a gene is differentially expressed we use statistical tests to assign a p-value. If
+            a gene has a p-value of 0.05 we know that there is only a 5% chance that it is not really differentially
+            expressed. However, if we are asking this question for every gene in the genome, then we would expect to
+            see due to multiple comparison, p-values less than 0.05 for many genes even though they are not really
+            differentially expressed. Due to this statistical problem we must correct the p-values so that we are not
+            tricked into accepting a large number of erroneous results. Adjusted p-values are p-values which have been
+            corrected for what is known as <b>multiple hypothesis testing</b>.
+            <p>The summary shows us the number of genes with an adjusted p-value < 0.1 that are under or over expressed in
+            one of the groups (log2FoldChange above or below 0, here represented as LFC). The adjusted p-value in the
+            DESeq analysis is equivalent to the FDR or 'False Discovery Rate'. This value represents the proportion of
+            discoveries that we can expect to be false.</p>
+          <div class="alert alert-warning">Which is the maximum percentage of "false discoveries" that we can expect given
+            a cut off adjusted p-value of 0.1?</div>
+          <div class="alert alert-warning">How many genes are up and down-regulated with an adjusted p-value < 0.1?</div>
+          <p>Some of the p-values in our results might be NA values, which can be due to extreme outliers. To continue with the
+            analysis we are going to remove these missing values.</p>
+          <pre><code>res <- res[!is.na(res$padj),]</pre></code>
+          <p>Let's now order the results by p value, so we see the top genes with the highest statistial significance. Take a
+            look at the results again.</p>
+          <pre><code>resOrdered <- res[order(res$pvalue),]
+resOrdered</pre></code>
+          <p>To visualise the diffences in expression we are going to plot a heatmap using the 17 genes that are above the
+            cut off. To do it, we will first get the normalised counts in a variable called "counts_heatmap". We will copy
+            the names of the first 17 genes from our "resOrdered" table in a vector, and then extract the normalised
+            counts from "counts_heatmap" for the 17 genes we want to plot.</p>
+          <pre><code>counts_heatmap <- counts(dds, normalized = TRUE)
+idx <- rownames(resOrdered)[1:17]
+counts_heatmap <- counts_heatmap[rownames(counts_heatmap)%in%idx,]</pre></code>
+          <p>If we type:</p>
+          <pre><code>counts_heatmap</pre></code>
+          <p>We can see the table with the normalised counts for each sample and each of
+            the genes of our interest.</p>
+          <div class="alert alert-info" style="white-space:pre-wrap;"><samp>        Mtb_1_L4_htseq_count.txt Mtb_2_L1_htseq_count.txt
+Rv2159c               1061.02472                16.090459
+Rv2160A                933.18297                 8.045229
+Rv2161c              10927.68994               141.157208
+Rv2162c               8503.01996               550.732527
+Rv2188c               1643.41488               495.147306
+Rv2271                 804.10604              1115.361360
+Rv2274A                 57.43615                68.018758
+Rv2275                2069.55403              1757.516950
+Rv2292c                 54.96577               263.298419
+Rv2338c               1439.60920              3638.637880
+Rv2346c               1742.22976              1260.175491
+Rv2381c               5656.53398              1778.727101
+Rv2382c               2140.57722               623.139593
+Rv2493                2611.18306               308.644258
+Rv2494                1635.38617               244.282423
+Rv2506                 345.23447               993.220149
+Rv2573                  31.49724                71.675681
+        Mtb_3_L1_htseq_count.txt Mtb_4_L4_htseq_count.txt
+Rv2159c                 34.44955               3070.71886
+Rv2160A                 25.05422               1716.06570
+Rv2161c                122.13932              10217.41567
+Rv2162c                685.85926              12248.53695
+Rv2188c                595.03771               3311.94670
+Rv2271                3936.64424                797.08204
+Rv2274A                147.19354                 55.37080
+Rv2275                3592.14872               1232.32231
+Rv2292c                140.92998                 62.66773
+Rv2338c               3335.34297               1310.44236
+Rv2346c                908.21546               2235.00602
+Rv2381c                466.63484               3045.82346
+Rv2382c                654.54148               1449.94245
+Rv2493                 184.77487               2647.49705
+Rv2494                 266.20108               1598.45639
+Rv2506                 494.82084                499.19570
+Rv2573                 112.74399                 57.08773
+        Mtb_5_L1_htseq_count.txt Mtb_6_L4_htseq_count.txt
+Rv2159c                 30.57068               3293.67692
+Rv2160A                 16.98371               1897.27712
+Rv2161c                302.31010              10307.40137
+Rv2162c                577.44627               6142.23638
+Rv2188c                343.07102               4986.18078
+Rv2271                1837.63783                871.00738
+Rv2274A                220.78828                 26.91855
+Rv2275                9847.15722               1075.78064
+Rv2292c                125.67948                 71.62257
+Rv2338c               5896.74541               1217.10303
+Rv2346c                886.54986               8732.18549
+Rv2381c               1895.38245               3401.35112
+Rv2382c                740.48992               1372.36538
+Rv2493                 377.03844               1754.03197
+Rv2494                 261.54919               1206.52789
+Rv2506                1864.81177                392.72242
+Rv2573                 220.78828                 49.03022
+</samp></div>
+          <p>To plot the heatmap copy the following script:</p>
+          <pre><code>colnames(counts_heatmap) <- c("L4_1","L1_2","L1_3","L4_4","L1_5","L4_6")
+heatmap.2(as.matrix(counts_heatmap), scale="row", col=greenred(75), Rowv=NA,
+dendrogram = "col", trace="none", density.info = "none")</pre></code>
+          <p>You should get a plot like this:</p>
+          <div class="text-center"><img src="img/rnaseq_9.png" class="img-fluid"></div>
+          <div class="alert alert-warning">Do the samples cluster by lineage in the dendrogram?</div>
+          <p>As you can see in the color key, red cells in the plot represent overexpressed genes
+            whilst green ones the underexpressed genes. Rows represent the 17 genes of interest and
+            columns the 6 samples we are analysing.</p>
+          <div class="alert alert-warning">How is Rv2493 in lineage 4 samples? And Rv2159c in lineage 1?</div>
+          <div class="alert alert-warning">Take a look at the first 5 genes in the plot. As you might
+            assume by the numbers they are located in the genome one after the other. Which potential
+            explanations would you give to their down-regulation in one of the lineages?</div>
+
+          <h4>Further exploration</h4>
+          <p><b>What do I do with a gene list?</b></p>
+          <p>As we have just seen, differential expression analysis results is a list of genes which show
+            differences between two conditions. It can be daunting trying to determine what the results mean.
+            On one hand you may find that due to there being no real differences or there being too
+            much noise in your experiment, you have no significant differences. On the other hand, you may
+            find thousands of genes are differentially expressed. What can you say about that?</p>
+          <p>Other than looking for genes you expect to be different or unchanged, one of the first things
+            to do is look at Gene Ontology (GO) term enrichment. There are many different algorithms for this,
+            but you should annotate your genes with functional terms from GO using for instance Bast2GO
+            (Conesa et al., 2005) and then use perhaps TopGO (Alexa et al., 2006) to determine whehter any
+            particular sorts of genes occur more than expected in your differentially expressed genes.</p>
+
+          <h4>References</h4>
+          <p>Mortazavi A, Williams BA, McCue K, Schaeffer L, Wold B. (2008). Mapping and quantifying mammalian
+            transcriptomes by RNA-Seq. Nat Methods 5(7):621-8. doi: 10.1038/nmeth.1226</p>
+          <p>Wang Z, Gerstein M, Snyder M. (2009). RNA-Seq: a revolutionary tool for transcriptomics. Nat Rev Genet
+            10(1):57-63. doi: 10.1038/nrg2484</p>
+          <p>Cole ST, Brosch R, Parkhill J, Garnier T, Churcher C, Harris D et al. (1998). Deciphering the biology
+            of Mycobacterium tuberculosis from the complete genome sequence. Nature 393(6685):537-44.</p>
+          <p>Parwati I, van Crevel R, van Soolingen D. (2010) Possible underlying mechanisms for successful
+            emergence of the Mycobacterium tuberculosis Beijing genotype strains. Lancet Infect Dis 10(2):103-111.
+            doi: 10.1016/S1473-3099(09)70330-5</p>
+          <p>Conesa A, Gotz S, Garcia-Gomez JM, Terol J, Talon M, Robles M. (2005) Blast2GO: a universal tool for
+            annotation, visualization and analysis in functional genomics research. Bioinformatics 21(18):3674-6.</p>
+          <p>Alexa A, Rahnenfuhrer J, Lengauer T. (2006). Improved scoring of functional groups from gene expression
+            data by decorrelating GO graph structure. Bioinformatics 22(13):1600-7.</p>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="jquery-3.3.1.slim.min.js" crossorigin="anonymous"></script>
+    <script src="popper.min.js"  crossorigin="anonymous"></script>
+    <script src="bootstrap.min.js"  crossorigin="anonymous"></script>
+    <script src="d3.v3.min.js"></script>
+    <script src="stack.v1.min.js"></script>
+  </body>
+</html>

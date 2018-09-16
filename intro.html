@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="bootstrap.min.css" type="text/css">
+
+    <style>
+
+    @import url(http://fonts.googleapis.com/css?family=PT+Serif|PT+Serif:b|PT+Serif:i);
+
+
+    #follow {
+      background: none;
+    }
+
+    .grey {
+      color: #777;
+    }
+
+    a:link,
+    a:visited {
+      color: black;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    </style>
+
+	<style>
+	pre {
+		display: block;
+		padding: 9.5px;
+		margin: 0 0 10px;
+		font-size: 13px;
+		line-height: 1.42857143;
+		color: white;
+		word-break: break-all;
+		word-wrap: break-word;
+		background-color: black;
+		border: 1px solid black;
+		border-radius: 4px;
+	}
+
+    .jumbotron-head{
+        background:linear-gradient(rgba(0, 0, 250, 0.15), rgba(125, 250, 250, 0.55)),url(img/Head_assembly.jpg);
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-position: top right;
+        color:black !important;
+    }
+	</style>
+
+
+    <title>Introduction - Pathogen 'Omics</title>
+  </head>
+  <body>
+      <div class="jumbotron vertical-center jumbotron-fluid jumbotron-head">
+        <div class="container">
+          <h1 class="display-4">Introduction</h1>
+          <p class="lead">A quick tutorial to familliarise yourself with the practicals</p>
+        </div> <!-- Container -->
+      </div>
+
+      <div class="container">
+        <p>During the course you will be following the practical sessions on this website.
+          To enable you to make full use of these sessions we will give you a quick introduction on how these session
+          will be structured. The practicals will be a combination of reading the theory and performing
+          bioinformatic analysis on real data.</p>
+        <p>Sections will be labelled according to its intended purpose and are described below:</p>
+        <h4>General text</h4>
+        <p>Text which does not have any special formatting and looks (plain) like this will guide you through the practicals,
+           providing background and explaining what anlyses we are performing, and why.</p>
+        <h4>Checkpoints</h4>
+        <div class="alert alert-primary">
+          Text which appears in boxes of this colour aims to inform you of a significant checkpoint in your analysis.
+          When you see this, it is good to take a moment to think about what you have acomplished so far and what you
+          have yet to do.
+        </div>
+        <h4>Code</h4>
+        <pre><code>Text which appears in boxes of this colour will tell that you are looking at a terminal command.
+You can copy and paste from here straight to the terminal but before you do take a moment to understand what the command is actually doing.
+Several command lines may be present, with each new line representing a single command. </pre></code>
+<h4>Screen output</h4>
+        <div class="alert alert-info">
+          <samp>Text appearing in these boxes represents output you might expect to see in the terminal in response to a command.
+          Check to see if you get a similar output!</samp>
+        </div>
+        <h4>Questions</h4>
+        <div class="alert alert-warning">
+          Text in these boxes will usually ask an open ended question. If you cannot think of an answer or you want to check you have the right one, do not hesitate to ask one of the demonstrators for help!
+        </div>
+        <br>
+        <h4>More questions</h4>
+        <div class="accordion" id="accordionExample">
+            <div class="card">
+              <div class = "card-header alert-warning"><strong>This section presents a quick question. Which answer do you think is the right one?</strong></div>
+          <div class="card-header" id="headingOne" data-toggle="collapse" data-target="#collapseOne">
+                  Asnwer 1
+            </div>
+            <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+              <div class="card-body alert-danger">
+                <strong>False</strong>: Wrong choice!
+              </div>
+            </div>
+                <div class="card-header" id="headingTwo" data-toggle="collapse" data-target="#collapseTwo">
+                  Answer 2
+            </div>
+            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+              <div class="card-body alert-success">
+                <strong>True</strong>: Right answer, well done!
+              </div>
+            </div>
+          </div>
+        </div>
+        <br>
+        <h4>Tooltips</h4>
+        <div>
+          Sometimes, especially in the first lessons there might be tooltips with definitions and useful information.
+          Hover over the word <a href="#" data-toggle="tooltip" data-placement="top" title="genome: the haploid set of chromosome/s in a gamete or microorganism, or in each cell of a multicellular organism.">genome</a> to see a definition.
+        </div>
+<h4>Lecture Presentations</h4>
+    <p>At the beginning of each lecture, you will have a window like the one below where you will be able to follow the
+      lectures which are being presented by your demonstrator. This has been set up so that you do not have to leave the
+      materials to follow the presentations. You can use the buttons in the PDF viewer to navigate through the
+      presentation pages, or if you click inside the viewer, you can use the arrow keys on your keyboard. Also, you can use the
+      drop-down list next to the zoom buttons to adjust the pages to the screen using the <b>"Page Fit"</b> option.</p>
+    <object data="presentations/Hello_I_am_page_1.pdf#page=1" type="application/pdf" width="100%" height="700px">
+        <p><b>Example fallback content</b>: This browser does not support PDFs. Please download the PDF to view it:
+        <a href="presentations/Hello_I_am_page_1.pdf">Download PDF</a>.</p>
+    </object>
+    <h4>Thats it!</h4>
+    <p>You are now ready to progress to the tutorials. If you have any questions don't hesitate to ask one of the demonstrators for help. Good luck!
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="jquery-3.3.1.slim.min.js" crossorigin="anonymous"></script>
+    <script src="popper.min.js"  crossorigin="anonymous"></script>
+    <script src="bootstrap.min.js"  crossorigin="anonymous"></script>
+    <script src="d3.v3.min.js"></script>
+    <script>
+        	$(function () {
+          $('[data-toggle="tooltip"]').tooltip()
+        })
+	</script>
+  </body>
+</html>

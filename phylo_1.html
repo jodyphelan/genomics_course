@@ -1,0 +1,649 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="bootstrap.min.css" type="text/css">
+	<link rel="stylesheet" href="course.css" type="text/css">
+
+    <style>
+
+
+
+    #follow {
+      background: none;
+    }
+
+    .grey {
+      color: #777;
+    }
+
+    a:link,
+    a:visited {
+      color: black;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    </style>
+
+	<style>
+	pre {
+		display: block;
+		padding: 9.5px;
+		margin: 0 0 10px;
+		font-size: 13px;
+		line-height: 1.42857143;
+		color: white;
+		word-break: break-all;
+		word-wrap: break-word;
+		background-color: black;
+		border: 1px solid black;
+		border-radius: 4px;
+	}
+
+    .jumbotron-head{
+        background:linear-gradient(rgba(0, 0, 250, 0.35), rgba(125, 250, 250, 0.55)),
+        url(img/Head_phylo_1.jpg);
+        background-size: 100%;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        color:white !important;
+    }
+	</style>
+
+
+    <title>Phylogenetics - Pathogen 'Omics</title>
+  </head>
+  <body>
+      <div class="jumbotron vertical-center jumbotron-fluid jumbotron-head">
+        <div class="container">
+          <h1 class="display-4">Phylogenetics</h1>
+          <p class="lead">The study of evolutionary relationships among biological entities</p>
+        </div> <!-- Container -->
+      </div>
+      <div class="container">
+      <h4>GWAS lecture</h4>
+      <object data="presentations/phylodynamics_lecture_2018.pdf#page=1" type="application/pdf" width="100%" height=700px>
+        <p><b>Example fallback content</b>: This browser does not support PDFs. Please download the PDF to view it:
+        <a href="presentations/phylodynamics_lecture_2018.pdf">Download PDF</a>.</p>
+      </object>
+      <hr>
+      <h4>Objectives</h4>
+	  <p>
+		  By the end of this practical you should:
+		  <ul>
+		  	<li>Understand the relationship between genetic relatedness and transmission events.</li>
+			<li>Know how to reconstruct and interpret a phylogenetic tree</li>
+			<li>Understand how time and spatial diffusion of an epidemic is inferred from a phylogeny</li>
+		  </ul>
+	  </p>
+	  <h4>Introduction</h4>
+	  <p>
+	  	In the lecture, we saw how epidemiological processes leave a measurable imprint on pathogen genomes sampled
+		from infected individuals. These processes can be recovered from genetic data sampled at different times and
+		places, using statistical inference methods that take into account the sequences’ shared ancestry.
+	  </p>
+	  <p>
+	  	In this practical session, we will reconstruct and interpret the Influenza A H1N1 2009 (H1N1/09) epidemic in
+		England, based on a set of viral sequences isolated during the outbreak.
+	  </p>
+	  <p>
+	  	We will identify transmission chains of H1N1/09, reconstruct their migration patterns, estimate the number of
+		independent introductions in England, and infer the time and geographical location of these introduction
+		events. In order to do so, we will apply the following procedure:
+		<ol>
+			<li>We will reconstruct the phylogeny of influenza genomes sampled in England and other countries where
+				H1N1 infections were diagnosed.</li>
+			<li>We will apply a molecular clock model to the data in order to fit the phylogeny to real time
+				scales.</li>
+			<li>We will infer the migration patterns of H1N1 into and within England using Bayesian Markov chain
+				Monte Carlo (MCMC) phylogeographic inference.</li>
+		</ol>
+	  </p>
+	  <hr>
+	  <h4>Section 1 - Phylogenetic reconstruction</h4>
+	  <p>
+	  	We will use the packages <b>AliView</b> and <b>RAxML</b> to view genetic sequence files and build a
+		maximum-likelihood (ML) phylogenetic tree.
+	  </p>
+	  <p>
+	  	The file ‘<b>H1N1.flu.2009.fas</b>’ is a multi-FASTA file containing 50 full-length influenza A H1N1/09 genomes.
+		These nucleotide sequences correspond to influenza viruses sampled in Canada (n = 5), China (n = 3),
+		England (n = 23), Mexico (n = 4), Peru (n = 1), and the United States of America (USA; n = 14) between
+		April and June 2009. The sequences are 12,735 nucleotides long.
+	  </p>
+	  <p>
+	  	We will use <b>AliView</b> to manually inspect the FASTA file:
+	  </p>
+	  <ol>
+
+	  	<li>Open <b>AliView</b> by running the commmand <kbd>aliview</kbd>.</li>
+      <li>Import the sequence file: <kbd>File</kbd> > <kbd>Open File</kbd>, navigate to <b><i>~/data/phylogenetics</i></b> and select the file <b>H1N1.flu.2009.fas</b>. </li>
+	  </ol>
+	  <div class="alert alert-primary" role="alert">
+	  	<u>Important</u>. To infer the phylogenetic relationship of a set of sequences, these need to be ‘aligned’.
+		That is, nucleotide positions need to be arranged in columns to ensure that we compare homologous
+		positions one to another. In evolutionary biology, homology means similarity due to descent from a
+		common ancestor. Two genes are homologous if they descend from an ancestral gene. Likewise, two
+		nucleotides in different sequences are homologous if they correspond to the same nucleotide position
+		in the ancestral gene. Note that two objects can be ‘similar’ without being ‘identical’. The sequences
+		shown here have been aligned but if your data are not, it will need to be aligned. This can be done
+		in AliView, as well as in other programs including MUSCLE, ClustalW and MAFFT.
+	  </div>
+	  <p>
+	  	The sequence alignment is displayed as a matrix, where lines correspond to viral samples and columns
+		to nucleotide positions (see <b>Figure 1</b>). Cells are coloured by type of nucleotides (A, C, G or T) and
+		missing information, or gaps, are indicated by a dash (“-“).
+	  </p>
+	  <figure>
+	  		<img src="img/phylo_1_1.jpg" class="img-fluid" alt="Responsive image">
+			<figcaption class="figure-caption"><b>Figure 1.</b> Nucleotide sequence alignment of influenza A H1N1 genomes (detail)</figcaption>
+	  </figure>
+
+	  <p>
+	  	The unique identifier of the sequences is shown at the left hand side of the nucleotide matrix and
+		contains the strain name (e.g. A/England/247/2009) followed by the date of sampling (e.g. d2009-05-31)
+		in the format dYYYY-MM-DD.
+	  </p>
+	  <p>
+	  	In the matrix, we can spot ‘rare’ nucleotide substitutions present in one or more sequence (scroll
+		along the sequence alignment to spot some). These single nucleotide polymorphisms (SNPs) allow us to
+		identify viruses that are genetically related (they share a common SNP) and infer epidemiological linkage
+		between them. If viruses sampled from different individuals have the same SNPs, we can assume that they
+		form a specific strain infecting these individuals. This is the property we use to reconstruct transmission
+		chains from a phylogenetic tree.
+	  </p>
+	  <hr>
+	  <h4>Tree reconstruction</h4>
+	  <p>
+	  	<b>RAxML</b> [1] is a freely available software used to reconstruct phylogenetic relationships between
+		individuals using a maximum-likelihood (ML) approach. This approach takes into account a substitution
+		model to assess the probability of particular mutations. You can also perform bootstrapping, a method for
+		validating the tree by repeating the analysis a specified number of times to produce pseudoreplicates.
+		This acts as a support for the tree topology of the final tree that is produced by calculating the number of
+		pseudoreplicates in which a given node of a tree is found.
+	  </p>
+	  <ol>
+	  	<li>Open your command-line terminal and navigate to the folder containing the <b>H1N1.flu.2009.fas</b>
+			sequence file.</li>
+      <pre><code>cd ~/data/phylogenetics/</code></pre>
+		<li>Run the following command (This may take a few minutes to complete):</li>
+    <pre><code>raxmlHPC -m GTRGAMMA -s H1N1.flu.2009.fas -n H1N1.flu.2009.ML -p 11334 -k -f a -x 13243 -N 100</code></pre>
+    </ol>
+	  <p>
+          <b>raxmlHPC</b>: This will run RAxML on the command-line and uses the following parameters:
+		  <ul>
+
+		  	<li><b>-m GTRGAMMA</b>: This sets the substitution model to be used. We are using GTR (generalised time reversible)
+				with a gamma distribution.</li>
+			<li><b>-s H1N1.flu.2009.fas</b>: This is your input file.</li>
+			<li><b>-n H1N1.flu.2009.ML</b>: This is the name that will appended to output files.</li>
+			<li><b>-p 11334</b>: This is a random seed number.</li>
+			<li><b>-k</b>: Trees are printed with branch lengths.</li>
+			<li><b>-f a</b>: This tells RAxML to conduct a rapid Bootstrap analysis and search for the best-scoring ML tree
+				in a single run.</li>
+			<li><b>-x 13243</b>: This is a random seed number for bootstrapping.</li>
+			<li><b>-N 100</b>: This specifies the number of bootstrap runs.</li>
+
+		  </ul>
+	  </p>
+	  <p>
+	  	Once the software has finished running, the file <b>RAxML_bipartitions.H1N1.flu.2009.ML</b> will contain
+		the ML tree with bootstrap supports. Add the extension .tre to the file:</p>
+    <pre><code>mv RAxML_bipartitions.H1N1.flu.2009.ML RAxML_bipartitions.H1N1.flu.2009.ML.tre</pre></code>
+    <p> And open the tree to view in the
+		program FigTree, for this run the command:</p>
+    <pre><code>figtree</pre></code>
+    <p>FigTree is a tree editor with a graphic interface and is freely available at
+		<a href="http://tree.bio.ed.ac.uk/software/figtree/" target="_blank">http://tree.bio.ed.ac.uk/software/figtree/</a>. It runs on all operating systems.
+	  </p>
+	  <p>
+	  	When prompted at opening, name the bootstrap values “bootstrap support”. You can now view the ML tree with
+		bootstrap support values. Click on the <kbd>node labels</kbd> section on the left of the viewer and select <kbd>bootstrap
+		support</kbd> from the <kbd>Display</kbd> drop down box. This will display the bootstrap support for each of the nodes of
+		the tree. Go to <kbd>Tree</kbd> > <kbd>Increasing Node Order</kbd> to display the tree by increasing node order.
+	  </p>
+	  <div class="alert alert-primary" role="alert">
+	  	<u>Note</u>. many of the values shown are low (the scale is 0 [no support] to 100 [full support]). Typically
+		values over 70% (in this case a bootstrap value of 70) are taken as showing strong support. Low values
+		here may suggest that you need to change the substitution model or run the analysis with more bootstrap
+		runs. For the purposes of time for this exercise, we will continue with the trees produced here.
+	  </div>
+	  <h4>Tree interpretation</h4>
+	  <p>
+	  	Take a few minutes to familiarise yourself with the tree.
+	  </p>
+	  <div class="alert alert-primary" role="alert">
+	  	<u>Reminder</u>. The components of a phylogenetic tree are shown in Figure 2. The sequences, or taxa (plural for
+		taxon), are positioned at the end of the external branches. Related sequences are linked by a node (their
+		most recent common ancestor). Two or more sequences descending from a node form a ‘clade’ (or cluster). The
+		length of a branch represents the genetic distance between two nodes or between a node and a taxon, i.e.
+		the number of mutations accumulated since divergence. The root corresponds to the common ancestor of all
+		the taxa.
+	  </div>
+	  <p>
+	  	Since the sequences represent viruses sampled from different individuals, a clade in the tree corresponds
+		to a transmission chain. The number of sequences in a clade reflects the number of infections sampled
+		from that transmission chain. The root of the tree corresponds to the origin of the epidemic.
+	  </p>
+	  <div class="alert alert-warning" role="alert">
+	  	<p>Q1. How many times was H1N1/2009 introduced in England during the outbreak?</p>
+
+	  	Q2. What is/are the most likely geographical origin of the English strain(s)?
+		(Take the sampling dates into account in your reasoning)
+	  </div>
+	  <figure>
+	  	<img src="img/phylo_1_2.jpg" class="img-fluid" alt="Responsive image">
+		<figcaption class="figure-caption"><b>Figure 2.</b> Components of a phylogenetic tree</figcaption>
+	  </figure>
+	  <h4>Dating the introduction(s) of H1N1/09 in England</h4>
+	  <p>
+	  	We will now estimate the time frame of these migration events. This time frame can be inferred from
+		the rate at which mutations are accumulated in gene sequences. If, for instance, two sequences differ
+		by 4 mutations and their rate of evolution is known to be around one substitution per nucleotide position
+		per year, then 2 years have elapsed since they diverged from their common ancestor (i.e. 1 substitution
+		x 2 year x 2 sequences = 4 mutations).
+	  </p>
+	  <p>
+	  	The first step of this procedure involves testing whether the genomes in the tree have evolved at a
+		constant rate over time or not. This is called testing the <b>molecular clock hypothesis</b>.
+	  </p>
+	  <p>
+	  	If the molecular clock is constant, or <b>strict</b>, the genetic distance between two sequences will be
+		proportional to the time since these sequences last shared a common ancestor (as in the example given
+		above). If the molecular clock is not constant, the correlation between genetic distance and time since
+		divergence is weaker. The molecular clock is then said to be <b>relaxed</b>. Assuming a strict or relaxed
+		molecular clock will have an impact on the dating of phylogenetic nodes. We will therefore test the
+		molecular clock hypothesis before dating the tree.
+	  </p>
+	  <h4>Molecular clock testing</h4>
+	  <p>
+	  	Open the software TempEst by running the following command:</p>
+	  <pre><code>tempest</pre></code>
+	  <p>
+	  	TempEst [2] is a tool for investigating the ‘temporal signal’ of molecular phylogenies, i.e. testing whether
+		there is sufficient genetic change between sampling times to reconstruct a statistical relationship between
+		genetic divergence and time (a molecular clock) in your data. The software is freely available from
+		<a href="http://tree.bio.ed.ac.uk/software/tempest" target="_blank">http://tree.bio.ed.ac.uk/software/tempest</a>.
+	  </p>
+	  <p>
+	  	<u>How does it work?</u> TempEst performs ‘root-to-tip’ linear regressions, which can be used as a simple
+		diagnostic tool for molecular clock models. It implies plotting the genetic divergence of the sequences
+		(i.e. the sum of the branch lengths from a sequence -the tip- to the root of the tree) against the sampling
+		time of the sequences (Figure 3).  A linear trend with few residuals indicates that evolution follows a strict
+		molecular clock. The same trend with greater scatter from the regression line suggests that a relaxed
+		molecular clock model may be most appropriate. No trend at all indicates that the data contains little
+		temporal signal and is unsuitable for inference using phylogenetic molecular clock models.
+	  </p>
+	  <figure>
+	  	<img src="img/phylo_1_3.jpg" class="img-fluid" alt="Responsive image">
+		<figcaption class="figure-caption"><b>Figure 3.</b> Phylogeny of 6 sequences (left) and corresponding
+			root-to-tip linear regression (right)</figcaption>
+	  </figure>
+      <p>
+          Import the ML tree you saved earlier or, if you can’t find it anymore, select the file named
+          <b>RAxML_bipartitions.H1N1.flu.2009.ML.tre</b> in your folder. If you are not prompted for the tree when
+          <kbd>TempEst</kbd> opens, import it using the drop-down menu: <kbd>File</kbd> > <kbd>Open…</kbd>
+      </p>
+      <p>
+          We now have to tag the sequences with their sampling date. A list of all the sequences in the tree will appear
+          (in the default <kbd>Sample Dates</kbd> tab). In order to plot root-to-tip genetic distances against sampling
+          time, each sequence has to be associated with its date of sampling. Sampling dates are indicated at
+          the end of the sequences’ name, preceded by the suffix ‘_d’, in the format YYYY-MM-DD. For instance,
+          the sequence named ‘A/Lima/WRAIR1687P/2009_d2009-06-27’ was sampled the 27th of June 2017.
+      </p>
+      <p>
+          In the Sample Date tab, click on <kbd>Guess Dates</kbd>. In the <kbd>Guess Dates for Taxa</kbd> window, select
+          the following options:
+          <ul>
+              <li>The date is given by a numerical field in the taxon label that is defined by a prefix and its order
+                  (Order: <b>Last</b>; Prefix: <b>_d</b>)</li>
+              <li>Parse as a calendar date (Date format: <b>yyy-MM-dd</b>)</li>
+          </ul>
+      </p>
+      <p>
+          Click <kbd>OK</kbd> and the time of sampling will appear in the <b>Date</b> column.
+      </p>
+      <p>
+          Go to the <kbd>Root-to-tip</kbd> tab to see the root-to-tip linear regression plot. Check the box marked
+          <b>Best-fitting root</b>. Summary statistics of the plot are shown in the left hand side window:
+          <ul>
+              <li><b>Date range</b>: the maximum time interval between two sampled sequences.</li>
+              <li><b>Slope</b>: The slope of the regression line; corresponds to the rate of evolution, here the average
+                  number of nucleotide substitutions per unit of time (here, per year).</li>
+              <li><b>X-intercept</b>: the time at which the viral population had no genetic diversity,
+                  which corresponds to
+                  the time of the most recent common ancestor of the sampled population (tMRCA).</li>
+              <li><b>Correlation Coefficient</b>: A measure of the relationship between time and the number of
+                  accumulated mutations (range: -1, 1). A positive/negative value implies a positive/negative linear
+                  relationship between time and diversity (i.e. as time increases, so does genetic divergence). A
+                  value close to 0 suggests no relationship between time and genetic divergence.</li>
+              <li><b>R squared</b>: A measure of how close the data is to the regression line, i.e. what proportion
+                  of the variation in genetic divergence is explained by a strict molecular clock hypothesis.</li>
+          </ul>
+      </p>
+      <div class="alert alert-warning" role="alert">
+          Q3. Can we assume that the rate of evolution of the viruses in the phylogeny is constant over time
+          (i.e. that the molecular clock is strict)?
+      </div>
+      <h4>Dating migration events</h4>
+      <p>
+          Now that the properties of the molecular clock in our dataset have been established, we will estimate the
+          time(s) at which H1N1/09 was introduced in England.
+      </p>
+      <div class="alert alert-primary" role="alert">
+          <u>Reminder</u>. In a ‘classic’ phylogenetic tree, branch lengths reflect as the number of nucleotide substitutions
+          per site. Rates of evolution are expressed as the number of substitutions per site per unit of time. By
+          dividing the length of a branch by the rate of evolution, we end up with a tree where branch lengths represent
+          time units. A branch therefore represents the time elapsed between two nodes. Or, in our case, the time
+          elapsed between two transmission events.
+      </div>
+      <p>
+          The reconstruction of dated phylogenetic trees is computationally intense and could not be achieved
+          within the time imparted for this practical. A dated H1N1/09 phylogeny was therefore built prior to the
+          session, under the appropriate molecular clock model, using the Bayesian MCMC approach implemented in the
+          software <b>BEAST</b> v.1.8 [3]. The resulting dated tree is in your folder under the name
+          <b>H1N1.flu.2009.mol_clock.tre</b>. A more detailed example of how to set up a BEAST v1.8. analysis, including
+          producing the input files and analysing the output is shown in the <b>Appendix</b>.
+      </p>
+      <p>
+          <u>How does it work?</u> Each tip of the tree has a known time, given by the sampling date of the
+          sequence. Internal nodes are given arbitrary starting times consistent with their order in the
+          tree (from the tips to the root). An additional parameter, the evolution rate, is used to scale
+          these times into expected number of nucleotide substitutions per site. Markov chain Monte Carlo
+          integration is then used to summarize the probability density function of a model tested against
+          the data, providing a representative sample of parameter values of the chosen model. The model
+          includes the tree topology, the times of internal nodes and the evolution rate.
+      </p>
+      <p>
+          We will use the program <b>FigTree</b> to display the dated tree and its annotations.
+      </p>
+      <p> Open <b>FigTree</b> by running the command:</p>
+      <pre><code>figtree</pre></code>
+      <p>
+          Import the dated tree: <kbd>File</kbd> > <kbd>Open…</kbd> > <b>H1N1.flu.2009.mol_clock.2.tre</b>
+      </p>
+      <p>
+          A phylogeny will appear. Again, go to <kbd>Tree</kbd> > <kbd>Increasing Node Order</kbd> to display the tree in the same way
+          as the one you generated with RAxML. This will ease comparison. Note that the major clusters do change,
+          just the order in which the clusters are organised from top to bottom. The dated tree should be very
+          similar to the ML tree you reconstructed in Session 1. However, in this tree, the branch lengths represent
+          days rather than genetic distances. Notice the scale at the bottom of the tree.
+      </p>
+      <p>
+          On the lefthand side toolbar, tick the <kbd>Node Labels</kbd> box. The age of the nodes will appear.
+      </p>
+      <p>
+          The age of a node is expressed as the number of days prior to the most recent sampling date in the tree.
+          Here, the most recent sample is A/Lima/WRAIR1687P/2009, sampled on the 27th of June 2009. If, for instance,
+          a node age equals 21 days, it means that the date at this node is the 6th of June 2009.
+      </p>
+      <div class="alert alert-warning" role="alert">
+          <p>Q4. According to the molecular clock dating, what are the date(s) of introduction of H1N1/09 in England (rounded down)? </p>
+          <u>Tip</u>: If mental arithmetic is not your thing, you can use the 2009 calendar provided as Appendix to back-calculate the date of the nodes.
+      </div>
+      <h4>Identifying the geographical origin(s) of the H1N1/09 strains imported in England</h4>
+      <p>
+          We will finally reconstruct the migration pathways of these H1N1/09 strains.
+      </p>
+      <div class="alert alert-primary" role="alert">
+          <u>Reminder</u>. When individuals are infected in one location and then move to another, or infect someone
+          whilst travelling, this is apparent as a “change” in the location ascribed to one branch of the tree. These
+          changes in location along a phylogenetic tree can be inferred from the location values at the tips and the
+          shape of the tree (see Figure 4). To do so, a model of location exchange process is fitted to the data and
+          the most likely location of the viral strain positioned at the nodes of the tree, together with its probability,
+          can be estimated using a MCMC sampling procedure similar to the one used in Section 2.
+      </div>
+      <figure>
+          <img src="img/phylo_1_4.jpg" class="img-fluid" alt="Responsive image">
+          <figcaption class="figure-caption">Figure 4. Principle of phylogeographic inference. Traits A, B and C at the
+              tips of the phylogeny represent geographic locations from which genetic sequence data was collected. Crosses
+              on the branches represent estimated changes in location. The color-coded pie charts represent posterior
+              probability support for the location estimates. Adapted from Faria et al. 2014 [4].</figcaption>
+      </figure>
+      <p>
+          This approach was applied to the H1N1/09 phylogeny, using an asymmetric continuous-time Markov chain [5], as
+          implemented in the program BEAST. The asymmetric model uses separate parameters for forward and reverse
+          rates of movement between each pair of locations. The tree file we used for the molecular clock analysis
+          (<b>H1N1.flu.2009.mol_clock.2.tre</b>) also contains the result of the inferred migration patterns.
+      </p>
+      <p>
+          On the left hand side toolbar, pull down the <kbd>Node Labels</kbd> menu and under <kbd>Display</kbd>, select <b>Location</b>. The most
+          likely location of the ancestral virus located at the nodes will appear.
+      </p>
+      <p>
+          To display the posterior probability of the most likely node location, select <b>Location.prob</b> in the <kbd>Display</kbd> menu of the <kbd>Node Labels</kbd>.
+      </p>
+      <div class="alert alert-warning" role="alert">
+          <p>Q5: Which country is the most likely source of the H1N1/09 epidemic? What is the probability of that
+          location? </p>
+          Q6: Where were the English strains of H1N1/09 imported from? How confident are we? How does your
+          answer compare to that of Q4?
+      </div>
+      <hr>
+      <p>
+          <u><i>References</i></u>
+          <ol>
+              <li>A. Stamatakis: 'RAxML Version 8: A tool for Phylogenetic Analysis and Post-Analysis of Large Phylogenies'. Bioinformatics, 2014</li>
+              <li>A. Rambaut, T. T. Lam, L. Max Carvalho, and O. G. Pybus, ‘Exploring the temporal structure of heterochronous sequences using TempEst (formerly Path-O-Gen)’, Virus Evol., vol. 2, no. 1, p. vew007, Jan. 2016.</li>
+              <li>A. J. Drummond, M. A. Suchard, D. Xie, and A. Rambaut, ‘Bayesian Phylogenetics with BEAUti and the BEAST 1.7’, Mol. Biol. Evol., vol. 29, no. 8, pp. 1969–1973, Jan. 2012.</li>
+              <li>N. R. Faria et al., ‘The early spread and epidemic ignition of HIV-1 in human populations’, Science, vol. 346, no. 6205, pp. 56–61, Mar. 2014.</li>
+              <li>P. Lemey, A. Rambaut, A. J. Drummond, and M. A. Suchard, ‘Bayesian phylogeography finds its roots’, PLoS Comput. Biol., vol. 5, no. 9, p. e1000520, Sep. 2009.</li>
+          </ol>
+      </p>
+      <hr>
+      <h4>Appendix</h4>
+      <h5>Phylogenetic tree building with BEAST</h5>
+      <p>
+          Note: This is an example of initializing a BEAST v.1.8. analysis only, BEAST2 is a re-write of BEAST v.1.#. and
+          will have a different interface.
+      </p>
+      <p>
+          1. Creating a BEAST input file using BEAUti
+      </p>
+      <p>
+          XXX Launch BEAUti by typing beauti into the command line or by opening the BEAUti program from the dashboard.
+          BEAUti is the program used to create .xml files that are used as the input to BEAST.
+      </p>
+      <p>
+          1.1. Load in the FASTA sequence file <b>H1N1.flu.2009.fas</b> by clicking the <kbd>+</kbd> button on the bottom
+          left, or by clicking: <kbd>File</kbd> > <kbd>Open…</kbd>
+      </p>
+
+      <img src="img/phylo_1_5.jpg" class="img-fluid" alt="Responsive image">
+
+      <p>
+          This first will give you information on the number of taxa (50), the number of sites (12735), and the data
+          type (nucleotide).
+      </p>
+      <p>
+          If you want to partition the data, i.e. if you have samples that you know are from different populations
+          or lineages, you can go onto the ‘Taxa’ tab and set these partitions. This will allow you to specify whether
+          these groups are monophyletic as well as divergence dates between groups. For this exercise, we will not
+          assume any partitioning of samples.
+      </p>
+      <p>
+          1.2. Attach a date to each of your samples.
+      </p>
+      <p>
+          This can be done in the same way as was shown in TempEst:<br>
+          In the Tips tab, tick the box for <b>Use tip dates</b>’, and then click on <b>Guess Dates</b>. In the <b>Guess
+          date values for all taxa</b> window, select the following options:
+          <ul>
+              <li>The date is given by a numerical field in the taxon label that is defined by a prefix and its order (Order: <b>Last</b>; Prefix: <b>_d</b>)</li>
+              <li>Parse as a calendar date (Date format: <b>yyyy-MM-dd)</b></li>
+          </ul>
+
+      </p>
+      <p>
+          Alternatively, you can create a tab-delimited file (.txt) with two columns corresponding to the taxa names
+          and sample dates, and use <b>Import Dates</b>.
+      </p>
+      <img src="img/phylo_1_6.jpg" class="img-fluid" alt="Responsive image">
+      <p>
+          1.4. Set the location for each sample.
+      </p>
+      <p>
+          To attach further traits to each sample, such as location, in the <kbd>Traits</kbd> tab, click on <kbd>Import Traits</kbd> and
+          open a tab-delimited file (.txt) with two columns corresponding to the taxa names and location (or
+          characteristic of choice).
+      </p>
+      <p>
+          1.5 Set a site (substitution) model.
+      </p>
+      <p>
+          This allows us to substitution and site heterogeneity models. The rate and likelihood of base substitution
+          over the genome will be variable so we will set some parameters to describe the model of substitution.
+          We will set the <b>substitution model</b> to <b>GTR</b> – Generalized Time Reversible model – as this is the most
+          frequently used model and allows for variable base frequencies. It is also reversible (i.e. T->A same rate as
+          A->T). We can also set the site heterogeneity model, i.e. the frequency of each site to a <b>Gamma</b> distribution
+          with 4 categories.
+      </p>
+      <p>
+          In the Sites tab, select <b>GTR</b> from the ‘<b>Substitution model</b>’ dropdown box. We will set the ‘<b>Site Heterogeneity
+          model</b>’ as ‘<b>Gamma</b>’ with 4 categories.
+      </p>
+      <img src="img/phylo_1_7.jpg" class="img-fluid" alt="Responsive image">
+      <p>
+          1.5 Set a clock model.
+      </p>
+      <p>
+          The ‘<b>Clocks</b>’ tab will allow us to set the molecular clock for mutations along each branch of the tree. If
+          we set this to ‘<b>Strick clock</b>’ this specifies that the mutation rate along each branch will be invariable.
+          As we have shown in the TempEst analysis that our data varies significantly from a strict molecular clock,
+          we will select a relaxed clock to allow for rate variation across branches in our tree.
+      </p>
+      <p>
+          In the Clocks tab, select ‘<b>Uncorrelated relaxed clock</b>’ from the ‘<b>Clock Type</b>’ dropdown box and keep the ‘<b>Relaxed Distribution</b>’ option as ‘<b>Lognormal</b>’.
+      </p>
+      <img src="img/phylo_1_8.jpg" class="img-fluid" alt="Responsive image">
+      <p>
+          1.6 Set a tree model.
+      </p>
+      <p>
+          As the phylogenetic tree is built through a coalescent approach, backwards through time based on the genetic
+          diversity at tips/samples, you can will need to set a model for the demographic history of the population
+          that describes the effective population size through time. For example, ‘<b>Constant size</b>’ will state that the
+          effective population size has remained constant through evolutionary time. For the purposes of this exercise,
+          we will choose a constant population size.
+      </p>
+      <p>
+          In the <kbd>Trees</kbd> tab, select ‘<b>Coalescent: Constant Size</b>’ from the ‘<b>Tree Prior</b>’ dropdown box.
+      </p>
+      <p>
+          <i>Note: You can also input a starting tree on which BEAST will base the topology of the Bayesian tree. This may
+              be a neighbor-joining or parsimony tree and can speed up the analysis by approximating the topology as a
+              prior. We will start with a random tree.</i>
+      </p>
+      <p>
+          The ‘<b>States</b>’, ‘<b>Priors</b>’ and ‘<b>Operators</b>’ tabs allow us to specify whether to reconstruct sequences, set
+          specific priors for each parameter, and to specify which operators to include in the output log file.
+          We will leave all these as default values.
+      </p>
+      <p>
+          1.7 Define the length of the MCMC chain
+      </p>
+      <p>
+          Finally, the ‘<b>MCMC</b>’ tab is where we will define the steps in the MCMC chain that is used to construct trees.
+          Here we are interested in the length of the chain. This is the number of iterations (number of steps in the
+          random walk) the program will go through to converge on the best tree topology. The higher this number, the
+          more support there will be for the final tree and the more chance of convergence.
+      </p>
+      <p>
+          Define the length of the chain by typing '<b>10000000</b>' in the '<b>Length of chain</b>' box.
+      </p>
+      <p>
+          The name of the output files can be specified here. This will determine the names of the files that will be created
+          after the BEAST run, .log, .trees, and .ops. The output file from BEAUti will be a <b>.xml</b> file for BEAST input. We
+          will call this H1N1.flu.2009, so type this in the ‘<b>File name stem</b>’ box, if it doesn’t already appear there.
+      </p>
+      <img src="img/phylo_1_9.jpg" class="img-fluid" alt="Responsive image">
+      <p>
+          The click on the <kbd>Generate BEAST file</kbd> button at the bottom right of the screen to generate the .xml file that will be used as the input for BEAST.
+      </p>
+      <h4>2. Running the BEAST analysis</h4>
+      <p>
+          BEAST can be run on the command line or through the desktop application. We will run BEAST on command line.
+      </p>
+      <p>
+          To run BEAST, open up a terminal and make sure you are in the folder containing your .xml file from the BEAUti output and type:
+      </p>
+      <pre><code>beast H1N1.flu.2009.xml</code></pre>
+      <p>
+          This will create three files; .log, .trees, and .ops, with the “H1N1.flu.2009.” prefix.
+      </p>
+      <h4>3. Evaluating your BEAST run</h4>
+      <p>
+          Open the program TRACER by typing <kbd>tracer</kbd>. This will allow you to check the output from BEAST and
+          determine how effectively the MCMC has mixed, i.e. how close it is to reaching a steady state (converging).
+          This can be used to manually evaluate the performance of the BEAST run.
+      </p>
+      <p>
+          Load in the ‘<b>H1N1.flu.2009.log</b>’ file to Tracer to see the output.
+      </p>
+      <img src="img/phylo_1_10.jpg" class="img-fluid" alt="Responsive image">
+      <img src="img/phylo_1_11.jpg" class="img-fluid" alt="Responsive image">
+      <p>
+          Here we want to look at the <b>ESS score</b>. This is the Effective Sample Size, which is a measure of the number
+          of effectively independent draws from the posterior distribution that the Markov chain is equivalent to.
+          Low scores are highlighted in red, with scores >200 considered sufficient to demonstrate good mixing.
+      </p>
+      <p>
+          To increase ESS scores, you can run the analysis for longer (more MCMC iterations), or do multiple
+          independent runs that can be combined with the program <b>LogCombiner</b>. Very low scores for many parameters
+          may though suggest that the prior parameters are not a good fit and should be varied.
+      </p>
+      <p>
+          In our data, we can see that most values are over 200, with only the prior and posterior values highlighted
+          in red. Looking at the “<b>Trace</b>” of the MCMC though, we can see that it remaining reasonably steady around
+          -19600 for the prior parameter, suggesting that this support will increase (ESS will increase) if the
+          MCMC chain was longer.
+      </p>
+      <p>
+          4. Producing a single phylogenetic tree
+      </p>
+      <p>
+          The program <b>TreeAnnotator</b> summarises the sample of trees produced by BEAST (in the .tree file) onto a
+          single maximum clade credibility tree. The posterior probabilities of the nodes in the target tree, the
+          posterior estimates and HPD limits of the node heights and (in the case of a relaxed molecular clock model)
+          the rates, are shown.
+      </p>
+      <p>
+          Load in the ‘<b>H1N1.flu.2009.trees</b>’ file to TreeAnnotator through <kbd>Choose File…</kbd> in “<kbd>Input Tree File</kbd>. Select what to the call the output file, e.g. <b>H1N1.flu.2009.tre</b>
+      </p>
+      <p>
+          You can also set the number of burnin states (The number of initial MCMC runs to discard).
+      </p>
+      <p>
+          Then select <b>Run</b> to produce a single maximum clade credibility tree.
+      </p>
+      <img src="img/phylo_1_12.jpg" class="img-fluid" alt="Responsive image" style="max-width: 50%">
+      <hr>
+      <h4>Calendar</h4>
+      <img src="img/phylo_1_13.jpg" class="img-fluid" alt="Responsive image">
+
+
+      </div> <!-- Container -->
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="jquery-3.3.1.slim.min.js" crossorigin="anonymous"></script>
+    <script src="popper.min.js"  crossorigin="anonymous"></script>
+    <script src="bootstrap.min.js"  crossorigin="anonymous"></script>
+    <script src="d3.v3.min.js"></script>
+
+	<script>
+        	$(function () {
+          $('[data-toggle="tooltip"]').tooltip()
+        })
+	</script>
+  </body>
+</html>
