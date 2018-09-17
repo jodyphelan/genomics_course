@@ -769,7 +769,7 @@ bwa index ~/data/malaria/Pf3D7_05.fasta
 
     <p>
          The Dd2 clone is known to be chloroquine resistant. Add its mapped reads (a file already prepared before
-         the course) by right-clicking on the BAMview and choosing <kbd>Add BAM…</kbd>. Select the file <strong>DD2.Chr5.bam</strong>
+         the course) by right-clicking on the BAMview and choosing <kbd>Add BAM/CRAM ...</kbd>. Select the file <strong>DD2.Chr5.bam</strong>
     </p>
     <img src="img/Mapping_23.jpg" class="img-fluid" alt="Responsive image">
     <div class="alert alert-warning" role="alert">
@@ -971,56 +971,67 @@ samtools index TraDIS_reads_chr1.bam
             <td>BPSL0079</td>
             <td>90207</td>
             <td>90668</td>
-            <td></td>
-            <td></td>
+            <td><input type="text" ></td>
+            <td><input type="text"  ></td>
           </tr>
           <tr>
             <td>Ch1</td>
             <td>BPSL0590</td>
             <td>654016</td>
             <td>660111</td>
-            <td></td>
-            <td></td>
+            <td><input type="text"  ></td>
+            <td><input type="text"  ></td>
           </tr>
           <tr>
             <td>Chr1</td>
             <td>BPSL0764</td>
             <td>881805</td>
             <td>886049</td>
-            <td></td>
-            <td></td>
+            <td><input type="text"  ></td>
+            <td><input type="text"  ></td>
           </tr>
           <tr>
             <td>Chr1</td>
             <td>BPSL1661</td>
             <td>1925148</td>
             <td>1934837</td>
-            <td></td>
-            <td></td>
+            <td><input type="text"  ></td>
+            <td><input type="text"  ></td>
           </tr>
           <tr>
             <td>Chr1</td>
             <td>BPSL1712</td>
             <td>1998620</td>
             <td>2017444</td>
-            <td></td>
-            <td></td>
+            <td><input type="text"  ></td>
+            <td><input type="text"  ></td>
           </tr>
           <tr>
             <td>Chr1</td>
             <td>BPSL2990</td>
             <td>3563128</td>
             <td>3563709</td>
-            <td></td>
-            <td></td>
+            <td><input type="text" ></td>
+            <td><input type="text" ></td>
           </tr>
         </table>
 
     </div>
-    <p>
-        That concludes the Mapping practical. Next up you will learn how to use the alignment you have
-        generated to call variants.
-    </p>
+    <hr>
+    <div class="alert alert-primary" role="alert">
+        That concludes the Mapping practical. You should now be able to:
+        <ol>
+            <li>Assess the quality of raw sequence data</li>
+            <li>Perform read trimming to remove low quality bases</li>
+            <li>Map reads to a reference genome using BWA</li>
+        </ol>
+        <p>
+            Next up you will learn how to use the alignment you have
+            generated to call variants.
+        </p>
+    </div>
+
+
     <hr>
     <p style="font-size: 10px;">
         Acknowledgements: Thomas Otto, Brendan Wren, Wellcome Trust

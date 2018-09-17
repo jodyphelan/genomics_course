@@ -90,9 +90,9 @@
       <hr>
       <h4>Genome assembly</h4>
       <p>
-          In the previous practical we looked at using Illumina data to assemble the genome of sever <i>M. tuberculosis</i>
+          In the previous practical we looked at using Illumina data to assemble the genome of several <i>M. tuberculosis</i>
           isolates. Although this helped with reconstructing some of the regions for which mapping doesn't work, it
-          is not perfect. Genome reconstructions are often broken up into many contigs using and are subject to errors in highly
+          is not perfect. Genome reconstructions are often broken up into many contigs using short read data and are subject to errors in highly
           repetitive regions. Ultimately, the completeness of the assembly is limited by the size of the read. If the read
           is less than the size of the repeat there is no way of resolving how many copies of the repeat are present. This is
           where the read length of PacBio comes in handy.
@@ -103,7 +103,7 @@
           complete chromosome in one contig.
       </p>
       <p>
-          With complete genome assemblies, it is possible to identify
+          With complete genome assemblies, it is possible to identify:
           <ol>
               <li>SNPs</li>
               <li>Small indels</li>
@@ -117,9 +117,9 @@
           Methylation refers to the mechanism by which methyl groups (CH<sub>3</sub>) are added to DNA. This is often referred to as
           epigenetic modification. Methylation of DNA is facilitated by DNA methyltransferases (MTase), which mostly are part of
           restriction-modification systems. Restriction enzymes cut unmethylated DNA at a specific motifs (recognition sites), while the paired methyltransferase
-          methylates the same motif. Traditionally DNA methylation in bacteria has been seen as a primitive immune mechanism
+          methylates the same motif. Traditionally, DNA methylation in bacteria has been seen as a primitive immune mechanism
           to fight against invading phages. When a bacterium is invaded by foreign DNA, its restriction enzyme will cut it if the
-          enzymes recognition site is present on the DNA, thus neutralising the threat. There is one problem, however. The
+           recognition site is present on the DNA, thus neutralising the threat. There is one problem however. The
           restriction enzyme is not specific to foreign DNA and will also cut its own genome. The solution comes from the MTase.
           The MTase will methylate the same motif on the bacterium's genome, preventing the restriction enzyme from cutting.
       </p>
@@ -132,8 +132,8 @@
           while replicating input DNA. The data from the PacBio platform is stored in a h5 format. This contains information on the
           base calls and the time it takes to incorporate each base (inter pulse duration). The polymerase takes longer to incorporate nucleotides
           on methylated input DNA than non-methylated. By comparing the time spent between each incorporation event and comparing
-          it to an <i>in-silico</i> control it is possible to calculate the inter pulse duration ratio (IPD ratio). Using this
-          it is possible to detect DNA modification to a single base precision.
+          it to an <i>in-silico</i> control it is possible to calculate the inter pulse duration ratio (IPD ratio). This
+          makes it possible to detect DNA modification to a single base precision.
       </p>
       <p>
           After the location of all methylation sites have been found, the context of these sites are analysed to look for
