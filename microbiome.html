@@ -11,7 +11,7 @@
 
     <style>
 
-    
+
 
     .jumbotron-head{
         background:linear-gradient(rgba(0, 0, 250, 0.15), rgba(125, 250, 250, 0.55)),url(img/Head_microbiome.jpg);
@@ -115,7 +115,7 @@
            and his software development team in the Department of Microbiology & Immunology at The University of
            Michigan. Its objective was to create a single piece of open-source, expandable software to fill the
            bioinformatics needs of the microbial ecology community.</p>
-        <p>In order to open mothur, open a new terminal and navigate to the folder ~/metagenomics.</p>
+        <p>In order to open mothur, open a new terminal and navigate to the folder ~/data/metagenomics.</p>
         <pre><code>cd ~/data/metagenomics</pre></code>
         <p>FOr this practical we will be using an old version of python so in order to use it run the commnad:</p>
         <pre><code>source activate mothur_env</pre></code>
@@ -311,7 +311,7 @@ total # of seqs:	<b>201401</b>
             <p>And then remove the undesirable ones:</p>
             <pre><code>remove.lineage(fasta=BV.trim.contigs.good.unique.good.filter.unique.precluster.pick.fasta, count=BV.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.count_table, taxonomy=BV.trim.contigs.good.unique.good.filter.unique.precluster.pick.silva.wang.taxonomy, taxon=Chloroplast-Mitochondria-unknown-Archaea-Eukaryota-unknown-Bradyrhizobium-Paracoccus-Comamonas-Moraxella-Pseudomonas-Acidobacteria-Cyanobacteria-Deinococcus-Thermus-Acidobacteria-Chloroplast-Cyanobacteria-Deinococci-ML635J-21-Sphingobacteriia-Deinococcales-Sphingobacteriales-Subgroup_2-Subgroup_3-Subgroup_4-Subgroup_5-Subgroup_6-SubsectionI-SubsectionII-SubsectionIII-Chitinophagaceae-Comamonadaceae-env.OPS_17-FamilyI-FamilyI-FamilyII-mitochondria-Moraxellaceae-NS9_marine_group-Sphingobacteriaceae-Trueperaceae-Unknown_Family-Unknown_Family-Acinetobacter-Afipia-Alicycliphilus-Alteromonas-Aquabacterium-Aquamicrobium-Azospira-Azospirillum-Blastocatella-Bosea-Bradyrhizobium-Brevundimonas-Bryobacter-Candidatus_Solibacter-Caulobacter-Chroococcidiopsis-Chroogloeocystis-Chryseobacterium-Cloacibacterium-Comamonas-Craurococcus-Crinalium-Cupriavidus-Curvibacter-Delftia-Diaphorobacter-Enhydrobacter-Flavisolibacter-Flavobacterium-Globicatella-Hydrotalea-Lautropia-Leptolyngbya-Marinobacter-Massilia-Mesorhizobium-Methylobacillus-Methylobacterium-Methylophilus-Methyloversatilis-Moraxella-Nitrosospira-Noviherbaspirillum-Novosphingobium-Paracoccus-Pedobacter-Pedomicrobium-Pelagibacterium-Phenylobacterium-Propionibacterium-Propioniciclava-Propioniferax-Propionimicrobium-Pseudomonas-Psychrobacter-Ralstonia-Rhizobium-Roseomonas-Salinimicrobium-Schlegelella-Sediminibacterium-Sphingobacterium-Sphingomonas-Stenotrophomonas-Sulfuritalea-Terrimonas-Tessaracoccus-Truepera-Undibacterium-Variovorax-Weeksella)</pre></code>
             <p>To see the output of this classification we will use another software called
-              <i>KronaTools</i>. For this open a new command line and type:</p>
+              <i>KronaTools</i>. For this type:</p>
             <pre><code>system(python mothur_krona_XML.py BV.trim.contigs.good.unique.good.filter.unique.precluster.pick.silva.wang.tax.summary > BV_krona.xml)</pre></code>
 
             <p>This will create and output in XML format that can then be loaded into
@@ -319,7 +319,7 @@ total # of seqs:	<b>201401</b>
               To do this type:</p>
             <pre><code>system(ktImportXML BV_krona.xml -o BV_krona.html)</pre></code>
             <p>This will create the file <i>BV_krona.html</i> that you can open by navigating
-              to the folder <b>~/metagenomics/</b> and double clicking in it. It should open in
+              to the folder <b>~/data/metagenomics/</b> and double clicking in it. It should open in
               the Web browser.</p>
               <div class="text-center"><img src="img/Microbiome_6.jpg" class="img-fluid"></div>
               <br>
@@ -426,7 +426,7 @@ total # of seqs:	<b>201401</b>
                 <pre><code>rarefaction.single(shared=BV.an.shared, calc=sobs, freq=100)</pre></code>
                 <p>This will produce the file <i>BV.an.groups.rarefaction</i>. that includes the rarefaction curves for the 6
                  samples. To plot this rarefaction curves we will use the statistical software <i>R</i>. Open a new
-                 command line and navigate to <i>~/metagenomics/</i> and type <i>R</i>.</p>
+                 command line and navigate to <i>~/data/metagenomics/</i> and type <i>R</i>.</p>
                  <pre><code>cd ~/data/metagenomics/
 R</pre></code>
                 <p><b>This will start <i>R</i> then copy the following scripts to plot the graphics.</b></p>
