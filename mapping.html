@@ -539,7 +539,7 @@ samtools index sample1.bam
     </code></pre>
     <p>The previous commands transformed SAM files into binary format, sorted the reads by occurrence against the reference, and then indexed the bam files. At this point, we can use the ‘flagstat’ samtools command to print summary statistics from indexed bam files:</p>
     <pre><code>samtools flagstat sample1.bam</code></pre>
-    <p>The 'flagstat' output sould look like this:</p>
+    <p>The 'flagstat' output should look like this:</p>
     <div class="alert alert-info" role="alert">
         <samp>1345146 + 0 in total (QC-passed reads + QC-failed reads)
 0 + 0 secondary
@@ -736,7 +736,7 @@ bwa index ~/data/malaria/Pf3D7_05.fasta
     <img src="img/Mapping_21.jpg" class="img-fluid" alt="Responsive image" style="max-width: 75%">
     <p>
         These two windows provide information on the mapping of the reads, as it is stored in the bam file.
-        Notice the <strong>Mapping quality</strong>. The maximum value for this is 99. The mapping quality
+        Notice the <strong>Mapping quality</strong>. The maximum value for this is 60. The mapping quality
         depends on the accuracy of the sequence read and the number of mismatches with the reference. A value
         of 0 means that the read maps equally well to at least one other location and therefore is unreliably
         mapped. The flags describe the read’s mate pair mapping. Most of those values can be filtered, to do so,
