@@ -894,7 +894,7 @@ bwa index ~/data/malaria/Pf3D7_05.fasta
     <div class="alert alert-warning" role="alert">
         Can you determine what the transposon sequence is?
     </div>
-    <pre><code>zcat TraDIS_reads_chr1.fastq | less</code></pre>
+    <pre><code>zcat TraDIS_reads_chr1.fastq.gz | less</code></pre>
     <p>
         We are now going to run a Perl script to filter out the reads and create a new fastq file
         (TraDIS_reads_chr1.fq)
@@ -905,9 +905,7 @@ bwa index ~/data/malaria/Pf3D7_05.fasta
         signature sequence. The number of lines in the post QC file can be calculated by typing:
     </p>
     <pre><code>wc -l TraDIS_reads_chr1.fq</code></pre>
-    <div class="alert alert-warning" role="alert">
-        What proportion of the reads passed QC?
-    </div>
+
     <h6>Mapping reads using Bowtie to detect genomic insertion sites</h6>
     <p>
         The filtered <strong>TraDIS_reads_chr1.fq</strong> file of the previous step can now be mapped back to the
@@ -949,9 +947,9 @@ samtools index TraDIS_reads_chr1.bam
     </p>
     <img src="img/Mapping_28.jpg" class="img-fluid" alt="Responsive image">
     <div class="alert alert-warning" role="alert">
-        Use samtools (flagstat) with the indexed BAM file to see how many reads are mapping. Given that the size
+        Use samtools flagstat (like the example below) with the indexed BAM file to see how many reads are mapping. Given that the size
         of chromosome 1 is 4074542 basepairs, what is the transposon insertion density? <br><br>
-
+        <pre><code>samtools view -b TraDIS_reads_chr1.bam chr1:90207-90668 | samtools flagstat -</code></pre>
         Please look at the following genes in the table, and decide whether they are essential:<br><br>
         <table class="table">
         <thead class="thead-dark">
