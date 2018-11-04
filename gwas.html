@@ -39,391 +39,306 @@
       </object>
       <hr>
       <h4>Genome Wide Aassociation Studies (GWAS) Practical</h4><br>
-      <br>
-      <h4>Introduction</h4>
-      <p>In this practical we will analyse GWAS data from two sources:</p>
-      <ul class="list-group">
-        <li class="list-group-item">An in vitro study of chloroquine drug resistance in <i>Plasmodium falciparum</i> isolates.</li>
-        <li class="list-group-item">A case/control study of severe malaria in The Gambia (Jallow, et al, 2009)</li>
+      <p>
+        <b>The objective of this tutorial is to get you familiar with the basic file format used for GWAS and common
+        tools used for analysis and take you through data Quality control (Crucial in any study!).</b>
+      </p>
+      <p><strong>Our dataset is based on a GWAS study for Meningococcal disease in a European population.</strong></p>
+      <strong>Data:</strong>
+      <ul >
+        <li >Genome wide SNP data</li>
+        <li >Scripts to facilitate analysis</li>
       </ul>
-      <br>
-      <p>The first study is comprised of 22 isolates that have been challenged with chloroquine in a laboratory
-        setting. Growth inhibition experiments were repeated at least twice, and half-maximal inhibitory
-        concentrations (IC50) were estimated. All samples underwent whole genome sequencing, with 54 or
-        76-base paired end fragment sizes, using Illumina technology. SNPs were identified using
-        approaches described in Robinson et. al 2011.</p>
-      <p>This second study is comprises of  ~1,000 cases of severe malaria and ~1,500 population controls
-        genotyped on the Affymetrix 500K chip.  In the interest of computational speed this practical will
-        be limited to the analysis of SNPs on chromosome 11.  Please note that the MalariaGEN data access
-        policy does not permit distribution of this dataset to individual users without approval of the
-        Data Access Committee and a signed agreement. The data provided for this practical can only be
-        used for teaching purposes and must not be copied from your computer. You can obtain the entire
-        dataset (including all chromosomes) by following the process at
-        <a href="https://www.malariagen.net/data" target="_blank">https://www.malariagen.net/data</a>.</p>
-        <p>We will analyse the <i>Plasmodium</i> GWAS data using R statistical software (www.r-project.org).
-           The larger MalariaGEN data will be analysed with the program PLINK, a free, open-source whole-genome
-            association analysis toolset written by Shaun Purcell (Purcell  et al., 2007).  It is routinely
-            used by the many groups for the analysis of large-scale, whole-genome association data and
-            subsequent visualization when integrated with the program Haploview.  It has tools for data
-            management, summary statistics, quality control, association analysis and some linkage
-            disequilibrium analysis.  Please note that in this practical we will be using gPLINK, which
-            provides a graphical interface to common PLINK tools.  You can explore the full range of PLINK
-            tools at <a href="http://zzz.bwh.harvard.edu/plink/" target="_blank">http://zzz.bwh.harvard.edu/plink/</a>.</p>
-            <h4>Aims</h4>
-            <p>The aim of this Session is for you to become familiar with some steps in a GWAS analysis.
-              In this practical we will use R and gPLINK to perform basic quality control and association
-              tests on real genotype data. Portions of this practical have been adapted from the tutorial
-              provided by Shaun Purcell on the gPLINK homepage. These examples are designed to take you
-              through some immediately useful functions and help you interpret their output.  However,
-              there will be time, and encouragement, for you to explore other features of PLINK that are
-              not featured in the exercises in this practical. Like all the Sessions in this course, the
-              key is <b>‘if you don’t understand please ask’</b>.</p>
-            <h4>Excercise 1: <i>P. falciparum</i> drug resistance study</h4>
-            <p>This practical will use the R statistical software. The focus of the practical is on analysis
-              methods, rather than learning the R program. An introduction to R is in the course material.
-              There is code is in the “association.txt” file, and it can be cut and paste into the R
-              interface.</p>
-            <p>Change directory to  ”~/data/gwas/” and start R:</p>
-            <pre><code>cd ~/data/gwas/
-R</pre></code>
-            <p>Load prebuilt R functions:</p>
-            <pre><code>source("functions.txt")</pre></code>
-            <p>Load IC50s:</p>
-            <pre><code>pheno <- read.table("ic50.txt",header=T,sep="")</pre></code>
-            <p>Load genotypes with alleles:</p>
-            <pre><code>genosAT <- as.matrix(read.table("genosAT.txt",header=T))</pre></code>
-            <p>Load genotypes with alleles converted to 0’s (reference) and 1’s (non-reference):</p>
-            <pre><code>genos01<-as.matrix(read.table("genos01.txt",header=T))</pre></code>
-            <p>And load SNP position information:</p>
-            <pre><code>positns<-read.table("positions.txt",header=T)</pre></code>
-            <p>View the genetic data, the first SNPs in each file can be viewed by:</p>
-            <pre><code>head(genosAT)
-head(genos01)
-head(positns)</pre></code>
-            <p>The order of the rows in “positns” is the same as the genotype files. The columns in
-              “positns” are: "Chr"  (chromosome), "Pos"  (position),  “Ref" (reference allele),
-              "Totalcov" (total coverage across the population), "Gene"  (Gene name), "NCR”
-              (non-coding, coding or repeat region), "Uniq" (uniqueness of the region, maximum of
-              50 implies unique), "subtelo" (sub-telomeric region, 1 = yes), "newpos" (cumulative
-              genomic position), "colors" (for plotting), and "vars" (in a highly variable gene family).</p>
-            <p>We will consider the SNPs in chromosome 7. Determine the number of SNPs.</p>
-            <pre><code>table(positns$Chr)
-barplot(table(positns$Chr),las=2,xlab="Chromosome",ylab="Number of SNPs")</pre></code>
-            <div class="alert alert-warning">Does the chloroquine phenotype look symmetric?</div>
-            <pre><code>hist(pheno$CQ,main="Chloroquine IC50")
-boxplot(pheno$CQ,xlab="Chloroquine IC50")
-summary(pheno$CQ)</pre></code>
-            <p>We will proceed with using a non-parametric Wilcoxon test.</p>
-            <p><b>Quality control of SNPs:</b> We propose to remove SNPs with too many missing genotypes.</p>
-            <pre><code>missing <- function(x) { sum(1*(is.na(x))) }
-missingsnp <- apply(genos01,1,missing)
-table(missingsnp)
-plot(sort(missingsnp),ylab="Missing genotypes (n=22)", main="Missingness per SNP")</pre></code>
-            <div class="alert alert-warning">What is an appropriate cut-off?</div>
-            <p>In addition, we should remove SNPs that are in non-unique regions of the genome, as
-              these are more likely to be spurious:</p>
-              <pre><code>table(positns$Uniq)</pre></code>
-            <p>Let us focus on chromosome 7, and unique regions with SNPs with low missingness</p>
-            <pre><code>keepsnps <- positns$Chr == "MAL7" & positns$Uniq > 49 & missingsnp < 3
-table(keepsnps)
-ngenosAT <- genosAT[keepsnps,]
-ngenos01 <- genos01[keepsnps,]
-npositns <- positns[keepsnps,]</pre></code>
-            <p><b>Population Structure:</b> Once again, we can look for any population structure
-              using PCA:</p>
-              <pre><code>dists <- as.matrix(dist(t(ngenos01),method="manhattan"))
-all <- cmdscale(dists,k=10,eig=T)
-vars <- cumsum(all$eig)/sum(all$eig)
- 
-cols<-c("green","red")[as.numeric(pheno$CQ>100)+1]
-plot(all$points[,1],all$points[,2], pch=20, xlab="PC1", col=cols,ylab="PC2",cex=2)
-legend("bottomleft",legend=c("CQ<100","CQ>100"),fill=c("green","red"))
-text(all$points[,1],all$points[,2],colnames(genos01),cex=0.6)</pre></code>
-            <div class="alert alert-warning">Do you see any evidence of population structure?</div>
-            <p><b>Tests of association:</b></p>
-            <pre><code>phenos <- as.numeric(sqrt(pheno[,"CQ"]))
-cqresults <- assocwlc(ngenos01,phenos,npositns)</pre></code>
-            <p>This will run the Wilcoxon test on the new dataset. You could try a linear regression
-              approach by replacing “assocwlc” with “assoclm”, but this would not be appropriate given
-              the previous analysis. Plot the results, and present those SNPs with a minor allele
-              frequency of 1%, and highlight p-values less than 0.0006 (a significance cut-off established
-              by simulation).</p>
-            <pre><code>plotfunction(cqresults,"CQ",thres=0.0006,maf1=0.01)</pre></code>
-            <div class="alert alert-warning">How many hits do you have?</div>
-            <div class="alert alert-warning">Are there any SNPs in the chloroquine resistance transporter (MAL7P1.27) associated with the phenotype?</div>
-            <div class="alert alert-warning">What does the qqplot tell us?</div>
-            <pre><code>qqplots(as.numeric(cqresults[,"pval"]))</pre></code>
-            <p>The analysis can be repeated on all chromosomes. The plots are shown below.</p>
-            <div class="alert alert-warning">Do your conclusions regarding inflation of test statistics
-              still hold?</div>
-            <pre><code>cqresults1 <- assocwlc(genos01,phenos,positns)
-plotfunction(cqresults1,"CQ",thres=0.0006, maf1=0.01)
-qqplots(as.numeric(cqresults1[,"pval"]))</pre></code>
-            <div class="text-center"><img src="img/gwas_1.jpg" class="img-fluid"></div><br>
-            <p>In GWAS studies, principal components are included in models to adjust for the potential
-              confounding effect of hidden population structure. However, this approach is not robust
-              with small sample sizes. Instead, random effects modelling approaches that include kinship
-              matrices are being used (e.g. EMMAX approach, see Neafsey et al, 2012). Here we use the
-              “emma” library in R,  and to run it on a single SNP hit (number 64272, in the PfCRT) from
-              above, try:</p>
-            <pre><code>## load library, construct kinship matrix, and select SNP
-library(emma)
-K <- emma.kinship(genos01,"additive","all")
-nsnp <- 64272
-## test for association using emma
-model1 <- emma.ML.LRT(phenos,genos01[nsnp,],K)
-model1$ps ### this will give the p-value</pre></code>
-            <div class="alert alert-warning">Is it the result you expected? Try some other SNPs. What
-              are the limitations of this approach?</div>
-              <h4>Exercise 2: Tanzanian Severe Malaria Case – Control Study </h4>
-              <p>Severe malaria cases (n=506) and controls (n=477) were recruited from the Tanga
-                region, matched on ward of residence, ethnicity and age. The 913 participants were
-                genotyped on the Omni 2.5 million SNP chip, of which 1.7 million SNPs were polymorphic.
-                A further 9.2 million SNPs imputed using the 1000 Genomes reference panel to produce
-                a combined dataset of 10.9 million SNPs. Principal components analysis revealed complex
-                population structure that was not strongly correlated with ethnicity or ward. Here we
-                will run EMMAX to perform association analysis across chromosome 11, which contains the
-                HbS sickle polymorphism.</p>
-                <p>In a terminal window Please change directory using:</p>
-                <pre><code>cd ~/data/gwas/emmax</pre></code>
-                <p><b>Mixed Model Regression with EMMAX</b></p>
-                <p>Linear regression is sometimes an inadequate method for controlling p-value inflation
-                  in highly related populations. In these cases a mixed model approach may prove more
-                  useful. EMMAX is an approach which allows the inclusion of a kinship matrix to account
-                  for this statistical bias. First, we create the kinship matrix by providing the
-                  non-suffixed name of our transposed pedigree file (.tped) to emmax-kin. Usually we
-                  would create this kinship matrix from the full SNP dataset, but we’ll use a subset
-                  here as a working example.</p>
-                  <p>Create kinship matrix:</p>
-                  <pre><code>emmax-kin -v -h -d 10 emmax_chr11</pre></code>
-                  <p>Next, we run the regression model with EMMAX, providing the tped name, pheno file
-                    (indicating case and control groups), kinship matrix and a covariate file (containing
-                    fixed effects, such as age).</p>
-                  <div class="alert alert-warning">How many SNPs are there?</div>
-                  <p>Run emmax mixed model regression:</p>
-                  <pre><code>emmax -v -d 10 -t emmax_chr11 -p emmax_chr11.pheno -k emmax_chr11.hBN.kinf -c emmax_chr11.covars  -o chr11_output</pre></code>
-                  <p>And plot those P values using R:</p>
-                  <pre><code>R
-dat<-read.table("chr11_output.ps",header = F)
-plot(-log10(dat$V3), xlab="position", ylab="-log10(pval)", pch=20)</pre></code>
-                  <div class="alert alert-warning">How many SNPs are less than the common 10-7 cut-off?</div>
-                  <div class="alert alert-warning">What is the influence of sample size on the results?</div>
-                  <h4>Exercise 3: gPLINK software </h4>
-                  <p><b>Starting up the gPLINK software: </b>Open a new tab and type:</p>
-                  <pre><code>gplink</pre></code>
-                   <p>The gPLINK interface will appear
-                    (see below). It is comprised of three screens and a menu bar.</p>
-                  <ul class="list-group">
-                    <li class="list-group-item">The left panel shows the files contained in the PLINK project folder.</li>
-                    <li class="list-group-item">The top right panel tracks each PLINK operation.</li>
-                    <li class="list-group-item">The bottom right panel shows the LOG file from any one particular
-                      PLINK run.</li>
-                  </ul>
-                  <br>
-                  <p><b>Ask a demonstrator for help if you have any problems.</b></p>
-                  <div class="text-center"><img src="img/gwas_2.jpg" class="img-fluid"></div><br>
-                  <p><b>Opening a Project:</b></p>
-                  <ul class="list-group">
-                    <li class="list-group-item">Click on the ‘Project’ Tab and then select the option ‘Open’.</li>
-                    <li class="list-group-item">An ‘Open project’ dialog box should appear – use the browse button
-                      to select the folder ‘~/data/gwas/’ as the Project.</li>
-                    <li class="list-group-item">The files in the Project should now appear in the left hand panel.</li>
-                  </ul>
-                  <br>
-                  <div class="text-center"><img src="img/gwas_3.jpg" class="img-fluid"></div><br>
-                  <p><b>The project contains the following 4 files:</b></p>
-                  <ul class="list-group">
-                    <li class="list-group-item"><i>chr11.ped</i>: Genotype data for 26,205 SNPs in 2340 individuals</li>
-                    <li class="list-group-item"><i>chr11.map</i>: Map file for SNPs in <i>chr11.ped</i></li>
-                    <li class="list-group-item"><i>Self_reported_eth.txt</i>: Self reported ethnicity codes for
-                      each individual</li>
-                    <li class="list-group-item"><i>PCA_covariates.txt</i>: Eigenstrat principle component
-                      measurements of population membership</li>
-                  </ul>
-                  <br>
-                  <p><b>Viewing Files:</b> To view a text file, e.g. output from PLINK or an input file</p>
-                  <ul class="list-group">
-                    <li class="list-group-item">Right click on the file</li>
-                    <li class="list-group-item">Select Open in default viewer</li>
-                  </ul>
-                  <br>
-                  <p>Open the chr11.ped and chr11.map files – the pedfile is very large, so it may take a few
-                    moments to load.</p>
-                  <p>The chr11.ped file contains sample information and genotypes.  Each line represents one
-                    sample. The first six columns provide information on the sample – Family ID, Sample ID,
-                    Father’s ID, Mother’s ID, Gender, and Case/Control Status.  The following columns represent
-                    the genotype data.  Each SNP is represented by two columns giving the two alleles of
-                    that sample.  Allele A is represented by a ‘1’ and Allele B by a ‘2’.  Missing data is
-                    denoted with a ‘0’.  It is also possible to store genotypes in these files with actual
-                    nucleotides, e.g. ACTG.</p>
-                    <div class="text-center"><img src="img/gwas_4.jpg" class="img-fluid"></div><br>
-                  <p>The chr11.map file contains the SNP information for each SNP in the pedfile. Each row
-                    represents an individual SNP, and the first row corresponds to the first genotype
-                    columns in the pedfile, and so on.  The information listed for each SNPs are: chromosome
-                    number, SNP ID, Genetic Map Position (cM), and Physical Position (bp)</p>
-                    <div class="text-center"><img src="img/gwas_5.jpg" class="img-fluid"></div><br>
-                    <p><b>Data Management and Validation:</b></p>
-                    <ul class="list-group">
-                      <li class="list-group-item">First, we will create a compact binary fileset from the raw genotype data.</li>
-                      <li class="list-group-item">Under the PLINK tab select 'Data Management' and then 'Generate Fileset'.</li>
-                      <li class="list-group-item">The basic dialog box  gPLINK uses for most operations should appear.  Follow
-                        the directions below to specify option for the new fileset.</li>
-                    </ul>
-                    <br>
-                    <div class="text-center"><img src="img/gwas_6.jpg" class="img-fluid"></div><br>
-                    <p>This will bring up this box, with:</p>
-                    <ul class="list-group">
-                      <li class="list-group-item">The corresponding PLINK command that is about to be run.</li>
-                      <li class="list-group-item">A space for you to add a description (to later track the project).</li>
-                      <li class="list-group-item">When finalized click on the <i>OK</i> button.</li>
-                    </ul>
-                    <br>
-                    <div class="text-center"><img src="img/gwas_7.jpg" class="img-fluid"></div><br>
-                    <p>The LOG file contains many critical details regarding the data, and any possible warnings or error
-                      messages. You should ALWAYS view the log file after any operation:</p>
-                    <div class="text-center"><img src="img/gwas_8.jpg" class="img-fluid"></div><br>
-                    <p>Now check that the conversion process has been successful by selecting
-                      ‘Summary Statistics > Validate Fileset’ option and examining the subsequent log file.</p>
-                    <div class="text-center"><img src="img/gwas_9.jpg" class="img-fluid"></div><br>
-                    <p><b>Creating a filtered data set:</b></p>
-                    <ul class="list-group">
-                      <li class="list-group-item">Proper quality control is one of the most critical steps in a GWAS.
-                        We will now create a filtered data set by removing SNPs that fail our quality control
-                        thresholds.  Note that we would normally also filter samples, but problematic samples
-                        have already been removed from this dataset.</li>
-                      <li class="list-group-item">Click on the ‘PLINK’ Tab and then select the option
-                        ‘Data Management’-> ‘Generate Fileset</li>
-                      <li class="list-group-item">A dialog box should appear – enter a new name for you the
-                        filtered data set – here ‘<b>malaria_qc</b>’</li>
-                      <li class="list-group-item">Click on the ‘Threshold’ button to enter inclusion thresholds
-                        for the filtered data set</li>
-                      </ul>
-                    <br>
-                    <div class="text-center"><img src="img/gwas_10.jpg" class="img-fluid"></div><br>
-                    <div class="alert alert-warning">How many SNPs have been filtered out? For what reasons?</div>
-                    <div class="alert alert-warning">Why do we only filter on HWE in the controls?</div>
-                    <div class="alert alert-warning">If the samples had not been previously filtered, what
-                      quality control checks would we need to apply to them?</div>
-                    <p><b>Performing the Association Test:</b></p>
-                    <p>Now that we have a clean data set it is time to look for association between
-                      genotypes and our phenotype, severe malaria. Click on the ‘PLINK’ Tab and then select the
-                      option Association -> Allelic Association Test</p>
-                      <div class="text-center"><img src="img/gwas_11.jpg" class="img-fluid"></div><br>
-                      <p>Once the association is complete view  the  log file:</p>
-                      <div class="text-center"><img src="img/gwas_12.jpg" class="img-fluid"></div><br>
-                      <div class="alert alert-warning">What is the genomic control lambda value for the association?</div>
-                      <div class="alert alert-warning">What does this value mean for your interpretation of the association results?</div>
-                      <p><b>Viewing results in Haploview:</b></p>
-                      <p>Open up a new terminal and type <kbd>haploview</kbd> and hit enter</p>
-                      <p>Once Haploview has opened, click on “File” -> “Open new data”.</p>
-                      <p>Select the “PLINK format” tab and relect the results file and map file”.</p>
-                      <p>Then click ”OK”. Once you have opened the file in Haploview explore your results by sorting on
-                        columns and selecting filters.</p>
-                      <div class="text-center"><img src="img/gwas_13.jpg" class="img-fluid"></div><br>
-                      <p><b>Creating Plots in Haploview</b></p>
-                      <p>Select the ‘Plot’ button from the HaploView Window to create a plot of any two
-                        columns in the results.</p>
-                      <p>First we will create a plot of p values vs position.</p>
-                      <p>Please save a copy of your plot.</p>
-                      <div class="text-center"><img src="img/gwas_14.jpg" class="img-fluid"></div><br>
-                      <p><b>Once you have your plot – try the following options:</b></p>
-                      <ul class="list-group">
-                        <li class="list-group-item">Mouse over a point to see SNP information for that point.</li>
-                        <li class="list-group-item">Zoom in on areas of interest.</li>
-                        <li class="list-group-item">Right click on the plot area to select the ‘Properties’ option.
-                          This will allow  you to save the plot or to edit Plot
-                           properties such as the Title, Font, Axis Limits, etc.</li>
-                        <li class="list-group-item">Return to the Haploview mainpage and set the filters to a region
-                          of interest. Now use the plot button to graph your region of interest.</li>
-                        </ul>
-                      <br>
-                      <p><b>Controlling for Population Structure in the Association:</b> As the initial
-                        association test revealed clear bias in the data – as evidenced by genomic
-                        control lambda- we will now perform the association while controlling for
-                        population structure.</p>
-                      <ul class="list-group">
-                        <li class="list-group-item">First, we will perform a stratified test that tests for association
-                          within each self-reported ethnicity and combines the results with a Cochran-Mantel
-                          Haenszel test</li>
-                        <li class="list-group-item">Secondly, we will perform the association using genetically
-                          defined population structure as a covariate in a logistic regression model.
-                          We will use the values from the first three principle components of Eigenstrat
-                          as the latent genetic structure.  </li>
-                        </ul>
-                      <br>
-                      <p><b>Stratified Test:</b> Click on the ‘PLINK’ Tab and then select the option Association ->
-                        Stratified Analysis to open the dialog box shown below.
-                        Once the association is complete view the log file.</p>
-                        <div class="text-center"><img src="img/gwas_15.jpg" class="img-fluid"></div><br>
-                        <div class="alert alert-warning">What is the genomic control lambda value for the stratified association?</div>
-                        <div class="alert alert-warning">How many individuals were included in the association?</div>
-                        <p>Open the results in Haploview and plot the p-values as before,
-                          saving a copy of the plot.</p>
-                      <p><b>Logistic Regression Test:</b> Click on the ‘PLINK’ Tab and then select the
-                        option Association -> Linear/logistic regression to open the dialog box shown
-                        below. Once the association is complete view the log file.</p>
-                        <div class="text-center"><img src="img/gwas_16.jpg" class="img-fluid"></div><br>
-                        <div class="alert alert-warning">The logfile does not provide a value for lambda, but we
-                          have calculated it to be 1.08 for this test   Why is this an improvement on the
-                          stratified results?</div>
-                      <p>Open the results in Haploview using “pca_assoc1.assoc.logistic” as the Results file
-                        and “malaria_qc.bim” as the map file and plot the p-values as before, saving a copy
-                        of the plot.</p>
-                      <p><b>Viewing logistic regression results  in Haploview:</b> The logistic regression
-                        test reports four rows per SNP. The rows with the value ‘ADD’ in the Test column
-                        represent the results of the logistic regression for the additive model. The other
-                        three columns represent the influence of that SNP in each of the covariates, and is
-                        not relevant our association tests.  Use the filter command to remove the ‘cov1’,
-                        ‘cov2’ and ‘cov3’ rows  before plotting results.</p>
-                        <div class="text-center"><img src="img/gwas_17.jpg" class="img-fluid"></div><br>
-                        <div class="alert alert-warning">Compare the plots you have made for the three
-                          association tests.  What are the major differences?</div>
-                      <p><b>View hit SNPs in their HapMap Genomic Context:</b> In the HaploView window click on
-                        the most significant SNP and select the “Go to Selected Region” button at the bottom of
-                        the window.  Select the ‘YRI’ as the Analysis Panel and change position to include 150
-                        kb on either side of the selected SNP.</p>
-                      <div class="text-center"><img src="img/gwas_18.jpg" class="img-fluid"></div><br>
-                      <p>Your Haploview Window should now contain several tabs with information on all of the
-                        YRI HapMap SNPs within 150Kb of your selected SNP. You can limit the SNPs displayed
-                        to only those markers in your PLINK results under the Check Markers Tab.</p>
-                        <div class="alert alert-warning">What does LD look like in this region?</div>
-                        <div class="alert alert-warning">Where are the recombination hotspots?</div>
-                        <div class="alert alert-warning">What genes are in the hit region?</div>
-                        <div class="alert alert-warning">When the HbS polymorphism responsible for sickle
-                          cell anaemia is directly typed in these samples it is associated with a protection
-                          from severe malaria with an odds  ratio of 0.1 at a pvalue of 10-28. Explain how
-                          this result differs from what we see on the array, and what are the possible reasons
-                          why the signal is attenuated on the arrays</div>
-                        <p><b>Viewing LD in Your Data:</b> You can view LD in the Gambian MalariaGEN genotypes
-                          by returning to PLINK and selecting PLINK->Data Management -> Generate Fileset. Select
-                          the ‘Haploview fileset (--recodeHV)’ option and then the Filter button to select the
-                          region of interest.  Be aware that Haploview will have trouble displaying a region larger
-                          than a few MB in a cohort with hundreds of individuals.  Be careful to use the filters
-                          to select only the control individuals for LD visualization.</p>
-                        <p><b>Advanced PLINK commands:</b> PLINK includes many tools  that are not included in the
-                          gPLINK menu panels.  To run such a command select  the tab Advanced -> Create Plink
-                          Command to open the standard dialog box that allows you to select files, filters, and
-                           the output name.  Once you have selected these hit ‘OK’ to open  the following dialog
-                           box.</p>
-                        <div class="text-center"><img src="img/gwas_19.jpg" class="img-fluid"></div><br>
-                        <p>As an example, you could use the same command specified in the logistic regression
-                          analysis, but add the option ‘- -dominant’ to tell PLINK to calculate the association
-                          with a Dominant model rather than an Additive model.</p>
-                        <p><b>Further exploration:</b> You can explore further option in PLINK at
-                          <a href="http://zzz.bwh.harvard.edu/plink/gplink.shtml" target="_blank">http://zzz.bwh.harvard.edu/plink/gplink.shtml</a>.
-                          This site provides a large amount of documentation on all PLINK tools, as well as
-                          tutorials on configuring PLINK on different machines.</p>
-                          <p>Shaun Purcell has written a more advanced practical based around the command
-                            line version of PLINK that can be downloaded from
-                          <a href="http://zzz.bwh.harvard.edu/plink/res.shtml#teach" target="_blank">
-                            http://zzz.bwh.harvard.edu/plink/res.shtml#teach</a></p>
-                        <p>In addition, there are now interfaces between VCF files, EMMAX and Plink.</p>
-                        <p><b>Acknowledgements</b></p>
-                        <p>Kerrin Small, Steffen Borrmann, Alexis Nzila, Susana Campino, Dominic Kwiatkowski,
-                          and the Kwiatkowski group for data generation and assistance in preparing this
-                          practical; Wellcome Trust.</p>
+      <b>Software you will need for analysis</b>
+      <ul >
+        <li >Computer workstation with Unix/Linux operating system </li>
+        <li >PLINK software for genome-wide association analysis: http://pngu.mgh.harvard.edu/_purcell/plink/download.shtml </li>
+        <li >Statistical software for data analysis and graphing such as: R: http://cran.r-project.org/</li>
+        <li >SMARTPCA.pl software for running principal components analysis (not used in this tutorial to save time):
+          http://genepath.med.harvard.edu/~reich/Software.htm </li>
+        <li>BCFtools</li>
+      </ul>
+
+      <p><b>A.	 Create BED files for analysis:</b></p>
+      <p>Your data set:</p>
+      <p>MD.vcf.gz – Variant call format dataset (see: http://www.internationalgenome.org/wiki/Analysis/vcf4.0/) consisting
+        3004 individuals, 409 cases, 2595 controls, 601089 variants</p>
+
+      <p>1.	Convert your plink genotype files to binary format - smaller file easier for manipulation of data </p>
+      <pre><code>plink --vcf MD --make-bed --out MD.</code></pre>
+      <div class="alert alert-primary" role="alert">
+        Whats in my newly generated BED file?<br>
+MD.bed – binary coded information on individuals and variants<br>
+MD.bim – variant information. : “Chromosome”, “Marker name”, “Allele 1”, “Allele2”, “Genetic Distance” & “Base pair position”. Each SNP must have two alleles.<br>
+MD.fam – Individual Information. first 6 columns are mandatory and in the order: “Family ID”, “Individual ID”, “Paternal ID”, “Maternal ID”, “Sex” & “Phenotype”.<br>
+MD.log - Implemented commands, the number of cases and controls in the input files, any excluded data and the genotyping rate in the remaining data. This file is very useful for checking the software is successfully completing commands.<br>
+
       </div>
 
+      <div class="alert alert-warning" role="alert">
+        <p>How many individuals are in your file? How many cases and controls?</p>
+        <p>How many variants are present?</p>
+        <p>What other information is available?</p>
+        <p>To view your log file type: <kbd>less MD.log</kbd></p>
+      </div>
+
+      <p><b>B.	Sample QC</b></p>
+      <p><u>1.	Identification of Individuals with discordant sex information</u><br>
+         Ideally if X-chromosome data is available, we would data calculate the mean homozygosity
+         rate across X chromosome markers for each individual in the study and identify discordance
+         with our reported Sex phenotype.<br>
+         <font color="red">As our data only contains autosomes we will skip this step.</font>
+       </p>
+       <p>
+         <u>2.	Identification of individuals with elevated missing data rates or outlying heterozygosity rate </u>
+       </p>
+       <p>
+         2.1.	At the shell prompt type:
+       </p>
+       <pre><code>plink --bfile MD --missing --out MD</code></pre>
+       <p>
+         This creates the files MD.imiss (sample-based missing report) and MD.lmiss (variant-based missing report).
+         The fourth column in the imiss file (N_MISS) gives the number of missing SNPs and the sixth column (F_MISS)
+         gives the proportion of missing SNPs per individual.
+       </p>
+       <p>2.2.	At the shell prompt type:</p>
+       <pre><code>plink --bfile MD --het --out MD</code></pre>
+       <p>This creates the file MD.het where the third column gives the observed number of homozygous genotypes [O(Hom)]
+         and the fifth column gives the number of non-missing genotypes [N(NM)], per individual. </p>
+        <p>
+          2.3.	Calculate the observed heterozygosity rate per individual using the formula (N(NM) - O(Hom))/N(NM) and
+            create a graph where the observed heterozygosity rate per individual is plotted on the x-axis and the proportion
+             of missing SNPs per individuals is plotted on the y-axis. Type:
+        </p>
+        <pre><code>R CMD BATCH imiss-vs-het.Rscript</code></pre>
+        <p>
+          This creates the graph MD.imiss-vs-het.pdf (see below).
+        </p>
+        <img src="img/gwas_1.jpg" class="img-fluid" alt="Responsive image">
+        <div class="alert alert-primary" role="alert">
+          Examine the plot to decide reasonable thresholds at which to exclude individuals based on elevated missing or extreme heterozygosity.
+          <ul><li>Here we will exclude all individuals with a genotype failure rate ≥ 0.0185 (vertical dashed line) and/or heterozygosity rate ± 3 standard deviations from the mean (horizontal dashed lines). </li></ul>
+        </div>
+        <p>2.4.	Add the family ID and individual ID of all the failing this QC using:</p>
+        <pre><code>R CMD BATCH imiss_fail.R script</code></pre>
+        <p>
+            This produces a file named fail_imisshet-qc.txt
+        </p>
+        <div class="alert alert-warning" role="alert">
+          How many samples failed this QC stage?
+        </div>
+        <p>
+          <u>3.	Identification of duplicated or related individuals </u>
+        </p>
+        <p>
+          3.1.	To identify duplicate & related individuals, create an Identity-by-State (IBS) matrix - calculated for each pair of individuals based on the average proportion of alleles shared in common at genotyped SNPs
+        </p>
+        <p>
+          3.1.1.	To reduce the computational complexity, first prune the dataset so that no pair of SNPs (within a given window e.g 200kb) has linkage disequilibrium (an r2> 0.2). Type
+        </p>
+        <pre><code>plink --bfile MD --indep-pairwise 200 5 0.5 --out MD</code></pre>
+        <p>
+          This creates files with the extension *.prune.in *.prune.out & *.log
+        </p>
+        <p>
+          3.1.2.	 Then to extract pruned snps and generate pair-wise IBS, type:
+        </p>
+        <pre><code>nohup plink --bfile MD --extract MD.prune.in --genome --out MD &</code></pre>
+        <p>
+          This creates files with the extension *.genome & *.log
+        </p>
+        <div class="alert alert-primary" role="alert">
+          You can also create a BED file with the pruned SNPS: plink --bfile MD --extract MD.prune.in --make-bed --out MD.pruned
+note: ‘nohup’ and ‘&amp’ are used to allow command to run in the background thus freeing up terminal for further use.
+
+        </div>
+        <div class="alert alert-warning" role="alert">
+          How many SNPs are in your pruned list? HINT: Have a look at your log file (using the <kbd>less</kbd> command) or type <kbd>wc -l MD.prune.in</kbd>
+        </div>
+        <p>
+          3.1.3.	To identify all pairs of individuals with an Idenity-by-descent (IBD) > 0.185. Type:
+        </p>
+        <pre><code>perl run-IBD-QC.pl MD</code></pre>
+        <div class="alert alert-primary" role="alert">
+          The code looks at the individual call rates stored in MD.imiss and output the IDs of the individual with the lowest call rates to <b>fail_IBD-QC.txt</b> for subsequent removal.
+        </div>
+        <p>
+          To visualise the IBD rates, type:
+        </p>
+        <pre><code>R CMD BATCH  plot-IBD.Rscript</code></pre>
+        <p>
+          this generates MD.IBD-hist.pdf
+        </p>
+        <img src="img/gwas_2.jpg" class="img-fluid" alt="Responsive image">
+        <div class="alert alert-primary" role="alert">
+          <u>Note</u>: The expectation is that IBD = 1 for duplicates or monozygotic twins, IBD = 0.5 for 1st-degree relatives, IBD = 0.25 for 2nd-degree relatives and IBD = 0.125 for 3rd-degree relatives. Due to variation around these values and it is typical to exclude one individual from each pair with an IBD > 0.185, which is halfway between the expected IBD for 3rd- and 2nd-degree relatives.
+        </div>
+        <div class="alert alert-warning" role="alert">
+          How many individuals fail to meet the IBD threshold? Hint: use the <kbd>less</kbd> command to view the file or <kbd>wc -l filename</kbd> to count the number of lines
+        </div>
+        <p>
+          <u>4.	Identification of individuals of divergent ancestry </u>
+        </p>
+        <div class="alert alert-primary" role="alert">
+          In the interest of time, this step has been mostly done for you.
+          <p>4.1.	Principal components analysis (PCA) is performed with pruned bed file datasets generated from step 3.1.2 using the ./Run_PCA.sh command. This generates the following output files: MD.pruned.pca.par, MD.pruned.pca.log, MD.pruned.pca.evec, MD.pruned.pca, MD.pruned.eval. The evec extension file is what you will need to view your PCs</p>
+        </div>
+        <p>
+          4.2.	Create a scatter diagram of the first two principal components, including all individuals in the file MD.pruned.pca.evec (the first and second PCs are columns 2 and 3 respectively). Type:
+        </p>
+        <pre><code>R CMD BATCH plot-pca-results.Rscript</code></pre>
+        <p>
+          This outputs <b>pca_plot.pdf</b>
+        </p>
+        <img src="img/gwas_3.jpg" class="img-fluid" alt="Responsive image">
+        <div class="alert alert-primary" role="alert">
+          Data in column 4 is used to colour the points according to phenotype (i.e. case vs control). Here, we chose to exclude all individuals with a 2nd principal component score &lt;0.07.
+        </div>
+        <p>Type <kbd>./write_pca_fail.sh</kbd> to write the FID and IID of these individuals to a file called fail_PCA.txt. </p>
+
+        <div class="alert alert-warning" role="alert">
+          How many individuals failed PCA threshold?
+        </div>
+        <p>
+          4.3.	Remove all individuals failing QC
+        </p>
+        <p>
+          4.3.1. To concatenate all the files listing individuals failing the previous QC steps into single file, at the unix prompt type:
+        </p>
+        <pre><code>cat fail_* | sort -k1 | uniq > fail_qc_inds.txt</code></pre>
+        <p>
+          The file <b>fail_qc_inds.txt</b> should now contain a list of unique individuals failing the previous QC steps.
+        </p>
+        <p>
+          4.3.2.	To remove these from the dataset type:
+        </p>
+        <pre><code>plink --bfile MD --remove fail_qc_inds.txt --make-bed --out clean.MD</code></pre>
+        <div class="alert alert-warning" role="alert">
+          <p>
+            How many individuals in total will be excluded from further analysis?
+          </p>
+          <p>
+            How many individuals in total do you have for further analysis? HINT: check your log file
+          </p>
+        </div>
+        <p>
+          <b>C. Marker QC</b>
+        </p>
+        <p>
+          <u>5.	Identify all markers with an excessive missing data rate </u>
+        </p>
+        <p>
+          5.1.	To calculate the missing genotype rate for each marker type:
+        </p>
+        <pre><code>plink --bfile clean.MD --missing --out clean.MD.</code></pre>
+        <p>
+          The results of this analysis can be found in <b>clean.MD.lmiss</b>.
+        </p>
+        <p>
+          5.2.	Plot a histogram of the missing genotype rate to identify a threshold for extreme genotype failure rate. This can be done using the data in column five of the clean.MD.lmiss file. Type:
+        </p>
+        <pre><code>R CMD BATCH lmiss-hist.Rscript.</code></pre>
+        <p>
+          This generates <b>clean.MD.lmiss.pdf</b>
+        </p>
+        <img src="img/gwas_4.jpg" class="img-fluid" alt="Responsive image">
+        <p>
+          We chose to a call-rate threshold of 5% (these SNPs will be removed later in the protocol).
+        </p>
+        <p>
+          <b>6.	Test markers for different genotype call rates between cases and contols </b>
+        </p>
+        <p>
+          <u>6.1.	To test all markers for differences in call rate between cases and controls, at the Unix prompt type: </u>
+        </p>
+        <pre><code>plink --bfile clean.MD --test-missing –allow-no-sex --out clean.MD</code></pre>
+        <p>
+          The output of this test can be found in clean.MD.missing.
+        </p>
+        <p>
+          To create a file called ‘fail_diffmiss-qc.txt’ which contains all SNPs with a significantly different (P&lt;0.00001) missing data rate between cases and controls. At the unix prompt type:
+        </p>
+        <pre><code>perl run-diffmiss-qc.pl clean.MD</code></pre>
+        <div class="alert alert-warning" role="alert">
+          How many variants have failed QC?
+        </div>
+        <p>
+          <b>7.	Remove all markers failing QC </b>
+        </p>
+        <p>
+          <u>7.1.	To remove poor SNPs from further analysis and create a new clean (QC’D) MD data file, at the Unix prompt type:</u>
+        </p>
+        <pre><code>plink --bfile clean.MD --exclude fail_diffmiss-qc.txt --maf 0.01 --geno 0.05 --hwe 0.00001 --make-bed --out clean.final.MD</code></pre>
+        <p>
+           In addition to markers failing previous QC steps, those with a MAF&lt;0.01, genotype call rate&lt;0.05 and a HWE P-value &lt;0.00001 (in controls) are also removed.
+        </p>
+        <div class="alert alert-warning" role="alert">
+          How many variants and individuals pass filters and QC for your GWAS?
+        </div>
+        <p>
+          <b>8.	Perform a GWAS on your QC’d dataset</b>
+        </p>
+        <p>
+          <u>8.1.	To run a basic case/control association test, at the unix prompt type:</u>
+        </p>
+        <pre><code>plink --bfile clean.final.MD --assoc --ci 0.95 --adjust --out final.MD.assoc</code></pre>
+        <p>
+          Your association output file will contain 12 columns:
+        </p>
+        <div class="alert alert-info" role="alert">
+          <samp>CHR     Chromosome
+SNP     SNP ID
+BP      Physical position (base-pair)
+A1      Minor allele name (based on whole sample)
+F_A     Frequency of this allele in cases
+F_U     Frequency of this allele in controls
+A2      Major allele name
+CHISQ   Basic allelic test chi-square (1df)
+P       Asymptotic p-value for this test
+OR      Estimated odds ratio (for A1, i.e. A2 is reference)
+L95     Lower bound of 95% confidence interval for odds ratio
+U95     Upper bound of 95% confidence interval for odds ratio
+</samp>
+        </div>
+        <p>
+          <u>8.2.	To visualise your data:</u>
+        </p>
+        <p>
+          8.2.1. Generate a Quantile-Quantile (QQ) plot of your p-values to look at the distribution of P-values and assess whether genomic inflation is present (lambda&gt;1) (this can also be found in your assoc. log file).
+        </p>
+        <p>
+          8.2.2.	Generate a manhattan plot to visualise where your association signals lie across the chromosomes.
+        </p>
+        <pre><code>Type R CMD BATCH GWAS_plots.R</code></pre>
+        <p>
+          This generates both plots: <b>final.MD.assoc_qq.png</b> and <b>final.MD.assoc_mhplot.png</b>
+        </p>
+        <img src="img/gwas_5.jpg" class="img-fluid" alt="Responsive image">
+        <div class="alert alert-warning" role="alert">
+          What do the plots tell you?
+        </div>
+        <p>
+          8.2.2.1.	Let’s zoom into a region of interest, the tower of SNPs on CHR1 (coloured in yellow). This the Complement Factor H (CFH) region known to be associated with Mening Disease.
+The previous Rscript in 8.2.2 above also generated the <b>CHR_CFH_region.txt</b> file.
+        </p>
+        <ul>
+          <li>Open the locuszoom webpage: http://locuszoom.org/genform.php?type=yourdata</li>
+          <li>Upload the text file and select PLINK data format.</li>
+          <li>Enter the most associated snp (“rs1065489”) with a flanking size of 500KB</li>
+          <li>In the Genome Build/LD Population field select the appropriate hg19 european ref panel.</li>
+          <li>Then press plot data to generate your plot!</li>
+        </ul>
+
+        <hr>
+        <p>
+          We have reached the end of this practical. You can use the scripts to analyse your own data from sample QC to variant QC and case-control GWAS. Good luck!
+        </p>
+
+
+
+
+
+    </div>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
