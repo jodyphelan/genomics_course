@@ -198,7 +198,7 @@ note: ‘nohup’ and ‘&amp’ are used to allow command to run in the backgro
         <div class="alert alert-primary" role="alert">
           Data in column 4 is used to colour the points according to phenotype (i.e. case vs control). Here, we chose to exclude all individuals with a 2nd principal component score &lt;0.07.
         </div>
-        <p>Type <kbd>./write_pca_fail.sh</kbd> to write the FID and IID of these individuals to a file called fail_PCA.txt. </p>
+        <p>Type <kbd>R CMD BATCH write_pca_fail.R</kbd> to write the FID and IID of these individuals to a file called fail_PCA.txt. </p>
 
         <div class="alert alert-warning" role="alert">
           How many individuals failed PCA threshold?
@@ -234,7 +234,7 @@ note: ‘nohup’ and ‘&amp’ are used to allow command to run in the backgro
         <p>
           5.1.	To calculate the missing genotype rate for each marker type:
         </p>
-        <pre><code>plink --bfile clean.MD --missing --out clean.MD.</code></pre>
+        <pre><code>plink --bfile clean.MD --missing --out clean.MD</code></pre>
         <p>
           The results of this analysis can be found in <b>clean.MD.lmiss</b>.
         </p>
