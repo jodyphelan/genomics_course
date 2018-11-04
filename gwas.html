@@ -60,19 +60,22 @@
       </ul>
 
       <p><b>A.	 Create BED files for analysis:</b></p>
-      <p>Your data set:</p>
-      <p>MD.vcf.gz – Variant call format dataset (see: http://www.internationalgenome.org/wiki/Analysis/vcf4.0/) consisting
-        3004 individuals, 409 cases, 2595 controls, 601089 variants</p>
+
 
       <p>1.	Convert your plink genotype files to binary format - smaller file easier for manipulation of data </p>
-      <pre><code>plink --vcf MD.vcf.gz --make-bed --out MD</code></pre>
+      <p>
+        <font color="red">We have already provided you with plink formatted files we won't have to do this step.</font>
+      </p>
       <div class="alert alert-primary" role="alert">
-        Whats in my newly generated BED file?<br>
-MD.bed – binary coded information on individuals and variants<br>
-MD.bim – variant information. : “Chromosome”, “Marker name”, “Allele 1”, “Allele2”, “Genetic Distance” & “Base pair position”. Each SNP must have two alleles.<br>
-MD.fam – Individual Information. first 6 columns are mandatory and in the order: “Family ID”, “Individual ID”, “Paternal ID”, “Maternal ID”, “Sex” & “Phenotype”.<br>
-MD.log - Implemented commands, the number of cases and controls in the input files, any excluded data and the genotyping rate in the remaining data. This file is very useful for checking the software is successfully completing commands.<br>
+        plink allows for the conversion from many different formats to plink format. For example if you had a VCF file you could type:<br><kbd>plink --vcf MD.vcf.gz --make-bed --out MD</kbd>
+      </div>
 
+      <p>Your data set:</p>
+      <p>Plink binary formatted dataset consisting of 3004 individuals, 409 cases, 2595 controls, 601089 variants</p>
+      <div class="alert alert-primary" role="alert">
+        MD.bed – binary coded information on individuals and variants<br>
+        MD.bim – variant information. : “Chromosome”, “Marker name”, “Allele 1”, “Allele2”, “Genetic Distance” & “Base pair position”. Each SNP must have two alleles.<br>
+        MD.fam – Individual Information. first 6 columns are mandatory and in the order: “Family ID”, “Individual ID”, “Paternal ID”, “Maternal ID”, “Sex” & “Phenotype”.<br>
       </div>
 
       <div class="alert alert-warning" role="alert">
