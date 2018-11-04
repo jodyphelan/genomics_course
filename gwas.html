@@ -241,7 +241,7 @@ note: ‘nohup’ and ‘&amp’ are used to allow command to run in the backgro
         <p>
           5.2.	Plot a histogram of the missing genotype rate to identify a threshold for extreme genotype failure rate. This can be done using the data in column five of the clean.MD.lmiss file. Type:
         </p>
-        <pre><code>R CMD BATCH lmiss-hist.Rscript.</code></pre>
+        <pre><code>R CMD BATCH lmiss-hist.Rscript</code></pre>
         <p>
           This generates <b>clean.MD.lmiss.pdf</b>
         </p>
@@ -255,7 +255,7 @@ note: ‘nohup’ and ‘&amp’ are used to allow command to run in the backgro
         <p>
           <u>6.1.	To test all markers for differences in call rate between cases and controls, at the Unix prompt type: </u>
         </p>
-        <pre><code>plink --bfile clean.MD --test-missing –allow-no-sex --out clean.MD</code></pre>
+        <pre><code>plink --bfile clean.MD --test-missing --allow-no-sex --out clean.MD</code></pre>
         <p>
           The output of this test can be found in clean.MD.missing.
         </p>
