@@ -260,7 +260,7 @@ note: ‘nohup’ and ‘&amp’ are used to allow command to run in the backgro
           The output of this test can be found in clean.MD.missing.
         </p>
         <p>
-          To create a file called ‘fail_diffmiss-qc.txt’ which contains all SNPs with a significantly different (P&lt;0.00001) missing data rate between cases and controls. At the unix prompt type:
+          To create a file called ‘fail-diffmiss-qc.txt’ which contains all SNPs with a significantly different (P&lt;0.00001) missing data rate between cases and controls. At the unix prompt type:
         </p>
         <pre><code>perl run-diffmiss-qc.pl clean.MD</code></pre>
         <div class="alert alert-warning" role="alert">
@@ -272,7 +272,7 @@ note: ‘nohup’ and ‘&amp’ are used to allow command to run in the backgro
         <p>
           <u>7.1.	To remove poor SNPs from further analysis and create a new clean (QC’D) MD data file, at the Unix prompt type:</u>
         </p>
-        <pre><code>plink --bfile clean.MD --exclude fail_diffmiss-qc.txt --maf 0.01 --geno 0.05 --hwe 0.00001 --make-bed --out clean.final.MD</code></pre>
+        <pre><code>plink --bfile clean.MD --exclude fail-diffmiss-qc.txt --maf 0.01 --geno 0.05 --hwe 0.00001 --make-bed --out clean.final.MD</code></pre>
         <p>
            In addition to markers failing previous QC steps, those with a MAF&lt;0.01, genotype call rate&lt;0.05 and a HWE P-value &lt;0.00001 (in controls) are also removed.
         </p>
