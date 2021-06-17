@@ -110,8 +110,8 @@
          and the fifth column gives the number of non-missing genotypes [N(NM)], per individual. </p>
         <p>
           2.3.	Calculate the observed heterozygosity rate per individual using the formula (N(NM) - O(Hom))/N(NM) and
-            create a graph where the observed heterozygosity rate per individual is plotted on the x-axis and the proportion
-             of missing SNPs per individuals is plotted on the y-axis. Type:
+            create a graph where the proportion
+             of missing SNPs per individual is plotted on the x-axis and the observed heterozygosity rate per individual is plotted on the y-axis. Type:
         </p>
         <pre><code>R CMD BATCH imiss-vs-het.Rscript</code></pre>
         <p>
@@ -151,7 +151,7 @@
           This creates files with the extension *.genome & *.log
         </p>
         <div class="alert alert-primary" role="alert">
-          You can also create a BED file with the pruned SNPS: plink --bfile MD --extract MD.prune.in --make-bed --out MD.pruned
+          You can also create a BED file with the pruned SNPS: <kbd>plink --bfile MD --extract MD.prune.in --make-bed --out MD.pruned</kbd>
 note: ‘nohup’ and ‘&amp’ are used to allow command to run in the background thus freeing up terminal for further use. You can use
 <kbd>top</kbd> to see if the process is still running (remember to press <kbd>q</kbd> to exit).
 
@@ -196,7 +196,7 @@ note: ‘nohup’ and ‘&amp’ are used to allow command to run in the backgro
         </p>
         <img src="img/gwas_3.jpg" class="img-fluid" alt="Responsive image" width="50%">
         <div class="alert alert-primary" role="alert">
-          Data in column 4 is used to colour the points according to phenotype (i.e. case vs control). Here, we chose to exclude all individuals with a 2nd principal component score &lt;0.07.
+          Data in column 4 is used to colour the points according to phenotype (i.e. case vs control). Here, we chose to exclude all individuals with a 2nd principal component score &gt;0.07.
         </div>
         <p>Type <kbd>R CMD BATCH write_pca_fail.R</kbd> to write the FID and IID of these individuals to a file called fail_PCA.txt. </p>
 
