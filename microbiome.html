@@ -42,14 +42,13 @@
       <hr>
         <h4>Microbiomes Practical</h4><br>
         <p>Bacterial vaginosis (BV) is a disease of the vagina caused by excessive growth of bacteria. Common symptoms include increased
-           vaginal discharge that often smells like fish. The discharge is usually white or gray in color and burning with urination may
-           occur, as well as itching. However, in some cases there may be no symptoms. Having BV can double the risk of infection by a number
+           vaginal discharge, burning with urination, and itching. However, in some cases there may be no symptoms. Having BV can double the risk of infection by a number
            of other sexually transmitted infections including HIV/AIDS. It also increases the risk of early delivery among pregnant women.</p>
-        <p>BV is caused by an imbalance of the naturally occurring bacteria in the vagina. This change presents itself as a change in the
+        <p>BV is caused by an imbalance of the naturally occurring bacteria in the vagina. This presents itself as a change in the
            most common type of bacteria in the vaginal microbiome and a hundred to thousand-fold increase in total numbers of bacteria present.</p>
         <p>For this practical we are considering 6 samples of vaginal swab that were taken at the polyclinic by a GP in a setting of high
           transmission of HIV. DNA was extracted from the swabs and amplified using primers specific for the Region V1 and V2 of the 16S
-          rRNA gene of the bacteria (positions: 1148bp – 5716bp). These samples were then sequenced using the MiSeq Illumina machine producing
+          rRNA gene of the bacteria (27F and 338R). These samples were then sequenced using the MiSeq Illumina machine producing
           PAIRED END data of 300 bp. The 6 pairs of files generated are found in the <b>metagenomics/fastq</b> folder. The patients’
           phenotype was determined by the doctors at the time of the sample collection giving the following results:</p>
           <div class="row">
@@ -235,13 +234,15 @@ Mean:	1044.05	6333.36	321.816	0	4.08212
 total # of seqs:	204240
 </samp></div>
         <p>So what does this mean? You will see that the bulk of the sequences start at position
-          1044 and end at position 6333. Some sequences start at position 1044 and end at 6330
+          1044 and end at position 6333 (these designate the coordinates in the SILVA database and
+          not the actual positions in the 16S rRNA gene).
+          Some sequences start at position 1044 and end at 6330
           or 6443. These deviants from the mode positions are likely due to an insertion or
           deletion at the terminal ends of the alignments. Sometimes you will see sequences that
           start and end at the same position indicating a very poor alignment, which is generally
           due to non-specific amplification. To make sure that everything overlaps the same region
           we will re-run <i>screen.seqs</i> to obtain sequences that start at or before position 1148
-          and end at or after position 5716.</p>
+          and end at or after position 5716 (corresponding to 27&ndash;338 in the 16S gene).</p>
           <pre><code>screen.seqs(fasta=BV.trim.contigs.good.unique.align, count=BV.trim.contigs.good.count_table, summary=BV.trim.contigs.good.unique.summary, start=1148, end=5716, maxhomop=6)</pre></code>
           <p>Now we know our sequences overlap the same alignment coordinates, we want to make
             sure they only overlap that region. So we will filter the sequences to remove the
