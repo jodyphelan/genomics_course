@@ -117,7 +117,7 @@
         <p>In order to open mothur, open a new terminal and navigate to the folder ~/data/metagenomics.</p>
         <pre><code>cd ~/data/metagenomics</pre></code>
         <p>FOr this practical we will be using an old version of python so in order to use it run the commnad:</p>
-        <pre><code>source activate mothur_env</pre></code>
+        <pre><code>source activate mothur</pre></code>
         <p>Now, to start the software type in the command:</p>
         <pre><code>mothur</pre></code>
         <p>You should see a screen like this:</p>
@@ -139,7 +139,7 @@
         check how the reads should map against a contig:</p>
         <div class="text-center"><img src="img/Microbiome_2_1.jpg" class="img-fluid"></div>
         <p>To generate these contigs we run the following command:</p>
-        <pre><code>make.contigs(file=BV.files, processors=1)</pre></code>
+        <pre><code>make.contigs(file=BV.files, processors=4)</pre></code>
         <p>Note that we are using 4 processors to speed things up, and it will take at most 5-10
           minutes. Once finished you will see a list of the samples with the amount of reads in
           each sample:</p>
