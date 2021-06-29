@@ -170,10 +170,6 @@
           like using the following commands:</p>
         <pre><code>system(head BV.trim.contigs.fasta)</pre></code>
         <div class="text-center"><img src="img/Microbiome_3.jpg" class="img-fluid"></div><br>
-        <p>The BV.trim.contigs.qual will store all the sequence reads for all the samples.</p>
-        <pre><code>system(head BV.trim.contigs.qual)</pre></code>
-        <div class="text-center"><img src="img/Microbiome_4.jpg" class="img-fluid"></div><br>
-        <p>The BV.trim.contigs.qual stores the quality of the bases called in each contig.</p>
         <pre><code>system(head BV.contigs.report)</pre></code>
         <div class="text-center"><img src="img/Microbiome_5.jpg" class="img-fluid"></div><br>
         <p>The BV.contigs.report stores the summary of the contig quality and the file BV.contigs.groups
@@ -181,7 +177,7 @@
         <p>A good way to summarize the overall quality of the reads is by running the command:</p>
         <pre><code>summary.seqs(fasta=BV.trim.contigs.fasta)</pre></code>
         <div class="alert alert-info" style="white-space:pre-wrap;"><samp>
-          Start	End	NBases	Ambigs	Polymer	NumSeqs
+                Start   End	NBases	Ambigs	Polymer	NumSeqs
 Minimum:	1	298	298	0	3	1
 2.5%-tile:	1	305	305	0	4	6193
 25%-tile:	1	308	308	0	4	61928
@@ -195,7 +191,7 @@ Mean:		1	323.44	323.44	0.758968	4.11695
   <p>Interestingly, the longest read in the dataset is 600 bp. Be suspicious of this. Recall that
     the reads are supposed to be 300 bp each. This read clearly did not assemble well (or at all).
      Also note that at least 2.5% of our sequences had some ambiguous base calls and that the
-     maximum homopolymer, the same base repeated over (i.e AAAAAAAA is a homopolymer of 8 Adenine)
+     maximum homopolymer (i.e. the same base repeated multiple times &ndash; e.g. AAAAAAAA)
       is 282 bp in a row, these sequences are normally errors created in the sequencing process.
       We will take care of these issues in the next step when we run screen.seqs.</p>
       <pre><code>screen.seqs(fasta=BV.trim.contigs.fasta, group=BV.contigs.groups, summary=BV.trim.contigs.summary, maxambig=0, maxlength=340, maxhomop=6)</pre></code>
@@ -218,10 +214,10 @@ Mean:		1	323.44	323.44	0.758968	4.11695
         <pre><code>count.seqs(name=BV.trim.contigs.good.names, group=BV.contigs.good.groups)</pre></code>
         <p>Now that our reads are ordered and clean is the time to align our reads to the reference
           database and check what we have in there.</p>
-        <pre><code>align.seqs(fasta=BV.trim.contigs.good.unique.fasta, reference=database/silva.bacteria.fasta, flip=T)
-summary.seqs(fasta=BV.trim.contigs.good.unique.align, count=BV.trim.contigs.good.count_table)</pre></code>
+        <pre><code>align.seqs(fasta=BV.trim.contigs.good.unique.fasta, reference=database/silva.bacteria.fasta, flip=T)</pre></code>
+        <pre><code>summary.seqs(fasta=BV.trim.contigs.good.unique.align, count=BV.trim.contigs.good.count_table)</pre></code>
         <div class="alert alert-info" style="white-space:pre-wrap;"><samp>
-          Start	End	NBases	Ambigs	Polymer	NumSeqs
+                Start	End	NBases	Ambigs	Polymer	NumSeqs
 Minimum:	<b>1044	6330</b>	275	0	3	1
 2.5%-tile:	<b>1044	6333</b>	305	0	4	5107
 25%-tile:	<b>1044	6333</b>	308	0	4	51061
@@ -263,7 +259,7 @@ Number of sequences used to construct filter: 13610</samp></div>
             sequences. The next thing we want to do to further de-noise our sequences is to pre-cluster
             the sequences using the pre.cluster command allowing for up to 3 differences between
             sequences. This command will split the sequences by group and then sort them by abundance
-            and go from most abundant to least and identify sequences that are within 2 nt of each other.
+            and go from most abundant to least and identify sequences that are within 3 nt of each other.
             If they are then they get merged. We generally favour allowing 1 difference for every 100 bp
             of sequence:</p>
             <pre><code>pre.cluster(fasta=BV.trim.contigs.good.unique.good.filter.unique.fasta, count=BV.trim.contigs.good.unique.good.filter.count_table, diffs=3)</pre></code>
@@ -283,29 +279,29 @@ Number of sequences used to construct filter: 13610</samp></div>
                  <i>remove.seqs</i>:</p>
                <pre><code>remove.seqs(fasta=BV.trim.contigs.good.unique.good.filter.unique.precluster.fasta, accnos=BV.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.accnos)</pre></code>
                <p>You should see the following line:</p>
-               <div class="alert alert-info" style="white-space:pre-wrap;"><samp>Removed 785 sequences from your fasta file.</samp></div>
+               <div class="alert alert-info" style="white-space:pre-wrap;"><samp>Removed 838 sequences from your fasta file.</samp></div>
                <p>Let us see what we have left:</p>
                <pre><code>summary.seqs(fasta=current, count=current)</pre></code>
                <div class="alert alert-info" style="white-space:pre-wrap;"><samp>		Start	End	NBases	Ambigs	Polymer	NumSeqs
 Minimum:	1	570	235	0	3	1
-2.5%-tile:	1	570	266	0	4	5036
-25%-tile:	1	570	269	0	4	50351
-Median: 	1	570	276	0	4	100701
-75%-tile:	1	570	300	0	4	151051
-97.5%-tile:	3	570	300	0	5	196366
-Maximum:	3	570	303	0	6	201401
+2.5%-tile:	1	570	266	0	4	5038
+25%-tile:	1	570	269	0	4	50373
+Median: 	1	570	276	0	4	100746
+75%-tile:	1	570	300	0	4	151119
+97.5%-tile:	3	570	300	0	5	196454
+Maximum:	3	570	303	0	6	201491
 Mean:	1.26688	570	282.837	0	4.08113
 # of unique seqs:	<b>613</b>
-total # of seqs:	<b>201401</b>
+total # of seqs:	<b>201491</b>
 </samp></div>
-            <p>Note that we went <b>from 204,240 to 201,401 sequences</b> for a reduction of 0.01%; this is a
+            <p>Note that we went <b>from 204,240 to 201,491 sequences</b> for a reduction of 0.01%; this is a
               reasonable number of sequences to be flagged as chimeric (it can go up to around
               10%).</p>
             <p>As a final quality control step, we need to see if there are any "undesirables"
               in our dataset. Sometimes when we pick a primer set they will amplify other stuff
               that gets to this point in the pipeline such as 18S rRNA gene fragments or 16S
               rRNA from <i>Archaea</i>, chloroplasts, and mitochondria. There is also just the random
-              stuff that we want to get remove (we will provide you with the list, no worries).</p>
+              stuff that we want to remove (we will provide you with the list, no worries).</p>
             <p>Let us go ahead and classify those sequences using the Bayesian classifier
                 with the <i>classify.seqs</i> command:</p>
                 <pre><code>classify.seqs(fasta=BV.trim.contigs.good.unique.good.filter.unique.precluster.pick.fasta, count=BV.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.count_table, reference=database/silva.bacteria.fasta, taxonomy=database/silva.bacteria.silva.tax, cutoff=80)</pre></code>
@@ -313,14 +309,14 @@ total # of seqs:	<b>201401</b>
             <pre><code>remove.lineage(fasta=BV.trim.contigs.good.unique.good.filter.unique.precluster.pick.fasta, count=BV.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.count_table, taxonomy=BV.trim.contigs.good.unique.good.filter.unique.precluster.pick.silva.wang.taxonomy, taxon=Chloroplast-Mitochondria-unknown-Archaea-Eukaryota-unknown-Bradyrhizobium-Paracoccus-Comamonas-Moraxella-Pseudomonas-Acidobacteria-Cyanobacteria-Deinococcus-Thermus-Acidobacteria-Chloroplast-Cyanobacteria-Deinococci-ML635J-21-Sphingobacteriia-Deinococcales-Sphingobacteriales-Subgroup_2-Subgroup_3-Subgroup_4-Subgroup_5-Subgroup_6-SubsectionI-SubsectionII-SubsectionIII-Chitinophagaceae-Comamonadaceae-env.OPS_17-FamilyI-FamilyI-FamilyII-mitochondria-Moraxellaceae-NS9_marine_group-Sphingobacteriaceae-Trueperaceae-Unknown_Family-Unknown_Family-Acinetobacter-Afipia-Alicycliphilus-Alteromonas-Aquabacterium-Aquamicrobium-Azospira-Azospirillum-Blastocatella-Bosea-Bradyrhizobium-Brevundimonas-Bryobacter-Candidatus_Solibacter-Caulobacter-Chroococcidiopsis-Chroogloeocystis-Chryseobacterium-Cloacibacterium-Comamonas-Craurococcus-Crinalium-Cupriavidus-Curvibacter-Delftia-Diaphorobacter-Enhydrobacter-Flavisolibacter-Flavobacterium-Globicatella-Hydrotalea-Lautropia-Leptolyngbya-Marinobacter-Massilia-Mesorhizobium-Methylobacillus-Methylobacterium-Methylophilus-Methyloversatilis-Moraxella-Nitrosospira-Noviherbaspirillum-Novosphingobium-Paracoccus-Pedobacter-Pedomicrobium-Pelagibacterium-Phenylobacterium-Propionibacterium-Propioniciclava-Propioniferax-Propionimicrobium-Pseudomonas-Psychrobacter-Ralstonia-Rhizobium-Roseomonas-Salinimicrobium-Schlegelella-Sediminibacterium-Sphingobacterium-Sphingomonas-Stenotrophomonas-Sulfuritalea-Terrimonas-Tessaracoccus-Truepera-Undibacterium-Variovorax-Weeksella)</pre></code>
             <p>To see the output of this classification we will use another software called
               <i>KronaTools</i>. For this type:</p>
-            <pre><code>system(python mothur_krona_XML.py BV.trim.contigs.good.unique.good.filter.unique.precluster.pick.silva.wang.tax.summary > BV_krona.xml)</pre></code>
+            <pre><code>system(python2 mothur_krona_XML.py BV.trim.contigs.good.unique.good.filter.unique.precluster.pick.silva.wang.tax.summary > BV_krona.xml)</pre></code>
 
             <p>This will create and output in XML format that can then be loaded into
               <i>KronaTools</i> to create an interactive plot to navigate through.
               To do this type:</p>
             <pre><code>system(ktImportXML BV_krona.xml -o BV_krona.html)</pre></code>
             <p>This will create the file <i>BV_krona.html</i> that you can open by navigating
-              to the folder <b>~/data/metagenomics/</b> and double clicking in it. It should open in
+              to the folder <b>~/data/metagenomics/</b> and double clicking it (or by running <kbd>system(xdg-open BV_krona.html)</kbd>). It should open in
               the Web browser.</p>
               <div class="text-center"><img src="img/Microbiome_6.jpg" class="img-fluid"></div>
               <br>
@@ -395,17 +391,17 @@ total # of seqs:	<b>201401</b>
               <p><b>So what is an OTU?</b></p>
               <p>OTU's are used to categorize bacteria based on sequence similarity. In 16S metagenomics
                 approaches, OTUs are clusters of similar sequence variants of the 16S rDNA marker gene
-                sequence. Each of these cluster is intended to represent a taxonomic unit of a bacteria
+                sequence. Each of these clusters is intended to represent a taxonomic unit of a bacterial
                 species or genus depending on the sequence similarity threshold. Typically, OTU cluster
                 are defined by a 97% identity threshold of the 16S gene sequence variants, but also the
                 use of 99% identity is suggested for species separation.</p>
                 <p>OTU classification resolution depends on the 16S approach which has some limits in
                   distinguishing at the species level, for example, <i>Escherichia coli</i> and
-                  <i>Shigella spp.</i> share almost identical 16S rRNA gene sequences.</p>
+                  <i>Shigella spp.</i> have almost identical 16S rRNA gene sequences.</p>
                   <p>To do the classification we will use <i>dist.seqs</i>:</p>
               <pre><code>dist.seqs(fasta=BV.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.fasta, cutoff=0.20)</pre></code>
               <pre><code>cluster(column=BV.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.dist, count=BV.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.pick.count_table)</pre></code>
-              <p>Do not worry if you see a lot of 0's populating your screen this is normal, once finished we want
+              <p>Once finished we want
                  to know how many sequences are in each OTU from each group, and we can do this using the
                  <i>make.shared</i> command. Here we tell mothur that we are really only interested in the
                  0.03 cut-off level.</p>
@@ -430,7 +426,7 @@ total # of seqs:	<b>201401</b>
                  command line and navigate to <i>~/data/metagenomics/</i> and type <i>R</i>.</p>
                  <pre><code>cd ~/data/metagenomics/
 R</pre></code>
-                <p><b>This will start <i>R</i> then copy the following scripts to plot the graphics.</b></p>
+                <p><b>This will start <i>R</i>. Then copy the following script to plot the graphics.</b></p>
                 <pre><code>data<-read.table("~/data/metagenomics/BV.an.groups.rarefaction",sep="\t",header=T)
 data_all<-c(data$X0.03.BB_1,data$X0.03.BB_2,data$X0.03.BB_3,data$X0.03.BB_4,data$X0.03.BB_5,data$X0.03.BB_6)
 max_all<-max(data_all,na.rm=TRUE)
