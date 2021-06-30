@@ -73,21 +73,19 @@
       <p>Your data set:</p>
       <p>Plink binary formatted dataset consisting of 3004 individuals, 409 cases, 2595 controls, 601089 variants</p>
       <div class="alert alert-primary" role="alert">
-        MD.bed – binary coded information on individuals and variants<br>
-        MD.bim – variant information. : “Chromosome”, “Marker name”, “Allele 1”, “Allele2”, “Genetic Distance” & “Base pair position”. Each SNP must have two alleles.<br>
-        MD.fam – Individual Information. first 6 columns are mandatory and in the order: “Family ID”, “Individual ID”, “Paternal ID”, “Maternal ID”, “Sex” & “Phenotype”.<br>
+        MD.bed – binary-coded information on individuals and variants<br>
+        MD.bim – variant information: “Chromosome”, “Marker name”, “Genetic Distance” (or '0' as dummy variable), “Base-pair coordinate”, “Allele 1”, “Allele 2”. Each SNP must have two alleles.<br>
+        MD.fam – Individual Information. The first 6 columns are mandatory and in the order: “Family ID”, “Individual ID”, “Paternal ID”, “Maternal ID”, “Sex”, “Phenotype”.<br>
       </div>
 
       <div class="alert alert-warning" role="alert">
-        <p>How many individuals are in your file? How many cases and controls?</p>
-        <p>How many variants are present?</p>
+        <p>Double-check the basic stats of your dataset (number of variants, individuals, controls, cases) by examining MD.bim and MD.fam with bash utilities like <kbd>awk</kbd> or <kbd>wc</kbd>. </p>
         <p>What other information is available?</p>
-        <p>To view your log file type: <kbd>less MD.log</kbd></p>
       </div>
 
       <p><b>B.	Sample QC</b></p>
       <p><u>1.	Identification of Individuals with discordant sex information</u><br>
-         Ideally if X-chromosome data is available, we would data calculate the mean homozygosity
+         Ideally, if X-chromosome data are available, we would calculate the mean homozygosity
          rate across X chromosome markers for each individual in the study and identify discordance
          with our reported Sex phenotype.<br>
          <font color="red">As our data only contains autosomes we will skip this step.</font>
@@ -134,26 +132,26 @@
           <u>3.	Identification of duplicated or related individuals </u>
         </p>
         <p>
-          3.1.	To identify duplicate & related individuals, create an Identity-by-State (IBS) matrix - calculated for each pair of individuals based on the average proportion of alleles shared in common at genotyped SNPs
+          3.1.	To identify duplicate & related individuals, create an Identity-by-State (IBS) matrix &ndash; calculated for each pair of individuals based on the shared proportion of alleles.
         </p>
         <p>
-          3.1.1.	To reduce the computational complexity, first prune the dataset so that no pair of SNPs (within a given window e.g 200kb) has linkage disequilibrium (an r2> 0.2). Type
+          3.1.1.	To reduce the computational complexity, first prune the dataset so that no pair of SNPs (within a given window e.g 200kb) has linkage disequilibrium (r² > 0.2). Type
         </p>
         <pre><code>plink --bfile MD --indep-pairwise 200 5 0.5 --out MD</code></pre>
         <p>
           This creates files with the extension *.prune.in *.prune.out & *.log
         </p>
         <p>
-          3.1.2.	 Then to extract pruned snps and generate pair-wise IBS, type:
+          3.1.2.	 Then, to extract pruned SNPs and generate pair-wise IBS, type:
         </p>
         <pre><code>nohup plink --bfile MD --extract MD.prune.in --genome --out MD &</code></pre>
         <p>
-          This creates files with the extension *.genome & *.log
+          This might take a few minutes and creates files with the extension *.genome & *.log
         </p>
         <div class="alert alert-primary" role="alert">
-          You can also create a BED file with the pruned SNPS: <kbd>plink --bfile MD --extract MD.prune.in --make-bed --out MD.pruned</kbd>
-note: ‘nohup’ and ‘&amp’ are used to allow command to run in the background thus freeing up terminal for further use. You can use
-<kbd>top</kbd> to see if the process is still running (remember to press <kbd>q</kbd> to exit).
+          You can also create a BED file with the pruned SNPs: <kbd>plink --bfile MD --extract MD.prune.in --make-bed --out MD.pruned</kbd>
+note: ‘nohup’ and ‘&amp’ are used to allow the command to run in the background thus freeing up the terminal for further use. You can use
+<kbd>top</kbd> to see if the process is still running (remember to press <kbd>q</kbd> to exit). Alternatively, you could of course simply run the command in another terminal.
 
         </div>
         <div class="alert alert-warning" role="alert">
@@ -164,7 +162,7 @@ note: ‘nohup’ and ‘&amp’ are used to allow command to run in the backgro
         </p>
         <pre><code>perl run-IBD-QC.pl MD</code></pre>
         <div class="alert alert-primary" role="alert">
-          The code looks at the individual call rates stored in MD.imiss and output the IDs of the individual with the lowest call rates to <b>fail_IBD-QC.txt</b> for subsequent removal.
+          The code also looks at the individual call rates stored in MD.imiss and outputs the ID of the individual with the lower call rate to <b>fail_IBD-QC.txt</b> for each pair of related individuals.
         </div>
         <p>
           To visualise the IBD rates, type:
@@ -175,7 +173,7 @@ note: ‘nohup’ and ‘&amp’ are used to allow command to run in the backgro
         </p>
         <img src="img/gwas_2.jpg" class="img-fluid" alt="Responsive image" width="50%">
         <div class="alert alert-primary" role="alert">
-          <u>Note</u>: The expectation is that IBD = 1 for duplicates or monozygotic twins, IBD = 0.5 for 1st-degree relatives, IBD = 0.25 for 2nd-degree relatives and IBD = 0.125 for 3rd-degree relatives. Due to variation around these values and it is typical to exclude one individual from each pair with an IBD > 0.185, which is halfway between the expected IBD for 3rd- and 2nd-degree relatives.
+          <u>Note</u>: The expectation is that IBD = 1 for duplicates or monozygotic twins, IBD = 0.5 for 1st-degree relatives, IBD = 0.25 for 2nd-degree relatives and IBD = 0.125 for 3rd-degree relatives. Due to variation around these values it is typical to exclude one individual from each pair with an IBD > 0.185, which is halfway between the expected IBD for 3rd- and 2nd-degree relatives.
         </div>
         <div class="alert alert-warning" role="alert">
           How many individuals fail to meet the IBD threshold? Hint: use the <kbd>less</kbd> command to view the file or <kbd>wc -l filename</kbd> to count the number of lines
@@ -185,7 +183,7 @@ note: ‘nohup’ and ‘&amp’ are used to allow command to run in the backgro
         </p>
         <div class="alert alert-primary" role="alert">
           In the interest of time, this step has been mostly done for you.
-          <p>4.1.	Principal components analysis (PCA) is performed with pruned bed file datasets generated from step 3.1.2 using the ./Run_PCA.sh command. This generates the following output files: MD.pruned.pca.par, MD.pruned.pca.log, MD.pruned.pca.evec, MD.pruned.pca, MD.pruned.eval. The evec extension file is what you will need to view your PCs</p>
+          <p>4.1.	Principal components analysis (PCA) is performed with pruned bed file datasets generated from step 3.1.2 using the <kbd>./RUN_PCA.sh</kbd> command. This generates the following output files: MD.pruned.pca.par, MD.pruned.pca.log, MD.pruned.pca.evec, MD.pruned.pca, MD.pruned.eval. The evec extension file is what you will need to view your PCs</p>
         </div>
         <p>
           4.2.	Create a scatter diagram of the first two principal components, including all individuals in the file MD.pruned.pca.evec (the first and second PCs are columns 2 and 3 respectively). Type:
@@ -198,18 +196,22 @@ note: ‘nohup’ and ‘&amp’ are used to allow command to run in the backgro
         <div class="alert alert-primary" role="alert">
           Data in column 4 is used to colour the points according to phenotype (i.e. case vs control). Here, we chose to exclude all individuals with a 2nd principal component score &gt;0.07.
         </div>
-        <p>Type <kbd>R CMD BATCH write_pca_fail.R</kbd> to write the FID and IID of these individuals to a file called fail_PCA.txt. </p>
+        <p>For the next R script we need to install the <code>reshape</code> package. Fire up R by typing <kbd>R</kbd> and install the package via
+        <pre><code>options(download.file.method = "wget")</code></pre>
+        and
+        <pre><code>install.packages("reshape")</code></pre>
+        You can check the installation by importing the package with <kbd>library(reshape)</kbd>. Then, close R (with ctrl-d) and run <kbd>R CMD BATCH write_pca_fail.R</kbd> to write the FID and IID of the filtered individuals to a file called fail_PCA.txt. </p>
 
         <div class="alert alert-warning" role="alert">
-          How many individuals failed PCA threshold?
+          How many individuals failed the PCA threshold?
         </div>
         <p>
           4.3.	Remove all individuals failing QC
         </p>
         <p>
           4.3.1. To concatenate all the files listing individuals failing the previous QC steps into single file, at the unix prompt type:
-        </p>
-        <pre><code>cat fail_* | sort -k1 | uniq > fail_qc_inds.txt</code></pre>
+      </p>
+        <pre><code>cat fail*txt | sort -k1 | uniq > fail_qc_inds.txt</code></pre>
         <p>
           The file <b>fail_qc_inds.txt</b> should now contain a list of unique individuals failing the previous QC steps.
         </p>
@@ -260,7 +262,7 @@ note: ‘nohup’ and ‘&amp’ are used to allow command to run in the backgro
           The output of this test can be found in clean.MD.missing.
         </p>
         <p>
-          To create a file called ‘fail-diffmiss-qc.txt’ which contains all SNPs with a significantly different (P&lt;0.00001) missing data rate between cases and controls. At the unix prompt type:
+          To create a file called ‘fail-diffmiss-qc.txt’, which contains all SNPs with a significantly different (P&lt;0.00001) missing rate between cases and controls, type
         </p>
         <pre><code>perl run-diffmiss-qc.pl clean.MD</code></pre>
         <div class="alert alert-warning" role="alert">
@@ -274,7 +276,7 @@ note: ‘nohup’ and ‘&amp’ are used to allow command to run in the backgro
         </p>
         <pre><code>plink --bfile clean.MD --exclude fail-diffmiss-qc.txt --maf 0.01 --geno 0.05 --hwe 0.00001 --make-bed --out clean.final.MD</code></pre>
         <p>
-           In addition to markers failing previous QC steps, those with a MAF&lt;0.01, genotype call rate&lt;0.05 and a HWE P-value &lt;0.00001 (in controls) are also removed.
+           In addition to markers failing previous QC steps, those with a MAF &lt; 0.01, missing rate &gt; 0.05 and a HWE P-value &lt; 0.00001 (in controls) are also removed.
         </p>
         <div class="alert alert-warning" role="alert">
           How many variants and individuals pass filters and QC for your GWAS?
@@ -322,8 +324,8 @@ U95     Upper bound of 95% confidence interval for odds ratio
           What do the plots tell you?
         </div>
         <p>
-          8.2.2.1.	Let’s zoom into a region of interest, the tower of SNPs on CHR1 (coloured in yellow). This the Complement Factor H (CFH) region known to be associated with Mening Disease.
-The previous Rscript in 8.2.2 above also generated the <b>CHR_CFH_region.txt</b> file.
+          8.2.2.1.	Let’s zoom into a region of interest: the tower of SNPs on CHR1 (coloured in yellow). This the Complement Factor H (CFH) region known to be associated with Meningococcal disease.
+The previous Rscript in 8.2.2 above also generated the <b>chr1_CFH_region.txt</b> file.
         </p>
         <ul>
           <li>Open the locuszoom webpage: http://locuszoom.org/genform.php?type=yourdata</li>
@@ -334,12 +336,6 @@ The previous Rscript in 8.2.2 above also generated the <b>CHR_CFH_region.txt</b>
         </ul>
 
         <hr>
-        <p>
-          <b>We have reached the end of this practical. You can use the scripts to analyse your own data from sample QC to variant QC and case-control GWAS. Good luck!</b>
-        </p>
-
-
-
 
 
     </div>
