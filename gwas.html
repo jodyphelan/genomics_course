@@ -200,7 +200,9 @@ note: ‘nohup’ and ‘&amp’ are used to allow the command to run in the bac
         <pre><code>options(download.file.method = "wget")</code></pre>
         and
         <pre><code>install.packages("reshape")</code></pre>
-        You can check the installation by importing the package with <kbd>library(reshape)</kbd>. Then, close R (with ctrl-d) and run <kbd>R CMD BATCH write_pca_fail.R</kbd> to write the FID and IID of the filtered individuals to a file called fail_PCA.txt. </p>
+        You can check the installation by importing the package with <kbd>library(reshape)</kbd>. Then, close R (with ctrl-d) and run
+        <pre><code>R CMD BATCH write_pca_fail.R</code></pre>
+            to write the FID and IID of the filtered individuals to a file called fail_PCA.txt. </p>
 
         <div class="alert alert-warning" role="alert">
           How many individuals failed the PCA threshold?
@@ -328,11 +330,11 @@ U95     Upper bound of 95% confidence interval for odds ratio
 The previous Rscript in 8.2.2 above also generated the <b>chr1_CFH_region.txt</b> file.
         </p>
         <ul>
-          <li>Open the locuszoom webpage: http://locuszoom.org/genform.php?type=yourdata</li>
+          <li>Open the locuszoom webpage: <a href="http://locuszoom.org/genform.php?type=yourdata" target="_blank"> http://locuszoom.org/genform.php?type=yourdata </a></li>
           <li>Upload the text file and select PLINK data format.</li>
           <li>Enter the most associated snp (“rs1065489”) with a flanking size of 500KB</li>
           <li>In the Genome Build/LD Population field select the appropriate hg19 european ref panel.</li>
-          <li>Then press plot data to generate your plot!</li>
+          <li>Then press "Plot Data" to generate your plot.</li>
         </ul>
 
         <hr>
