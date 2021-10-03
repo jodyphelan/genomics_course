@@ -41,80 +41,130 @@
       </object>
       <hr>
         <h4>Microbiomes Practical</h4><br>
-        <p>Bacterial vaginosis (BV) is a disease of the vagina caused by excessive growth of bacteria. Common symptoms include increased
-           vaginal discharge, burning with urination, and itching. However, in some cases there may be no symptoms. Having BV can double the risk of infection by a number
-           of other sexually transmitted infections including HIV/AIDS. It also increases the risk of early delivery among pregnant women.</p>
-        <p>BV is caused by an imbalance of the naturally occurring bacteria in the vagina. This presents itself as a change in the
-           most common type of bacteria in the vaginal microbiome and a hundred to thousand-fold increase in total numbers of bacteria present.</p>
-        <p>For this practical we are considering 6 samples of vaginal swab that were taken at the polyclinic by a GP in a setting of high
-          transmission of HIV. DNA was extracted from the swabs and amplified using primers specific for the Region V1 and V2 of the 16S
-          rRNA gene of the bacteria (27F and 338R). These samples were then sequenced using the MiSeq Illumina machine producing
-          PAIRED END data of 300 bp. The 6 pairs of files generated are found in the <b>metagenomics/fastq</b> folder. The patients’
+        <p> Bacterial vaginosis (BV) is a common dysbiotic condition caused by excessive growth of bacteria replacing the common vaginal microbiome. Common symptoms include increased discharge, burning with urination, and itching. BV increases the risk of infection by a number of sexually transmitted infections including HIV/AIDS as well as the risk of early delivery when pregnant. The changed composition of the microbiome leads to a higher pH and a hundred to thousand-fold increase in total numbers of bacteria present.
+        </p>
+        <p>For this practical we are considering 6 samples of vaginal swab that were taken at a polyclinic by a GP in a setting of high
+          transmission of HIV. DNA was extracted from the swabs and amplified using primers specific for the first two hypervariable regions (V1 and V2) of the 16S
+          rRNA gene (27F and 338R). These samples were then sequenced with MiSeq Illumina producing
+          PAIRED END data of 300 bp length per read. The 6 pairs of files generated are found in the <kbd>metagenomics/fastq</kbd> folder. The patients’
           phenotype was determined by the doctors at the time of the sample collection giving the following results:</p>
-          <div class="row">
-            <div class="col-sm-2"></div>
-            <div class="col-sm-8">
+
+        <div class="row">
+          <div class="col-sm-2"></div>
+              <div class="col-sm-8">
               <table class="table">
-        <thead class="thead-dark">
-          <tr>
-            <th scope="col">Sample</th>
-            <th scope="col">BV +/-</th>
-            <th scope="col">pH</th>
-            <th scope="col">HIV +/-</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row">BB_1</th>
-            <td>BV(-)</td>
-            <td>4.1</td>
-            <td>HIV(-)</td>
-          </tr>
-          <tr>
-            <th scope="row">BB_2</th>
-            <td>BV(+)</td>
-            <td>4.7</td>
-            <td>HIV(-)</td>
-          </tr>
-          <tr>
-            <th scope="row">BB_3</th>
-            <td>BV(+)</td>
-            <td>5.3</td>
-            <td>HIV(-)</td>
-          </tr>
-          <tr>
-            <th scope="row">BB_4</th>
-            <td>BV(-)</td>
-            <td>4.4</td>
-            <td>HIV(-)</td>
-          </tr>
-          <tr>
-            <th scope="row">BB_5</th>
-            <td>BV(+)</td>
-            <td>5.5</td>
-            <td>HIV(-)</td>
-          </tr>
-          <tr>
-            <th scope="row">BB_6</th>
-            <td>BV(-)</td>
-            <td>4.4</td>
-            <td>HIV(-)</td>
-          </tr>
-        </tbody>
-      </table>
+                  <thead class="thead-dark">
+                      <tr>
+                          <th style="text-align:center", scope="col">Sample</th>
+                          <th style="text-align:center", scope="col">BV</th>
+                          <th style="text-align:center", scope="col">pH</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr>
+                          <th style="text-align:center", scope="row">BB_1</th>
+                          <td style="text-align:center">yes</td>
+                          <td style="text-align:center">5.3</td>
+                      </tr>
+                      <tr>
+                          <th style="text-align:center", scope="row">BB_2</th>
+                          <td style="text-align:center">yes</td>
+                          <td style="text-align:center">5.3</td>
+                      </tr>
+                      <tr>
+                          <th style="text-align:center", scope="row">BB_3</th>
+                          <td style="text-align:center">yes</td>
+                          <td style="text-align:center">3.6</td>
+                      </tr>
+                      <tr>
+                          <th style="text-align:center", scope="row">BB_4</th>
+                          <td style="text-align:center">yes</td>
+                          <td style="text-align:center">5.3</td>
+                      </tr>
+                      <tr>
+                          <th style="text-align:center", scope="row">BB_7</th>
+                          <td style="text-align:center">yes</td>
+                          <td style="text-align:center">4.7</td>
+                      </tr>
+                      <tr>
+                          <th style="text-align:center", scope="row">BB_8</th>
+                          <td style="text-align:center">no</td>
+                          <td style="text-align:center">3.6</td>
+                      </tr>
+                      <tr>
+                          <th style="text-align:center", scope="row">BB_9</th>
+                          <td style="text-align:center">no</td>
+                          <td style="text-align:center">4.1</td>
+                      </tr>
+                      <tr>
+                          <th style="text-align:center", scope="row">BB_10</th>
+                          <td style="text-align:center">no</td>
+                          <td style="text-align:center">3.6</td>
+                      </tr>
+                      <tr>
+                          <th style="text-align:center", scope="row">BB_11</th>
+                          <td style="text-align:center">no</td>
+                          <td style="text-align:center">4.4</td>
+                      </tr>
+                      <tr>
+                          <th style="text-align:center", scope="row">BB_12</th>
+                          <td style="text-align:center">no</td>
+                          <td style="text-align:center">3.6</td>
+                      </tr>
+                  </tbody>
+              </table>
           </div>
-          </div>
+      </div>
+                
 
+      <h4>Analysing the microbiome samples with <i>QIIME2</i></h4>
+      <p>Out of all tookits aiming at the unification of the analysis of microbiome data, QIIME (pronounced "chime") and its successor QIIME2 have grown the largest user base in the last couple years due to ease of use and great online documentation (<a href=https://docs.qiime2.org/>https://docs.qiime2.org/</a>). QIIME2 wraps an extensive suite of third party tools covering most of the "standard" microbiome pipeline from preprocessing and filtering of raw sequencing reads to statistical tests on diversity metrics and analyses on differential abundance of single taxa into a single command line interface (which we will use). In addition, it also provides a GUI as well as a python API for both less and more technically inclined users.</p>
+      <p>One idiosyncrasy of QIIME2 is the use of so-called "artifacts". These are simply zip-archives with a special file extension (<kbd>.qza</kbd> for data artifacts and <kbd>.qzv</kbd> for visualisation artifacts) that hold bulk data in addition to unique IDs and provenance metadata, which describe all steps that lead to the creation of that particular result. This has the advantage that for every intermediate or final result of <kbd>qiime</kbd> it is perfectly clear how it was generated from start to finish. However, there is the small downside, that we have to import our data into the QIIME2 format as a first step. In order to do this, <kbd>qiime</kbd> needs a tab-separated file with the sample IDs and the absolute paths to the forward and reverse reads. There are many ways to create such a file (and if you have just a few samples you can also simply type it by hand). We will employ a few of the command line utilities that come with most Linux distribution</p> 
+      <p>The FASTQ files of our samples are in <kbd>data/metagenomics/fastq/</kbd>. Navigate into the directory using <kbd>cd</kbd> and have a look at the filenames with <kbd>ls</kbd>. First, let's write the header line of the import-list to a new file:
+      </p>
+      <pre><code>printf "sample-id\tforward-absolute-filepath\treverse-absolute-filepath\n" \
+          > fastq_abs_paths</code></pre>
+      <div class="alert alert-primary" role="alert">
+        We used a backslash here to break this command into two lines.
+      </div>
+      Now, we need to append the lines corresponding to our samples to the file that was just created. We can achieve this with
+      <pre><code>paste -d'\t' \
+  <(ls | grep -o "BB_[0-9]*" | sort | uniq) \
+  <(find $PWD | grep "1.fastq.gz" | sort) \
+  <(find $PWD | grep "2.fastq.gz" | sort) \
+  >> fastq_abs_paths</code></pre>
+      This should have done the trick. <kbd>cat fastq_abs_paths</kbd> let's us see what we got. The output should look like this:
+      <pre><code>sample-id       forward-absolute-filepath       reverse-absolute-filepath
+  BB_1    /mnt/storage/julian_l/teaching/microbiome_practical/try/data/metagenomics/fastq/BB_1_1.fastq.gz      /mnt/storage/julian_l/teaching/microbiome_practical/try/data/metagenomics/fastq/BB_1_2.fastq.gz
+  BB_2    /mnt/storage/julian_l/teaching/microbiome_practical/try/data/metagenomics/fastq/BB_2_1.fastq.gz      /mnt/storage/julian_l/teaching/microbiome_practical/try/data/metagenomics/fastq/BB_2_2.fastq.gz
+  BB_3    /mnt/storage/julian_l/teaching/microbiome_practical/try/data/metagenomics/fastq/BB_3_1.fastq.gz      /mnt/storage/julian_l/teaching/microbiome_practical/try/data/metagenomics/fastq/BB_3_2.fastq.gz
+  BB_4    /mnt/storage/julian_l/teaching/microbiome_practical/try/data/metagenomics/fastq/BB_4_1.fastq.gz      /mnt/storage/julian_l/teaching/microbiome_practical/try/data/metagenomics/fastq/BB_4_2.fastq.gz
+  BB_5    /mnt/storage/julian_l/teaching/microbiome_practical/try/data/metagenomics/fastq/BB_5_1.fastq.gz      /mnt/storage/julian_l/teaching/microbiome_practical/try/data/metagenomics/fastq/BB_5_2.fastq.gz
+  BB_6    /mnt/storage/julian_l/teaching/microbiome_practical/try/data/metagenomics/fastq/BB_6_1.fastq.gz      /mnt/storage/julian_l/teaching/microbiome_practical/try/data/metagenomics/fastq/BB_6_2.fastq.gz</code></pre>
+      Great! This should be enough to let QIIME2 know, where the files that we want to import are. However, before firing up <kbd>qiime</kbd> we also need a directory to perform all the analyses in. Type <kbd>cd</kbd> without an argument to return to your home directory. Then, use <kbd>mkdir microbiome</kbd> to create a new directory for this module and enter it with <kbd>cd microbiome</kbd>. Now, before importing the sequencing data into <kbd>qiime</kbd>, let's first move the file we created earlier here. 
+      <pre><code>mv ../data/metagenomics/fastq/fastq_abs_paths .</code></pre>
+      <div class="alert alert-primary" role="alert">
+        Recall that a single <kbd>.</kbd> usually denotes the current working directory and <kbd>..</kbd> the current parent directory.
+      </div>
+      Now, we can import the reads with
+      <pre><code>qiime tools import \
+  --type 'SampleData[PairedEndSequencesWithQuality]' \
+  --input-path fastq_abs_paths \
+  --output-path fastq_imported.qza \
+  --input-format PairedEndFastqManifestPhred33V2</code></pre>
+      This should hopefully finish successfully in a few secocnds. Afterwards, you can check whether a new file was created with <kbd>ls</kbd> (which is slowly becoming our new best friend now &ndash; right after <kbd>cd</kbd> of course).
+      One more thing we can do after this getting a quick overview of our data by running
+      <pre><code>qiime demux summarize \
+  --i-data fastq_imported.qza \
+  --o-visualization fastq_imported.qzv</code></pre>
+      This will produce <kbd>fastq_imported.qzv</kbd> &ndash; our first visualisation artifact. These files are produced by certain <kbd>qiime</kbd> commands and provide human-readable information like plots or tables of summary statistics. There are several ways to view such files. The easiest one is to go to <a href="https://view.qiime2.org/">https://view.qiime2.org/</a> and drag & drop them into your browser window.
+      <div class="alert alert-primary" role="alert">
+        Note that the tables and plots generated at <a href="https://view.qiime2.org/">https://view.qiime2.org/</a> are all rendered in your local browser and that your data is not uploaded to be processed on a server.
+      </div>
+      <div class="alert alert-primary" role="alert">
+        If you are following this practical using a remote machine in the cloud, viewing these files is going to be slightly more cumbersome as running a feature-rich graphical application like a browser via SSH tends to be quite slow. Therefore, a better solution is to view the files with your local browser. One way to do this is to transfer the file using <kbd>scp</kbd> onto your machine.  <span style="color: red;; font-weight: bold">ADD DIFFERENT WAYS OF VIEWING HTML FILES FOR WINDOWS / MAC / LINUX</span>
+      </div>
 
-
-
-
-        <h4>Analysing the microbiome samples with <i>mothur</i></h4>
-        <p>The software we will use for analysing the samples is mothur which was created by Dr. Patrick Schloss
-           and his software development team in the Department of Microbiology & Immunology at The University of
-           Michigan. Its objective was to create a single piece of open-source, expandable software to fill the
-           bioinformatics needs of the microbial ecology community.</p>
-        <p>In order to open mothur, open a new terminal and navigate to the folder ~/data/metagenomics.</p>
         <pre><code>cd ~/data/metagenomics</pre></code>
         <p>FOr this practical we will be using an old version of python so in order to use it run the commnad:</p>
         <pre><code>source activate mothur</pre></code>
