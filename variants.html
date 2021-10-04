@@ -529,8 +529,8 @@ tabix -p vcf sample2.filt.vcf.gz</pre></code>
             detect large structural variants.</p>
           <p>Change to variants directory and run the following commands:</p>
           <pre><code>cd ~/data/tb/variants/
-delly call -o sample1.delly.bcf -q 20 -s 3 -g /home/user/data/tb/tb.fasta /home/user/data/tb/sample1.bam
-delly call -o sample2.delly.bcf -q 20 -s 3 -g /home/user/data/tb/tb.fasta /home/user/data/tb/sample2.bam</pre></code>
+delly call -o sample1.delly.bcf -q 20 -s 3 -g ~/data/tb/tb.fasta ~/data/tb/sample1.bam
+delly call -o sample2.delly.bcf -q 20 -s 3 -g ~/data/tb/tb.fasta ~/data/tb/sample2.bam</pre></code>
           <p>It should take no longer than 5 minutes per file. Type the program name to display all options:</p>
           <pre><code>delly</pre></code>
           <p>The screen output should look like this:</p>
