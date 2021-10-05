@@ -120,8 +120,8 @@
 	   <hr>
 	   <h4>File formats</h4>
 	   <p>You have the <i>P. falciparum</i> 3D7 clone reference file (Pf3D7_05.fasta). This contains the assembled sequence
-		   of the 3D7 genome. You also have two files of sequence reads from the IT clone (IT.Chr5_1.fastq and
-		   IT.Chr5_2.fastq). Look in both the reference file and the read files.
+		   of the 3D7 genome. You also have two files of sequence reads from the IT clone (IT.Chr5_1.fastq.gz and
+		   IT.Chr5_2.fastq.gz). Look in both the reference file and the read files.
 	   </p>
 	   <h5>FASTA format</h5>
 	   <p>Open up a terminal and navigate to the data directory, then type:</p>
@@ -136,7 +136,7 @@ gaaccctaaaccctaaaccctaaaccctaaaccctaaaccctaaaccctaaaccctgaac</div></samp>
 		</div>
 		<h5>FASTQ format</h5>
 		<p>Now type the commands below to see what FASTQ format looks like.</p>
-		<pre><code>head -n 12 IT.Chr5_1.fastq</code></pre>
+		<pre><code>zcat IT.Chr5_1.fastq.gz | head -n 12</code></pre>
 		<div class="alert alert-info" role="alert">
 			<samp><div><div class="hover" data-toggle="tooltip" data-placement="left" data-original-title="The read name and additional info from the sequencing platform">@HS3_5961:1:2207:17088:52965#1/1</div><div class="hover" data-toggle="tooltip" data-placement="left" data-original-title="The read sequence">GCCGGTTGTTCGGCTGGAAGGTCCTTTTGCCCTTGGTCACGGGCGTCTCCTCGCTATGTCTGGCAACATCACCAT</div><div class="hover" data-toggle="tooltip" data-placement="left" data-original-title="Sequence/quality line separator">+</div><div class="hover" data-toggle="tooltip" data-placement="left" data-original-title="Sequence quality. There is one character for each nucleotide. The characters relate to a sequence quality score e.g. how likely is the nucleotide correct? ‘>’ is higher quality than ‘6’. Sequence reads tend to have more errors at the end than the start">GGGGGGEGFGFGGGFGDBEBF:AFDEFG?CFFDD:FBEE?EFEDFDEFEAEBFB8CCC?A@CD;ADDD86CCC><</div></div></samp>
 		</div>
@@ -455,7 +455,7 @@ gaaccctaaaccctaaaccctaaaccctaaaccctaaaccctaaaccctaaaccctgaac</div></samp>
     previous table, and run it for sample1.
 </p>
 <pre><code>cd ~/data/tb/
-trimmomatic PE sample1_1.fastq sample1_2.fastq -baseout sample1 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:20 MINLEN:36</code></pre>
+trimmomatic PE sample1_1.fastq.gz sample1_2.fastq.gz -baseout sample1 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:20 MINLEN:36</code></pre>
 
 <h4>Alignment of short reads</h4>
 <div class="alert alert-primary" role="alert">
@@ -674,7 +674,7 @@ bwa index ~/data/malaria/Pf3D7_05.fasta
     <p>
         Next, read files (both forward/reverse) are mapped against the reference
     </p>
-    <pre><code>bwa mem ~/data/malaria/Pf3D7_05.fasta ~/data/malaria/IT.Chr5_1.fastq ~/data/malaria/IT.Chr5_2.fastq | samtools view -b - | samtools sort -o IT.Chr5.bam -</code></pre>
+    <pre><code>bwa mem ~/data/malaria/Pf3D7_05.fasta ~/data/malaria/IT.Chr5_1.fastq.gz ~/data/malaria/IT.Chr5_2.fastq.gz | samtools view -b - | samtools sort -o IT.Chr5.bam -</code></pre>
     <p>The details of where each IT clone read has been mapped is now stored in the file <strong>IT.Chr5.bam</strong>.
         We are going to view the mapped reads in Artemis using Artemis BAM view. Before we can proceed, however, we
         must index the BAM file to allow programs suchh as Artemis quick access to different sections of the file.
@@ -897,9 +897,9 @@ bwa index ~/data/malaria/Pf3D7_05.fasta
     <pre><code>zcat TraDIS_reads_chr1.fastq.gz | less</code></pre>
     <p>
         We are now going to run a Perl script to filter out the reads and create a new fastq file
-        (TraDIS_reads_chr1.fq)
+        (TraDIS_reads_chr1.fq.gz)
     </p>
-    <pre><code>perl remove_transposon_and_filter_FASTQ.pl ~/data/tradis/TraDIS_reads_chr1.fastq.gz 0 > TraDIS_reads_chr1.fq </code></pre>
+    <pre><code>perl remove_transposon_and_filter_FASTQ.pl ~/data/tradis/TraDIS_reads_chr1.fastq.gz 0  | gzip -c > TraDIS_reads_chr1.fq.gz </code></pre>
     <p>
         This script removes the transposon from the reads, as well as those reads that did not have the transposon
         signature sequence. The number of lines in the post QC file can be calculated by typing:
