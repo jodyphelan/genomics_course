@@ -118,13 +118,19 @@
 		   </div>
 	   </div>
 	   <hr>
+       <div class="alert alert-primary" role="alert">
+        Before doing anything we need to first activate the conda environment for this pracrical by typing the following:
+        <kbd>conda activate mapping</kbd>. This environment contains most of the software we need for this practical. 
+        This command needs to be run each time we open up a new terminal or switch from a different environment.
+
+        </div>
 	   <h4>File formats</h4>
 	   <p>You have the <i>P. falciparum</i> 3D7 clone reference file (Pf3D7_05.fasta). This contains the assembled sequence
 		   of the 3D7 genome. You also have two files of sequence reads from the IT clone (IT.Chr5_1.fastq.gz and
 		   IT.Chr5_2.fastq.gz). Look in both the reference file and the read files.
 	   </p>
 	   <h5>FASTA format</h5>
-	   <p>Open up a terminal and navigate to the data directory, then type:</p>
+	   <p>In the terminal navigate to the data/malaria directory, by typing:</p>
 	   <pre><code>cd ~/data/malaria/
 head -n 5 Pf3D7_05.fasta</code></pre>
 	   <p><strong>Hover over the output below to get an explanation</strong></p>
@@ -568,6 +574,10 @@ samtools index sample1.bam
     <li>Reads whose mates are mapped to a different chromosome.</li>
     <li>Reads whose mates are mapped to a different chromosome with mapping quality greater than 5; note, (11) is a subset of (10).</li>
     </ol></p>
+    <p>Finally lets also remove some temporary files we no longer need. Trimming has produced some files which are 
+        unzipped and take up a lot of space. Let's remove these using:
+        <pre><code>rm sample1_1P sample1_1U sample1_2P sample1_2U</code></pre>
+    </p>
     <div class="alert alert-primary" role="alert">
             <strong>Execute all previous commands for sample2 now, i.e. from trimmomatic to samtools flagstat, to obtain sample2.bam file.</strong>
     </div>
@@ -695,6 +705,14 @@ bwa index ~/data/malaria/Pf3D7_05.fasta
     <hr>
     <h4>Viewing the mapped reads in Artemis</h4>
     <p>We will now examine the read mapping in Artemis using the BAM view feature.</p>
+    <div class="alert alert-primary" role="alert">
+        Before we open up artemis we have to switch conda environments. Environments allow programs to be run
+        isolated from all other software. This is useful when two programs have clashing dependancies and can 
+        not be installed into the same environment (as is the case for tablet and artemis). Let's switch over 
+        to the artemis environment by typing the following:
+        <kbd>conda activate artemis</kbd>. This must be done every time before you run artemis
+
+    </div>
     <p>Open Artemis by typing <kbd>art</kbd> on your command line. Select <kbd>File</kbd> -> <kbd>Open...</kbd>
          and load <strong>Pf3D7_05.embl</strong> from
         the <strong>~/data/malaria/</strong> data directory. This contains exactly the same sequence as
@@ -879,32 +897,33 @@ bwa index ~/data/malaria/Pf3D7_05.fasta
         listed as a Tier 1 select agent, and current therapeutic options are severely limited due to a natural
         resistance to many antibiotics. We will focus on reads from chromosome 1. The analysis goes through several
         steps, culminating with viewing the mapped regions using Tablet to assess the evidence that loci are
-        essential:
+        essential.
     </p>
+    <div class="alert alert-primary" role="alert">
+        Remember to activate the correct environment using
+        <kbd>conda activate mapping</kbd> and change to the directory <strong>~/data/tradis</strong>. 
+    </div>
+    
     <p>
         The transposon sequence is identifiable, but it is not part of the reference genome. Furthermore, not
         all sequenced reads will have the transposon in them. Prior to mapping the sequences should then be
-        filtered and the transposon sequences removed.
+        filtered and the transposon sequences removed. We have already run a script on the data that 
+        removes the reads that did not have the transposon
+        signature sequence. The number of lines in the post QC file can be calculated by typing:
     </p>
-    <p>
-        Change to the directory <strong>~/data/tradis</strong>. First let us consider at the raw fastq file
-        in the <strong>~/data directory</strong>. How many reads are there?
-    </p>
+    
+    
     <pre><code>zcat TraDIS_reads_chr1.fastq.gz | wc -l</code></pre>
     <div class="alert alert-warning" role="alert">
-        Can you determine what the transposon sequence is?
+        <p>Can you determine what the transposon sequence is? hint: view the reads with </p> 
     </div>
     <pre><code>zcat TraDIS_reads_chr1.fastq.gz | less</code></pre>
     <p>
-        We are now going to run a Perl script to filter out the reads and create a new fastq file
-        (TraDIS_reads_chr1.fq.gz)
+        Remember to hit <kbd>q</kbd> to exit less! 
     </p>
-    <pre><code>perl remove_transposon_and_filter_FASTQ.pl ~/data/tradis/TraDIS_reads_chr1.fastq.gz 0  | gzip -c > TraDIS_reads_chr1.fq.gz </code></pre>
-    <p>
-        This script removes the transposon from the reads, as well as those reads that did not have the transposon
-        signature sequence. The number of lines in the post QC file can be calculated by typing:
-    </p>
-    <pre><code>wc -l TraDIS_reads_chr1.fq</code></pre>
+    <p>We are now going to run a Perl script to remove the transposon sequence from the reads and create a new fastq file (TraDIS_reads_chr1.filt.fq.gz) </p>
+    <pre><code>perl remove_transposon_and_filter_FASTQ.pl ~/data/tradis/TraDIS_reads_chr1.fastq.gz 0  | gzip -c > TraDIS_reads_chr1.filt.fq.gz </code></pre>
+
 
     <h6>Mapping reads using Bowtie to detect genomic insertion sites</h6>
     <p>
@@ -925,7 +944,7 @@ bwa index ~/data/malaria/Pf3D7_05.fasta
         We need to produce a BAM file. Now we will perform the mapping, by typing:
     </p>
     <pre><code>bowtie-build Bp.genome.fa Bp.genome.fa
-bowtie -y -a -v 0 -S Bp.genome.fa -q TraDIS_reads_chr1.fq 2> TraDIS_reads_chr1.bowtieLog.txt | samtools view -b - | samtools sort -o TraDIS_reads_chr1.bam -
+bowtie -y -a -v 0 -S Bp.genome.fa -q TraDIS_reads_chr1.filt.fq.gz 2> TraDIS_reads_chr1.bowtieLog.txt | samtools view -b - | samtools sort -o TraDIS_reads_chr1.bam -
 samtools index TraDIS_reads_chr1.bam
 </code></pre>
     <p>
