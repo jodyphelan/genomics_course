@@ -433,15 +433,17 @@ samtools index k45.bam</pre></code>
                   least 400bp) than the candidate region enables velvet to construct good contigs either side
                   of the possible SV.</p>
                 <pre><code>cd ~/data/tb
-samtools view sample1.bam Chromosome:79000-84000 -o sample1_candidate.bam -b -h</pre></code>
-                <p>The next step is to perform de novo assembly of the extracted reads:</p>
-                <pre><code>velveth target51 51 -shortPaired -bam sample1_candidate.bam
-velvetg target51 -ins_length 340 -ins_length_sd 120 -read_trkg no -exp_cov auto</pre></code>
+samtools view -b sample1.bam Chromosome:79000-84000  | samtools fastq - > region.fastq</pre></code>
+                <p>
+                  The next step is to perform de novo assembly of the extracted reads.
+                  We will be using another assembler called <i>spades</i>. 
+                </p>
+                <pre><code>spades.py -s region.fastq -o region_assembly</pre></code>
                 <p>We map the output contigs back to the reference by a technique known as <i>blasting</i> it.
                   This is available as an online tool that uses a cluster to perform blasts for
                   researchers around the world. It is also available to download as a command line tool,
                   in the same way as <i>velvet</i>, <i>samtools</i> and <i>bwa</i>. The web address
-                  is <a href="http://blast.ncbi.nlm.nih.gov/Blast.cgi" target="_blank">http://blast.ncbi.nlm.nih.gov/Blast.cgi</a>
+                  is <a href="https://blast.ncbi.nlm.nih.gov/Blast.cgi?PROGRAM=blastn&PAGE_TYPE=BlastSearch&LINK_LOC=blasthome" target="_blank">http://blast.ncbi.nlm.nih.gov/Blast.cgi</a>
                   and navigate to the <i>Nucleotide</i> BLAST page. Check the <i>“Align two or more sequences”</i> box.
                   Upload the contigs file (<i>~/data/tb/target51/contigs.fa</i>) as the subject and the tb reference
                   (<i>~/data/tb/tb.fasta</i>) as the query. Enter an appropriate region of the reference to
