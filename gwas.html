@@ -196,11 +196,7 @@ note: ‘nohup’ and ‘&amp’ are used to allow the command to run in the bac
         <div class="alert alert-primary" role="alert">
           Data in column 4 is used to colour the points according to phenotype (i.e. case vs control). Here, we chose to exclude all individuals with a 2nd principal component score &gt;0.07.
         </div>
-        <p>For the next R script we need to install the <code>reshape</code> package. Fire up R by typing <kbd>R</kbd> and install the package via
-        <pre><code>options(download.file.method = "wget")</code></pre>
-        and
-        <pre><code>install.packages("reshape")</code></pre>
-        You can check the installation by importing the package with <kbd>library(reshape)</kbd>. Then, close R (with ctrl-d) and run
+        <p>Next we can run
         <pre><code>R CMD BATCH write_pca_fail.R</code></pre>
             to write the FID and IID of the filtered individuals to a file called fail_PCA.txt. </p>
 
