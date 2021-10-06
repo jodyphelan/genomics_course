@@ -1,3 +1,4 @@
+conda activate gwas
 cd ~/data/gwas
 plink --bfile MD --missing --out MD
 plink --bfile MD --het --out MD

@@ -9,8 +9,8 @@ python analyse_motif_ipd.py tb_pb_2.ipd.csv.gz GTAYNNNNATC tb_pb_2.assembly.fa
 python analyse_motif_ipd.py tb_pb_16.ipd.csv.gz GTAYNNNNATC tb_pb_16.assembly.fa
 Rscript plot_ipd.R tb_pb_16,tb_pb_2 GTAYNNNNATC GTAYNNNNATC.pdf
 ls *.motif_summary.csv > files.txt
-combine_motifs.py files.txt unfiltered_motifs.csv
-combine_motifs.py files.txt filtered_motifs.csv --min_qual 60
+python combine_motifs.py files.txt unfiltered_motifs.csv
+python combine_motifs.py files.txt filtered_motifs.csv --min_qual 60
 
 
 raxmlHPC -m GTRGAMMA -s pacbio.fasta -n pacbio.ML -p 11334 -k -f a -x 13243 -N 100
