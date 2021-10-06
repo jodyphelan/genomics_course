@@ -1,0 +1,64 @@
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="bootstrap.min.css" type="text/css">
+  <style>
+    .jumbotron-head {
+      background: linear-gradient(rgba(0, 0, 250, 0.15), rgba(125, 250, 250, 0.55)), url(img/Aurum_1.jpg);
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-position: top right;
+      color: black !important;
+    }
+  </style>
+  <title>Pathogen 'Omics</title>
+</head>
+
+<body>
+
+  <div class="jumbotron vertical-center jumbotron-fluid jumbotron-head">
+    <div class="container">
+      <h1 class="display-4">Cloud access</h1>
+      <p class="lead">Connect to a remote machine via ssh</p>
+    </div> <!-- Container -->
+  </div>
+  <br>
+  <div class="row">
+    <div class="col-sm-3"></div>
+    <div class="col-sm-6 text-center" style="font-size: large;">
+      <h1>Windows</h1>
+      <p>
+        Download and install <a href="https://mobaxterm.mobatek.net/download-home-edition.html">MobaXterm</a>
+      </p>
+      <p>
+        Start MobaXterm and connect to the remote machine by typing <kbd>ssh&nbsp;username@ipaddress</kbd> into the
+        command
+        line. You will be asked for the password.
+      </p>
+      <img src="img/remote_instructions_1.png" class="img-fluid" width=100% alt="">
+      <br>
+      <br>
+      <p>
+        Once connected, in addition to the terminal itself you will be able to navigate the remote filesystem and open
+        files using the panel on the left.
+      </p>
+      <br>
+      <h1>macOS</h1>
+      <p>
+        Download <a href="https://www.xquartz.org/">XQuartz</a> and double click on the file to install. Once this has
+        completed, you can ssh into the remote machine via typing the following into a
+        terminal <kbd>ssh&nbsp;username@ipaddress&nbsp;-X</kbd>.
+      </p>
+      <br>
+
+      <h1>Linux</h1>
+      <p>
+        Simply fire up a terminal and type <kbd>ssh&nbsp;username@ipaddress&nbsp;-X</kbd>.
+      </p>
+    </div>
+  </div>
+
+</body>
+
+</html>
