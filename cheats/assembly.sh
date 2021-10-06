@@ -1,3 +1,4 @@
+conda activate assembly
 cd ~/data/tb
 zcat sample1_1.fastq.gz | head -8
 wc -l *

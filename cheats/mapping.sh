@@ -1,4 +1,5 @@
 # Intro
+conda activate mapping
 cd ~/data/malaria/
 head -n 5 Pf3D7_05.fasta
 zcat IT.Chr5_1.fastq.gz | head -n 12
@@ -31,6 +32,7 @@ samtools view IT.Chr5.bam | grep "IL39_6014:8:61:7451:18170"
 
 
 # Tradis
+cd ~/data/tradis
 zcat TraDIS_reads_chr1.fastq.gz | wc -l
 perl remove_transposon_and_filter_FASTQ.pl ~/data/tradis/TraDIS_reads_chr1.fastq.gz 0  | gzip -c > TraDIS_reads_chr1.filt.fq.gz 
 bowtie-build Bp.genome.fa Bp.genome.fa
