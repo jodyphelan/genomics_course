@@ -8,9 +8,8 @@ spades.py -1 ~/data/tb/sample1_1.fastq.gz -2  ~/data/tb/sample1_2.fastq.gz -o sa
 cd sample1_asm
 quast -r ../tb.fasta -o quast contigs.fasta 
 abacas.pl –h
-cd sample1_asm
 cp ~/data/tb/tb.fasta .
-abacas.pl -r tb.fasta -q contigs.fa -p nucmer -b -d -a -m -N -g sample1 -o sample1_asm
+abacas.pl -r tb.fasta -q contigs.fasta -p nucmer -b -d -a -m -N -g sample1 -o sample1_asm
 
 cd ~/data/tb/sample1_asm
 bwa index -a is sample1_asm.fasta
