@@ -1,0 +1,123 @@
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="bootstrap.min.css" type="text/css">
+<style>
+.button {
+  border-radius: 4px;
+  background-color: #4169E1;
+  border: none;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 20px;
+  padding: 20px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+}
+pre {
+  display: block;
+  padding: 9.5px;
+  margin: 0 0 10px;
+  font-size: 13px;
+  line-height: 1.42857143;
+  color: white;
+  word-break: break-all;
+  word-wrap: break-word;
+  background-color: black;
+  border: 1px solid black;
+  border-radius: 4px;
+}
+
+  .jumbotron-head{
+      background:linear-gradient(rgba(0, 0, 250, 0.15), rgba(125, 250, 250, 0.55)),url(img/Aurum_1.jpg);
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-position: top right;
+      color:black !important;
+  }
+
+.button span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.button span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.button:hover span {
+  padding-right: 25px;
+}
+
+.button:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+</style>
+<title>Pathogen 'Omics</title>
+</head>
+<body>
+
+<div class="jumbotron vertical-center jumbotron-fluid jumbotron-head">
+  <div class="container">
+    <h1 class="display-4">VirtualBox</h1>
+    <p class="lead">Setting up your course</p>
+  </div> <!-- Container -->
+</div>
+<br>
+<div class="row" >
+<div class="col-sm-3"></div>
+<div class="col-sm-6 text-center" style="font-size: large;">
+    <p>   
+        1. Install the latest version on <a href="https://www.virtualbox.org/">VirtualBox</a>
+    </p>
+    <p>
+        2. Open VirtualBox and click on the <b>New</b> button
+    </p>
+    <img src="img/instructions_1.png" class="img-fluid" width=100% alt="">
+    <p>
+        3. Fill in the <b>Name</b>, <b>Type</b> and <b>Version</b> as shown below and click <b>Continue</b>. 
+        Leave the <b>Machine Folder</b> as the default value
+    </p>
+    <img src="img/instructions_2.png" class="img-fluid" width=100% alt="">
+
+    <p>
+        4. We will now allocate RAM to the virtual machine. Drag the slider up to
+        just before the green colour ends and hit <b>Continue</b> 
+    </p>
+    <img src="img/instructions_3.png" class="img-fluid" width=100% alt="">
+
+    <p>
+        5. Select <b>Use and existing virtual hard disk file</b> and use the button
+        highlighted below. 
+    </p>
+    <img src="img/instructions_4.png" class="img-fluid" width=100% alt="">
+
+    <p>
+        6. Click <b>Add</b> to select the <b>genomics_course_2021.vdi</b> file you have
+        received. Then click <b>Choose</b> and then <b>Create</b>
+    </p>
+    <img src="img/instructions_5.png" class="img-fluid" width=100% alt="">
+
+    <p>
+        7. You can now start the virtual machine by selecting the <b>genomics_course</b>
+        virtual machine and clicking on <b>Start</b>
+    </p>
+    <img src="img/instructions_6.png" class="img-fluid" width=100% alt="">
+
+</div>
+<div class="col-sm-3"></div>
+</div>
+
+
+
+</body>
+</html>
