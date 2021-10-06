@@ -144,14 +144,12 @@
         <p>
           3.1.2.	 Then, to extract pruned SNPs and generate pair-wise IBS, type:
         </p>
-        <pre><code>nohup plink --bfile MD --extract MD.prune.in --genome --out MD &</code></pre>
+        <pre><code>plink --bfile MD --extract MD.prune.in --genome --out MD </code></pre>
         <p>
           This might take a few minutes and creates files with the extension *.genome & *.log
         </p>
         <div class="alert alert-primary" role="alert">
           You can also create a BED file with the pruned SNPs: <kbd>plink --bfile MD --extract MD.prune.in --make-bed --out MD.pruned</kbd>
-note: ‘nohup’ and ‘&amp’ are used to allow the command to run in the background thus freeing up the terminal for further use. You can use
-<kbd>top</kbd> to see if the process is still running (remember to press <kbd>q</kbd> to exit). Alternatively, you could of course simply run the command in another terminal.
 
         </div>
         <div class="alert alert-warning" role="alert">

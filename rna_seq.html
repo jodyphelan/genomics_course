@@ -210,9 +210,11 @@ mv Mtb_L1.sorted.bam.bai Mtb_L1.bam.bai</pre></code>
           <p>One interesting feature of the Artemis viewer is the possibility to see more than one BAM file at the same
             time, which enables to comapre coverage from different samples. Hence, next we want to include more lineages,
             in this case we will add another sample belonging to the lineage 4 of <i>Mtb</i>.</p>
-          <p>To do it, we will need first to follow the previous steps in order to get the sorted and index bam
+            <div class="alert alert-info">
+              <p>To do it, we will need first to follow the previous steps in order to get the sorted and index bam
             files. Therefore, map it with BWA as before, the fastq files are in the directory <i>transcriptomics</i>
             and are called <i>Mtb_L4_1.fastq</i> and <i>Mtb_L4_2.fastq</i>.</p>
+            </div>
           <p>Once we have the bam files, we can add it to the viewer.</p>
           <div class="text-center"><img src="img/rnaseq_6.png" class="img-fluid"></div>
           <p>In the BAM view of the reads, it might be difficult to distinguish the differences between the BAM files.

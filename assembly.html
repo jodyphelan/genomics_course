@@ -141,7 +141,7 @@
           <p>There are 6 fastq files in this directory; these are the input data for this practical.
             There are paired-end reads for three samples. To view the first 8 lines of a fastq
             file type:</p>
-          <pre><code>head -8 sample1_1.fastq</pre></code>
+          <pre><code>zcat sample1_1.fastq.gz | head -8</pre></code>
           <p>This gives:</p>
 <div class="alert alert-info" style="white-space:pre-wrap;"><samp>@HS3_5961:1:2207:17088:52965#1/1
 GCCGGTTGTTCGGCTGGAAGGTCCTTTTGCCCTTGGTCACGGGCGTCTCCTCGCTATGTCTGGCAACATCACCAT
@@ -158,7 +158,7 @@ HHHHFFHBHHHHHHHEGDDDGGEGFHHHHHHGHHHDFFEFFFDD>DB@CDAEFF?FBFGDDCCC.=?5=<@@;DA</sam
         <pre><code>wc -l *</pre></code>
         <p>and therefore the number of reads can be calculated by dividing by 4.
           The length of the first read can be calculated by running:</p>
-        <pre><code>head -2 sample1_1.fastq | tail -1 | wc -c</pre></code>
+        <pre><code>zcat sample1_1.fastq.gz | head -2 | tail -1 | wc -c</pre></code>
         <p>This gives the number of characters in the line including the new line character,
           so it gives a number one greater than the first read length.</p>
         <p><b>Running Velvet</b></p>
@@ -170,9 +170,9 @@ HHHHFFHBHHHHHHHEGDDDGGEGFHHHHHHGHHHDFFEFFFDD>DB@CDAEFF?FBFGDDCCC.=?5=<@@;DA</sam
         <p><i>velveth directory hash_length {[-file_format][-read_type][-separate|-interleaved]
           filename1 [filename2 ...]} {...} [options]</i></p>
         <p>An example invocation that takes the fastq formatted paired end files
-          (Mtb_sample1_1.fastq and Mtb_sample1_2.fastq) and creates the hash table
+          (Mtb_sample1_1.fastq.gz and Mtb_sample1_2.fastq.gz) and creates the hash table
           for K-mer length 51 in directory sample1_k51 is:</p>
-        <pre><code>velveth sample1_k51 51 -fastq -shortPaired ~/data/tb/sample1_1.fastq ~/data/tb/sample1_2.fastq</pre></code>
+        <pre><code>velveth sample1_k51 51 -fastq -shortPaired ~/data/tb/sample1_1.fastq.gz ~/data/tb/sample1_2.fastq.gz</pre></code>
         <p><i>velveth</i> supports sequence files of fasta and fastq format, their
           compressed versions fasta.gz and fastq.gz, alignment files in SAM/BAM format,
            and eland/gerald files. The read library format is indicated by
@@ -297,7 +297,7 @@ HHHHFFHBHHHHHHHEGDDDGGEGFHHHHHHGHHHDFFEFFFDD>DB@CDAEFF?FBFGDDCCC.=?5=<@@;DA</sam
           <p>We recommend using VelvetOptimiser (see further information) to automatically optimise
             K-mer length, as well as <i>-exp_cov</i> and <i>-cov_cutoff</i> for the Velvet assembler. To run
             VelvetOptimiser, testing every odd k-mer between 35 and 51 for the best k-mer run:</p>
-          <pre><code>VelvetOptimiser.pl --s 35 --e 51 -f '-fastq -shortPaired ~/data/tb/sample1_1.fastq ~/data/tb/sample1_2.fastq'</pre></code>
+          <pre><code>VelvetOptimiser.pl --s 35 --e 51 -f '-fastq -shortPaired ~/data/tb/sample1_1.fastq.gz ~/data/tb/sample1_2.fastq.gz'</pre></code>
           <p>The <i>–f</i> section (between the quotes) is exactly the options that you wish to pass
             to <i>velveth</i>. Dependent on the data, this can be a computationally intensive task.</p>
           <p>Further statistical information on the assembly is given in the <i>stats.txt</i> file.</p>
@@ -379,10 +379,7 @@ abacas.pl -r tb.fasta -q contigs.fa -p nucmer -b -d -a -m -N -g sample1 -o k45</
                 This is a similar process to those you have used in the previous classes.</p>
               <pre><code>cd ~/data/tb/sample1_k45
 bwa index -a is k45.fasta
-bwa mem -k 20 -c 100 -L 20 -U 20 -M -T 50 k45.fasta ~/data/tb/sample1_1.fastq ~/data/tb/sample1_2.fastq > k45.sam
-samtools faidx k45.fasta
-samtools view -bt k45.fasta.fai k45.sam > k45.unsorted.bam
-samtools sort -o k45.bam k45.unsorted.bam
+bwa mem -k 20 -c 100 -L 20 -U 20 -M -T 50 k45.fasta ~/data/tb/sample1_1.fastq.gz ~/data/tb/sample1_2.fastq.gz | samtools sort -o k45.bam
 samtools index k45.bam</pre></code>
               <p>This process indexes, maps and stores the fastq paired-end reads against the ABACAS
                 ordered pseudomolecule (<i>sample1/k45.fasta</i>) for sample1 created by velvet with k-mer

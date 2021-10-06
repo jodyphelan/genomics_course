@@ -1,0 +1,76 @@
+# Global
+tablet
+artemis
+aliview
+Tempest
+
+# Mapping
+## Conda
+fastqc
+trimmomatic
+bwa
+samtools
+bowtie
+## Unavailable
+remove_transposon_and_filter_FASTQ.pl
+
+# Variant detection
+## Conda
+samtools
+bcftools
+gatk4
+delly
+
+# Assembly
+## Conda
+spades
+velvet
+perl-velvetoptimiser
+abacas
+samtools
+bwa
+
+# Phylogenetics
+## Conda
+figtree
+raxml
+## Not available
+Tempest
+aliview
+
+# GwAS
+## Conda
+plink
+r-essentials
+r-qqman
+r-reshape
+bioconductor-geneplotter
+## Not available
+Custom perl/R scripts
+
+# Third generation
+## Conda
+r-essentials
+mafft
+mothur
+krona
+kraken
+## Not available
+aliview
+guppy
+
+# RNA-seq
+## Conda
+htseq
+bioconductor-deseq2
+r-gplots 
+
+# EQTL
+## Conda
+r-matrixeqtl
+r-ggplot2
+
+
+# Methylation
+## Conda
+analyse_motif_ipd.py
