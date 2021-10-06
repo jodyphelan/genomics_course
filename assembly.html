@@ -126,11 +126,11 @@
             amounts of data from high-coverage sequencing and have become the programs of
             choice when processing short reads produced by Illumina and other established
             platforms (>100bp).</p>
-          <h4>Exercise 1: De Novo Assembly using Velvet</h4>
+          <h4>Exercise 1: De Novo Assembly using Spades</h4>
           <p><i>De novo</i> assembly is one the most computationally demanding processes in bioinformatics.
             Large genomes require many hours or days of processing. A small bacterial genome may
             take up to several hours to assemble. Here we will assemble <i>M. tuberculosis</i> genomes
-            using Velvet (Zerbino & Birney, 2008). We will compute assembly statistics to check
+            using Spades (Bankevich et al, 2012). We will compute assembly statistics to check
             the quality, and review how resulting contigs can be aligned, ordered and orientated
             along the reference genome using Abacas (Assefa, Keane, Otto, Newbold, & Berriman, 2009).</p>
           <p><b>Quick start and data checks</b></p>
@@ -161,56 +161,47 @@ HHHHFFHBHHHHHHHEGDDDGGEGFHHHHHHGHHHDFFEFFFDD>DB@CDAEFF?FBFGDDCCC.=?5=<@@;DA</sam
         <pre><code>zcat sample1_1.fastq.gz | head -2 | tail -1 | wc -c</pre></code>
         <p>This gives the number of characters in the line including the new line character,
           so it gives a number one greater than the first read length.</p>
-        <p><b>Running Velvet</b></p>
-        <p>Velvet is implemented in two different programs that must be executed
-          sequentially: <i>velveth</i> and <i>velvetg</i>.</p>
-        <p><i>velveth</i> analyses the sequence files and produces a hash table
-          that is used as input for <i>velvetg</i>. The options are explained by
-          running the command with no parameters (<i>velveth</i>):</p>
-        <p><i>velveth directory hash_length {[-file_format][-read_type][-separate|-interleaved]
-          filename1 [filename2 ...]} {...} [options]</i></p>
+        <p><b>Running Spades</b></p>
+        <p>Spades is implemented in a single program that performs several steps in the assembly pipeline
+          with a single command. The options are explained by
+          running the command with no parameters (<i>spades.py</i>):</p>
+        <p>You will see that there are many options and the pipeline can be customised extensively. 
+          However, for most purposes we can run the tool with the default settings. You only need to 
+          supply the reads and an output directory.
+        </p>
         <p>An example invocation that takes the fastq formatted paired end files
-          (Mtb_sample1_1.fastq.gz and Mtb_sample1_2.fastq.gz) and creates the hash table
-          for K-mer length 51 in directory sample1_k51 is:</p>
-        <pre><code>velveth sample1_k51 51 -fastq -shortPaired ~/data/tb/sample1_1.fastq.gz ~/data/tb/sample1_2.fastq.gz</pre></code>
-        <p><i>velveth</i> supports sequence files of fasta and fastq format, their
-          compressed versions fasta.gz and fastq.gz, alignment files in SAM/BAM format,
-           and eland/gerald files. The read library format is indicated by
-           <i>-short</i> (default), <i>-shortPaired</i> (i.e. short paired-end reads), <i>-short2</i> (same
-           as short, but for a separate insert-size library), <i>-shortPaired2</i> (same as
-           shortPaired, but for a different insert-size library), <i>-long</i> (longer reads
-           from PacBio and Sanger platforms) or <i>–longPaired</i> (long paired-end reads). The
-           hash_lengh is the k-mer length in base pairs employed for the de Bruijn
-           graph construction. This parameter is crucial to obtain good quality assemblies.
-           It must be an odd number, strictly less than the read length (otherwise we
-           cannot detect any overlaps between reads) and also less than the maximum k-mer
-           hash length allowed (which is chosen when compiling the software). Other than
-           that, we are can choose any k-mer value. We will find out more about how to
-           choose the right k-mer length in below.</p>
-        <p><i>velvetg</i> is the core of Velvet package where the de Bruijn graph is built and
-            manipulated. An example usage is:</p>
-        <pre><code>velvetg sample1_k51 -cov_cutoff 2 -ins_length 280 -ins_length_sd 80 -read_trkg no -min_contig_lgth 150 -exp_cov auto -scaffolding yes -min_pair_count 20 -unused_reads yes</code></pre>
-        <p>In the above example we are running <i>velvetg </i> on the output of <i>velveth</i>
-          (note, the same directory name is specified <i>sample1_k51</i>). The coverage cut-off
-          (<i>-cov_cutoff</i>) removes any nodes that have less than the specified coverage.
-          Low coverage nodes are likely to be erroneous but setting this too high will result
-          in misassemblies. For paired-end reads, the insert size (<i>-ins_length</i>) and
-          standard deviation (<i>-ins_length_sd</i>) specify the mean and standard deviation of the
-          (random) gap length between reads. It will try to scaffold neighbouring contigs that
-          could not be joined directly by making use of pair-end reads and their expected
-          distance (<i>-scaffolding</i>). A key scaffolding cut-off is the minimum number
-          of supporting pair reads needed to join two contigs (<i>-min_pair_count</i>). We can
-          also save reads that are unused in the assembly to a separate fasta file (<i>–unused_reads</i>).</p>
-        <p>Eventually, three files will be obtained in the directory:</p>
+          (Mtb_sample1_1.fastq.gz and Mtb_sample1_2.fastq.gz) and performs assembly.</p>
+        <pre><code>spades.py -1 ~/data/tb/sample1_1.fastq.gz -2  ~/data/tb/sample1_2.fastq.gz -o sample1_asm</pre></code>
+        <p>Employing <i>paired-end</i> reads (rather than single-end) increases the assembly quality.
+          In general, libraries with smaller insert size produce more fragmented and shorter assemblies,
+          whilst the genome coverage does not increase that much. The combination of libraries with
+          different insert size always gives the best results.</p>
+        <p><i>De novo</i> assembly gives much better results if reads are aggressively pre-filtered
+          before passing them to the assembler. This is the same as we have seen for mapping and
+          variant detection earlier in the course.</p>
+        <p>Although anecdotal recommendations for the k-mer length range from lower than half of the
+          read length up to 80% of read length, the parameter is difficult to determine in advance
+          since it depends on coverage, read length, error rates and the sample properties (repeat
+          regions, etc). Therefore, it is advisable to perform several assemblies using different
+          values of k-mer length to decide a value.</p>
+          <p>Thankfully spades automatically chooses a range of kmer lengths to test and chooses the best one.
+            The pipeline also performs reads correction, which aims to correct random errors in reads which will
+            have a knock on effect on the kmers used in the assembly. 
+          </p>
+        <p>Eventually, after spades finishes running there will be several files will be obtained in the directory the most 
+          important for our purposes are:</p>
         <ul class="list-group">
-          <li class="list-group-item">A fasta file (<i>contigs.fa</i>) containing all assembled contigs
-            longer than the chosen minimum contig length (<i>-min_contig_lgth</i>).</li>
-          <li class="list-group-item">Assembly stats file (<i>stats.txt</i>).</li>
-          <li class="list-group-item">The final de Bruijn graph in a special formatted
-            file (<i>LastGraph</i>).</li>
-          </ul>
+          <li class="list-group-item">A fasta file (<i>contigs.fasta</i>) containing all assembled contigs</li>
+          <li class="list-group-item">A fasta file (<i>scaffolds.fasta</i>) containing all assembled scaffolds</li>
+        </ul>
+        <p>Scaffolds are contigs that have been chained together into larger sequences using information 
+          such from <a href="https://emea.illumina.com/science/technology/next-generation-sequencing/mate-pair-sequencing.html">mate pair libraries</a> 
+          and reference sequences. The scaffolds should be very similar to the contigs 
+          in this assembly because we these reads and the insert sizes of our library are relatively small. For the rest of
+          this practical we will only be analysing the contigs.
+        </p>
         <br>
-        <p><b>Assembly quality and parameter optimisation</b></p>
+        <p><b>Assembly quality</b></p>
         <p>The outcome of <i>de novo</i> assembly is a set of contigs. In a perfect assembly each
           contig covers exactly one chromosome in its entirety. In practice many contigs are
           created and the assembly quality is measured by examining their length; individually
@@ -227,80 +218,25 @@ HHHHFFHBHHHHHHHEGDDDGGEGFHHHHHHGHHHDFFEFFFDD>DB@CDAEFF?FBFGDDCCC.=?5=<@@;DA</sam
               removing the smallest contigs (e.g. discarding all contigs shorter than 150 bp).</li>
             </ul>
           <br>
-          <p>The last line output by Velvet gives the main summary of the analysis, for example:</p>
-          <div class="alert alert-info" style="white-space:pre-wrap;"><samp>Final graph has 305 nodes and n50 of 32787, max 93987, total 1000150, using 1332786/1513982 reads</samp></div>
-          <p>The summary line includes the number of resulting nodes in the final graph (305), the
-            N50 value (32,787 bp), the longest contig (93,987), the size of the assembly (1,000,150)
-            and the number of used reads out of the total.</p>
-          <p><b>Insert the summary statistics in the table below:</b></p>
-          <table class="table table-bordered">
-  <thead>
-      <tr>
-        <th>Sample</th>
-        <th>Read length</th>
-        <th># paired reads</th>
-        <th>Mean gap<br></th>
-        <th>Gap SD</th>
-        <th>k</th>
-        <th>Nodes</th>
-        <th>N50</th>
-        <th>Longest contig</th>
-        <th>Assembly size</th>
-        <th>% reads used</th>
-      </tr>
-  </thead>
-  <tr>
-    <td rowspan="3">1</td>
-    <td rowspan="3">75</td>
-    <td rowspan="3">756991</td>
-    <td rowspan="3">340</td>
-    <td rowspan="3">120</td>
-    <td>35</td>
-    <td>954</td>
-    <td>37484</td>
-    <td>110978</td>
-    <td>1034154</td>
-    <td>94.5%</td>
-  </tr>
-  <tr>
-    <td>45</td>
-    <td>479</td>
-    <td>37142</td>
-    <td>85601</td>
-    <td>1015194</td>
-    <td>91.0%</td>
-  </tr>
-  <tr>
-    <td>51</td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-  </tr>
-</table>
+          <p>
+            We can compute these statistics with the help of a tool called quast (made by the same
+            developers as spades). To get the statistics first navigate to the assembly directory and 
+            run quast
+          </p>
+          <pre><code>cd sample1_asm
+quast -r ../tb.fasta -o quast contigs.fasta </pre></code>
+          <p>
+            After it has finished you can examing the outputs. To view the report enter <kbd>cat quast/report.txt</kbd>. 
+            
+          </p>
+          <p>
+            <div class="alert alert-warning">See if you can spot the statistics we mentioned above. 
+              Compare the size of the reference with the size of the assembly. Are the 
+              different?
+            </div>  
+          </p> 
+  
 
-          <div class="alert alert-warning">Try to re-run velvetg and velveth lines for a k-mer length of 45
-            (k=45). Do you verify the results in the table?</div>
-          <p>Employing <i>paired-end</i> reads (rather than single-end) increases the assembly quality.
-            In general, libraries with smaller insert size produce more fragmented and shorter assemblies,
-            whilst the genome coverage does not increase that much. The combination of libraries with
-            different insert size always gives the best results.</p>
-          <p><i>De novo</i> assembly gives much better results if reads are aggressively pre-filtered
-            before passing them to the assembler. This is the same as we have seen for mapping and
-            variant detection earlier in the course.</p>
-          <p>Although anecdotal recommendations for the k-mer length range from lower than half of the
-            read length up to 80% of read length, the parameter is difficult to determine in advance
-            since it depends on coverage, read length, error rates and the sample properties (repeat
-            regions, etc). Therefore, it is advisable to perform several assemblies using different
-            values of k-mer length to decide a value.</p>
-          <p>We recommend using VelvetOptimiser (see further information) to automatically optimise
-            K-mer length, as well as <i>-exp_cov</i> and <i>-cov_cutoff</i> for the Velvet assembler. To run
-            VelvetOptimiser, testing every odd k-mer between 35 and 51 for the best k-mer run:</p>
-          <pre><code>VelvetOptimiser.pl --s 35 --e 51 -f '-fastq -shortPaired ~/data/tb/sample1_1.fastq.gz ~/data/tb/sample1_2.fastq.gz'</pre></code>
-          <p>The <i>–f</i> section (between the quotes) is exactly the options that you wish to pass
-            to <i>velveth</i>. Dependent on the data, this can be a computationally intensive task.</p>
-          <p>Further statistical information on the assembly is given in the <i>stats.txt</i> file.</p>
           <div class="row">
             <div class="col-sm-6 text-center"><div class="text-center"><img src="img/assembly_4.jpg" class="img-fluid"></div></div>
             <div class="col-sm-6"><p><i>High depth of coverage</i> is essential to obtain high quality assembled
@@ -315,6 +251,7 @@ HHHHFFHBHHHHHHHEGDDDGGEGFHHHHHHGHHHDFFEFFFDD>DB@CDAEFF?FBFGDDCCC.=?5=<@@;DA</sam
           <p>More data requires more memory too, as the lower graph demonstrates. Again the figures are genome
             specific but it is easy to see how large computers can quickly become necessary as coverage and
             genome size increase. (Illumina, 2009)</p>
+
         <h4>Exercise 2: Contig Ordering</h4>
           <p><b>Ordering with ABACAS</b></p>
           <p>To align, order and orientate contigs along the reference genome we will be using ABACAS (Assefa et
@@ -322,14 +259,14 @@ HHHHFFHBHHHHHHHEGDDDGGEGFHHHHHHGHHHDFFEFFFDD>DB@CDAEFF?FBFGDDCCC.=?5=<@@;DA</sam
             joined by N’s. To display the complete list of possible parameters by typing:</p>
           <pre><code>abacas.pl –h</pre></code>
           <p>The basic usage (for this exercise) is:</p>
-          <pre><code>cd sample1_k45
+          <pre><code>cd sample1_asm
 cp ~/data/tb/tb.fasta .
-abacas.pl -r tb.fasta -q contigs.fa -p nucmer -b -d -a -m -N -g sample1 -o k45</pre></code>
-          <p>This will create a pseudomolecule (into <i>sample1/k45.fasta</i>) from the assembled contigs
+abacas.pl -r tb.fasta -q contigs.fa -p nucmer -b -d -a -m -N -g sample1 -o sample1_asm</pre></code>
+          <p>This will create a pseudomolecule (into <i>sample1_asm.fasta</i>) from the assembled contigs
             (in <i>contigs.fa</i>). The program creates a number of files with the same base filename for
-            the other requested processing output, including gap information (<i>-g</i>, <i>k45.gaps</i>,
-            <i>k45.gaps.tab</i>), a comparison file (<i>k45.crunch</i>), no padding version (<i>-n</i>,
-            <i>k45.NoNs.fasta</i>), etc.</p>
+            the other requested processing output, including gap information (<i>-g</i>, <i>sample1_asm.gaps</i>,
+            <i>sample1_asm.gaps.tab</i>), a comparison file (<i>sample1_asm.crunch</i>), no padding version (<i>-n</i>,
+            <i>sample1_asm.NoNs.fasta</i>), etc.</p>
           <p><b>Visualisation with ACT</b></p>
           <p>Artemis Comparison Tools (ACT) (Carver et al., 2005) is a tool for displaying pair-wise
             comparison between two or more DNA sequences. It was developed to help identify and analyse
@@ -339,8 +276,8 @@ abacas.pl -r tb.fasta -q contigs.fa -p nucmer -b -d -a -m -N -g sample1 -o k45</
           <p>Launch ACT by running:</p>
           <pre><code>act</pre></code>
           <p>Click <i>File</i> > <i>Open</i>. Select the reference fasta file (<i>tb.fasta</i>) and the pseudomoelcule
-            (<i>k45.fasta</i>) as the two sequence files with the associated comparison
-            file (<i>k45.crunch</i>) – you will have to navigate the directories. Then press Apply. A map between
+            (<i>sample1_asm.fasta</i>) as the two sequence files with the associated comparison
+            file (<i>sample1_asm.crunch</i>) – you will have to navigate the directories. Then press Apply. A map between
             the two sequences will be displayed. To load annotation click on <i>File > tb.fasta > Read An
             Entry...</i> and select the <i>tb.gff</i> file. To make stop codons disappear (represented as black
             vertical lines) right-click on the reference and the pseudo molecule panels and deselect <i>Stop
@@ -364,7 +301,7 @@ abacas.pl -r tb.fasta -q contigs.fa -p nucmer -b -d -a -m -N -g sample1 -o k45</
               80kb, 336k and 840k in sample2; and 336k, 745k and 840kb in sample3 investigate what is
               happening in nearby regions. Use the annotations and the Internet to find out the properties
               of the genes in these areas.</p>
-            <p>View the <i>.gaps</i> files (more <i>k45.gaps</i>) and <i>.crunch</i> files (more <i>k45.crunch</i>).
+            <p>View the <i>.gaps</i> files (more <i>sample1_asm.gaps</i>) and <i>.crunch</i> files (more <i>sample1_asm.crunch</i>).
               The columns related to the length and the start/stop positions of gaps and overlaps between the
               reference and pseudomolecule.</p>
             <div class="alert alert-warning">Do you find it easier to read these files in the graphical
@@ -377,17 +314,17 @@ abacas.pl -r tb.fasta -q contigs.fa -p nucmer -b -d -a -m -N -g sample1 -o k45</
                 misassemblies rather than structural variation</p>
               <p>The following commands maps the raw reads against the pseudo molecules from the previous exercise.
                 This is a similar process to those you have used in the previous classes.</p>
-              <pre><code>cd ~/data/tb/sample1_k45
-bwa index -a is k45.fasta
-bwa mem -k 20 -c 100 -L 20 -U 20 -M -T 50 k45.fasta ~/data/tb/sample1_1.fastq.gz ~/data/tb/sample1_2.fastq.gz | samtools sort -o k45.bam
-samtools index k45.bam</pre></code>
+              <pre><code>cd ~/data/tb/sample1_asm
+bwa index -a is sample1_asm.fasta
+bwa mem -k 20 -c 100 -L 20 -U 20 -M -T 50 sample1_asm.fasta ~/data/tb/sample1_1.fastq.gz ~/data/tb/sample1_2.fastq.gz | samtools sort -o sample1_asm.bam
+samtools index sample1_asm.bam</pre></code>
               <p>This process indexes, maps and stores the fastq paired-end reads against the ABACAS
-                ordered pseudomolecule (<i>sample1/k45.fasta</i>) for sample1 created by velvet with k-mer
-                of 45. The output is a BAM file (<i>sample1/k45.bam</i>).</p>
+                ordered pseudomolecule (<i>sample1/sample1_asm.fasta</i>) for sample1 created by velvet with k-mer
+                of 45. The output is a BAM file (<i>sample1/sample1_asm.bam</i>).</p>
               <p>This script can be modified to create a BAM file for the sequence data mapped against
                 any reference genome, just as you have done in the previous class.</p>
-              <p>These files can be visualised in ACT. <i>Select File > k45.fasta > Read BAM/VCF...</i> and
-                choose the remapped.bam file (<i>k45.bam</i>). Do the same for tb.fasta and choose the originally
+              <p>These files can be visualised in ACT. <i>Select File > sample1_asm.fasta > Read BAM/VCF...</i> and
+                choose the remapped.bam file (<i>sample1_asm.bam</i>). Do the same for tb.fasta and choose the originally
                 mapped BAM file (<i>sample1.bam</i>). These BAM data are represented as pileup data – each read
                 stacked up over the section of the reference that it has been mapped to. Extra information can
                 be presented by right-clicking on the pileups and selecting <i>Graph > Coverage or View >
