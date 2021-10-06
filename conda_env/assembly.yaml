@@ -6,35 +6,34 @@ channels:
 dependencies:
   - _libgcc_mutex=0.1=conda_forge
   - _openmp_mutex=4.5=1_gnu
+  - _sysroot_linux-64_curr_repodata_hack=3=h5bd9786_12
   - abacas=1.3.1=pl5262hdfd78af_1
-  - alsa-lib=1.2.3=h516909a_0
-  - artemis=18.1.0=hdfd78af_1
   - bwa=0.7.17=h5bf99c6_8
   - bzip2=1.0.8=h7f98852_4
   - c-ares=1.17.2=h7f98852_0
-  - ca-certificates=2021.7.5=h06a4308_1
+  - ca-certificates=2021.5.30=ha878542_0
   - cairo=1.16.0=h6cf1ce9_1008
   - clustalw=2.1=h7d875b9_6
   - curl=7.79.1=h2574ce0_1
   - expat=2.4.1=h9c3ff4c_0
   - fontconfig=2.13.1=hba837de_1005
   - freetype=2.10.4=h0708190_1
-  - fribidi=1.0.10=h516909a_0
-  - gettext=0.21.0=hf68c758_0
-  - giflib=5.2.1=h516909a_2
-  - graphite2=1.3.14=h23475e2_0
+  - fribidi=1.0.10=h36c2ea0_0
+  - gettext=0.19.8.1=h73d1719_1008
+  - giflib=5.2.1=h36c2ea0_2
+  - graphite2=1.3.13=h58526e2_1001
   - graphviz=2.42.3=h0511662_0
   - harfbuzz=2.9.1=h83ec7ef_1
   - htslib=1.13=h9093b5e_0
   - icu=68.1=h58526e2_0
-  - jpeg=9d=h516909a_0
+  - jpeg=9d=h36c2ea0_0
+  - kernel-headers_linux-64=3.10.0=h4a8ded7_12
   - krb5=1.19.2=hcc1bbae_2
-  - lcms2=2.12=h3be6417_0
   - ld_impl_linux-64=2.36.1=hea4e1c9_2
   - libcurl=7.79.1=h2574ce0_1
-  - libdb=6.2.32=he1b5a44_0
+  - libdb=6.2.32=h9c3ff4c_0
   - libdeflate=1.7=h7f98852_5
-  - libedit=3.1.20210714=h7f8727e_0
+  - libedit=3.1.20191231=he28a2e2_2
   - libev=4.33=h516909a_1
   - libffi=3.4.2=h9c3ff4c_4
   - libgcc-ng=11.2.0=h1d223b6_9
@@ -43,25 +42,25 @@ dependencies:
   - libgomp=11.2.0=h1d223b6_9
   - libiconv=1.16=h516909a_0
   - libnghttp2=1.43.0=h812cca2_1
-  - libpng=1.6.37=hed695b0_2
+  - libpng=1.6.37=h21135ba_2
   - libssh2=1.10.0=ha56f1ee_2
   - libstdcxx-ng=11.2.0=he4da1e4_9
   - libtiff=4.1.0=hc3755c2_3
   - libtool=2.4.6=h9c3ff4c_1008
-  - libuuid=2.32.1=h14c3975_1000
+  - libuuid=2.32.1=h7f98852_1000
   - libwebp=1.0.2=h56121f0_5
-  - libxcb=1.14=h7b6447c_0
+  - libxcb=1.13=h7f98852_1003
   - libxml2=2.9.12=h72842e0_0
   - libxslt=1.1.33=h15afd5d_2
   - libzlib=1.2.11=h36c2ea0_1013
+  - llvm-openmp=8.0.1=hc9558a2_0
   - lz4-c=1.9.3=h9c3ff4c_1
-  - megahit=1.2.9=h2e03b76_1
   - mummer=3.23=pl5262h1b792b2_12
   - ncurses=6.2=h58526e2_4
-  - openjdk=11.0.9.1=h5cc2fde_1
+  - openmp=8.0.1=0
   - openssl=1.1.1l=h7f98852_0
   - paml=4.9=h779adbc_6
-  - pango=1.42.4=h80147aa_5
+  - pango=1.42.4=h69149e4_5
   - pcre=8.45=h9c3ff4c_0
   - perl=5.26.2=h36c2ea0_1008
   - perl-aceperl=1.92=pl526_2
@@ -270,35 +269,34 @@ dependencies:
   - perl-yaml=1.29=pl526_0
   - pip=21.2.4=pyhd8ed1ab_0
   - pixman=0.40.0=h36c2ea0_0
-  - python=3.7.10=hb7a2778_101_cpython
+  - pthread-stubs=0.4=h36c2ea0_1001
+  - python=3.7.10=hb7a2778_102_cpython
   - python_abi=3.7=2_cp37m
   - readline=8.1=h46c0cb4_0
   - samtools=1.13=h8c37831_0
   - setuptools=58.0.4=py37h89c1867_2
+  - spades=3.15.3=h95f258a_0
   - sqlite=3.36.0=h9cd32fc_2
+  - sysroot_linux-64=2.17=h4a8ded7_12
   - t_coffee=11.0.8=py37hea885bf_8
   - tidyp=1.04=h779adbc_3
   - tk=8.6.11=h27826a3_1
   - velvet=1.2.10=h5bf99c6_4
   - wheel=0.37.0=pyhd8ed1ab_1
-  - xorg-fixesproto=5.0=h14c3975_1002
-  - xorg-inputproto=2.3.2=h14c3975_1002
-  - xorg-kbproto=1.0.7=h14c3975_1002
-  - xorg-libice=1.0.10=h516909a_0
+  - xorg-kbproto=1.0.7=h7f98852_1002
+  - xorg-libice=1.0.10=h7f98852_0
   - xorg-libsm=1.2.3=hd9c2040_1000
   - xorg-libx11=1.7.2=h7f98852_0
+  - xorg-libxau=1.0.9=h7f98852_0
+  - xorg-libxdmcp=1.1.3=h7f98852_0
   - xorg-libxext=1.3.4=h7f98852_1
-  - xorg-libxfixes=5.0.3=h7f98852_1004
-  - xorg-libxi=1.7.10=h7f98852_0
   - xorg-libxpm=3.5.13=h7f98852_0
   - xorg-libxrender=0.9.10=h7f98852_1003
   - xorg-libxt=1.2.1=h7f98852_2
-  - xorg-libxtst=1.2.3=h7f98852_1002
-  - xorg-recordproto=1.14.2=h516909a_1002
-  - xorg-renderproto=0.11.1=h14c3975_1002
-  - xorg-xextproto=7.3.0=h14c3975_1002
-  - xorg-xproto=7.0.31=h14c3975_1007
+  - xorg-renderproto=0.11.1=h7f98852_1002
+  - xorg-xextproto=7.3.0=h7f98852_1002
+  - xorg-xproto=7.0.31=h7f98852_1007
   - xz=5.2.5=h516909a_1
   - zlib=1.2.11=h36c2ea0_1013
   - zstd=1.4.9=ha95c52a_0
-prefix: /mnt/storage7/jody/miniconda3/envs/assembly
+prefix: /home/user/miniconda3/envs/assembly

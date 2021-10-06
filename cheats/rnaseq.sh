@@ -1,3 +1,4 @@
+conda activate rnaseq
 cd ~/data/transcriptomics
 bwa index H37Rv.fa
 bwa mem H37Rv.fa Mtb_L1_1.fastq.gz Mtb_L1_2.fastq.gz > ./Mapping_Mtb/Mtb_L1.sam
@@ -8,6 +9,7 @@ samtools index Mtb_L1.sorted.bam
 mv Mtb_L1.sorted.bam Mtb_L1.bam
 mv Mtb_L1.sorted.bam.bai Mtb_L1.bam.bai
 
+cd ../
 bwa mem H37Rv.fa Mtb_L4_1.fastq.gz Mtb_L4_2.fastq.gz | samtools sort -o Mapping_Mtb/Mtb_L4.bam
 samtools index Mapping_Mtb/Mtb_L4.bam
 
