@@ -27,7 +27,8 @@
   <div class="row">
     <div class="col-sm-3"></div>
     <div class="col-sm-6 text-center" style="font-size: large;">
-      <h1>Windows</h1>
+      <h1>Connect to the command line with SSH</h1>
+      <h2>Windows</h2>
       <p>
         Download and install <a href="https://mobaxterm.mobatek.net/download-home-edition.html">MobaXterm</a>.
       </p>
@@ -44,7 +45,7 @@
         files using the panel on the left.
       </p>
       <br>
-      <h1>macOS</h1>
+      <h2>macOS</h2>
       <p>
         Download <a href="https://www.xquartz.org/">XQuartz</a> and double click on the file to install. Once this has
         completed, you can ssh into the remote machine via typing the following into a
@@ -52,12 +53,37 @@
       </p>
       <br>
 
-      <h1>Linux</h1>
+      <h2>Linux</h2>
       <p>
         Simply fire up a terminal and type <kbd>ssh&nbsp;username@ipaddress&nbsp;-X</kbd>.
       </p>
+      <br>
+      <br>
+
+      <h1>Remote Desktop</h1>
+      <p>
+        We have set up a remote desktop server on the host so that you can run graphical applications more smoothly. In
+        order to use the remote desktop, you will need a VNC viewer. The majority of Linux and macOS users will have such a client
+        pre-installed (e.g. <a href="https://remmina.org/">Remmina</a> on Ubuntu). Windows users most likely will need
+        to install a VNC viewer (e.g. <a href="https://tigervnc.org/">TigerVNC</a>; the current installer for 64-bit
+        systems can be downloaded from <a
+          href="https://sourceforge.net/projects/tigervnc/files/stable/1.11.0/vncviewer64-1.11.0.exe/download">here</a>).
+      </p>
+      <h2>Windows</h2>
+      <p>
+        Download and install a VNC viewer. Use it to connect to the IP of the remote machine on port <kbd>5901</kbd> and
+        provide the VNC password when prompted.
+      </p>
+      <h2>macOS</h2>
+      <p>
+        Modern macOS has a VNC client installed and Safari can be used to connect to the remote desktop. Open Safari and
+        type <kbd>vnc://IP:5901</kbd> into the search bar. Provide the VNC password of the remote when prompted.
+      </p>
+      <h2>Linux</h2>
+      <p>
+        Most Linux distros come with a VNC viewer installed. Fire it up and connect to <kbd>IP:5901</kbd>. Provide the VNC password when prompted. 
+      </p>
     </div>
-  </div>
 
 </body>
 
