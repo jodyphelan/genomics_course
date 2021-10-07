@@ -1,3 +1,4 @@
+eval "$(conda shell.bash hook)"
 conda activate methylation
 cd ~/data/methylation
 ls

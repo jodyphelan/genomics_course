@@ -1,3 +1,4 @@
+eval "$(conda shell.bash hook)"
 conda activate variant_detection
 mkdir ~/data/tb/variants
 

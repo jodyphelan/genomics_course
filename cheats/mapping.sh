@@ -1,4 +1,5 @@
 # Intro
+eval "$(conda shell.bash hook)"
 conda activate mapping
 cd ~/data/malaria/
 head -n 5 Pf3D7_05.fasta

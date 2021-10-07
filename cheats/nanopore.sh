@@ -1,3 +1,4 @@
+eval "$(conda shell.bash hook)"
 conda activate nanopore
 cd ~/data/nanopore_activity/basecalling 
 read_fast5_basecaller.py -f FLO-MIN106 -k SQK-LSK108 -i raw_fast5_reads -t 2 -s basecalling_output -o fastq --disable_filtering

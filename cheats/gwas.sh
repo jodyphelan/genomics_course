@@ -1,3 +1,4 @@
+eval "$(conda shell.bash hook)"
 conda activate gwas
 cd ~/data/gwas
 plink --bfile MD --missing --out MD

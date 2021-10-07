@@ -1,3 +1,4 @@
+eval "$(conda shell.bash hook)"
 conda activate rnaseq
 cd ~/data/transcriptomics
 bwa index H37Rv.fa
