@@ -366,7 +366,7 @@ dependencies:
     - cached-property==1.5.2
     - h5py==3.1.0
     - numpy==1.19.5
-    - ont-albacore==2.3.4
+#    - ont-albacore==2.3.4
     - ont-fast5-api==4.0.0
     - progressbar33==2.4
 prefix: /home/user/miniconda3/envs/nanopore
