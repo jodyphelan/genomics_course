@@ -24,12 +24,12 @@
 	</style>
 
 
-    <title>Microbiomes - Pathogen 'Omics</title>
+    <title>Microbiome - Pathogen 'Omics</title>
   </head>
   <body>
       <div class="jumbotron jumbotron-fluid jumbotron-head">
         <div class="container">
-          <h1 class="display-4">Microbiomes</h1>
+          <h1 class="display-4">Microbiome</h1>
           <p class="lead">A case study: Bacterial Vaginosis</p>
         </div> <!-- Container -->
       </div>
@@ -173,7 +173,8 @@
         Note that the tables and plots generated at <a href="https://view.qiime2.org/">https://view.qiime2.org/</a> are all rendered in your local browser and that your data is not uploaded to be processed on a server.
       </div>
       <div class="alert alert-primary" role="alert">
-        If you are following this practical using a remote machine in the cloud, viewing these files is going to be slightly more cumbersome as running a feature-rich graphical application like a browser via SSH tends to be quite slow. Therefore, a better solution is to view the files with your local browser. One way to do this is to transfer the file using <kbd>scp</kbd> onto your machine.  <span style="color: red;; font-weight: bold">ADD DIFFERENT WAYS OF VIEWING HTML FILES FOR WINDOWS / MAC / LINUX</span>
+        If you are following this practical using a remote machine in the cloud, viewing these files is going to be slightly more cumbersome since running a browser on the VM and using the graphical interface via SSH would be very slow. Therefore, a better solution is to view the files with your local browser. One way to do this is to transfer the file using <kbd>scp</kbd> onto your machine by typing <kbd>scp user@ipaddress:/path/to/file .</kbd> in a local terminal (for macOS and Linux users). Windows users should be able to drag & drop the files into the browser from the file panel of MobaXterm or PuTTY. Linux or macOS should also be able to connect to remote servers in their file browsers. However, in case you have to rely on <kbd>scp</kbd>, a convenient way of obtaining the absolute path of a file is to use the <kbd>find</kbd> command
+        <pre><code>find $PWD/fastq_imported.qzv</code></pre>
       </div>
 
       
