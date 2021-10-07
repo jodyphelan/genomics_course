@@ -251,8 +251,7 @@ BB_11   /home/user/data/metagenomics/fastq/BB_11_1.fastq.gz     /home/user/data/
 BB_12   /home/user/data/metagenomics/fastq/BB_12_1.fastq.gz     /home/user/data/metagenomics/fastq/BB_12_2.fastq.gz</pre>
     Great! This should be enough to let QIIME2 know where the files that we want to import are.
     Now, we can import the reads with
-    <pre>
-time qiime tools import \
+    <pre>qiime tools import \
     --type 'SampleData[PairedEndSequencesWithQuality]' \
     --input-path fastq_abs_paths \
     --output-path fastq_imported.qza \
@@ -282,11 +281,13 @@ time qiime tools import \
       which fits a model for each sample). It is therefore considerably slower and we will have to wait a few minutes
       for it to finish. In the meantime you can have a look at the later sections of the practical.
       <div class="alert alert-primary" role="alert">
-        If applicable, you can again change the number of threads in order to speed things up. 
+        If applicable, increase the number of threads in order to speed things up.
         <br>
-        Hint: Put <code>time</code> in front of a command to see how long it took.
+        Hint: You can put <code>time</code> in front of any command to see how long it took. Try it with <kbd>time sleep
+          5</kbd> in a new terminal.
         <br>
-        Note that we told the program to truncate forward and reverse reads after 190&nbsp;bp due to degrading quality. As the amplicon is only expected to be ~310&nbsp;bp long, this should still give us sufficient overlap.
+        Also note that we told the program to truncate forward and reverse reads after 190&nbsp;bp due to degrading quality.
+        As the amplicon is only expected to be ~310&nbsp;bp long, this should still give us sufficient overlap.
       </div>
     </p>
 
