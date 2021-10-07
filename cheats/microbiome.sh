@@ -21,7 +21,7 @@ time qiime dada2 denoise-paired \
 	--i-demultiplexed-seqs fastq_imported.qza \
 	--p-trunc-len-f 190 \
 	--p-trunc-len-r 190 \
-	--p-n-threads 4 \
+	--p-n-threads 1 \
 	--o-table table.qza \
 	--o-representative-sequences rep_seqs.qza \
 	--o-denoising-stats denoising_stats.qza
@@ -62,7 +62,7 @@ time qiime diversity core-metrics-phylogenetic \
   --i-phylogeny rooted_tree.qza \
   --i-table table.qza \
   --p-sampling-depth 15000 \
-  --p-n-jobs-or-threads 4 \
+  --p-n-jobs-or-threads 1 \
   --m-metadata-file meta.tsv \
   --output-dir core-metrics-results
 
