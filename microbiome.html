@@ -392,7 +392,8 @@ BB_12   /home/user/data/metagenomics/fastq/BB_12_1.fastq.gz     /home/user/data/
       BV-negative samples in red and BV-positive samples in blue looks like this:
       <div class="text-center"><img src="img/microbiome_4.png" class="img-fluid" id="PCoA_plot"></div>
       <div class="alert alert-warning" role="alert">
-        What does the plot tell us about our samples and the impact of BV on alpha and beta diversity.
+        What does the plot tell us about our samples and the impact of BV on alpha and beta diversity. Look up the term
+        "Anna Karenina Principle" and what it means in terms of the microbiome. Can we say that it applies here as well?
       </div>
     </p>
 
@@ -431,14 +432,19 @@ BB_12   /home/user/data/metagenomics/fastq/BB_12_1.fastq.gz     /home/user/data/
       <div class="alert alert-primary" role="alert">
         You can adjust the with of the bars with the slider above the plot.
       </div>
-      We can see that for the
+      <div class="alert alert-warning" role="alert">
+        We can see that some samples are dominated by <i>Lactobacillus iners</i> (green), whereas for others the
+        situation looks very different. Double check with the metadata to find out if this might be associated with
+        BV-status.
+      </div>
     </p>
 
     <h5>Testing differences in alpha diversity</h5>
     <p>
-      In the <a href="#PCoA_plot">PCoA plot from earlier</a> it looked
-      like the samples without BV were considerable closer to each other than the samples with BV. We can check if this
-      observation is also statistically significant by running a <a
+      Alpha diversity measures the general diversity of an ecosystem (i.e. a sample in our case) or a group of
+      ecosystems (i.e. groups of samples like all samples with BV).
+      After looking at the taxa barplot we just generated, do you think that the BV samples are statistically
+      significantly more diverse than the non-BV samples? We can check if your estimate is correct by running a <a
         href="https://en.wikipedia.org/wiki/Kruskal%E2%80%93Wallis_one-way_analysis_of_variance">Kruskal&ndash;Wallis
         test</a> on the four metrics of alpha diversity that we calculated for our samples. Let's create a new
       directory to write the results into and run:
@@ -449,9 +455,9 @@ for metric in faith_pd evenness shannon observed_features; do
         --m-metadata-file meta.tsv \
         --o-visualization alpha_tests/${metric}_group_significance.qzv
 done</pre>
-      This creates four more visualisations to look at.
+      This produces four more visualisations. Have a look at them. Were you right?
       <div class="alert alert-warning" role="alert">
-        Not all of the metrics see a significant difference between BV and non-BV samples. After looking at the short
+        It looks like the different alpha diversity metrics disagree! After reading the short
         definitions of the metrics provided below, can you think of a reason for this discrepancy?
         <br>
         faith_pd: <a href="https://en.wikipedia.org/wiki/Phylogenetic_diversity">Faith's phylogenetic diversity</a> is
@@ -466,10 +472,28 @@ done</pre>
         <br>
         observed_features: Simply the number of unique taxa found in the sample.
       </div>
-
     </p>
 
-    <p><b>Acknowledgements:</b> Dr. Suzanna Francis</p>
+    <h5>Testing beta diversity</h5>
+    As opposed to alpha diversity, which quantifies the diversity of a sample (or a group of samples) overall, beta
+    diversity gives an estimate of the magnitude of differences between samples or groups of samples. We can test the
+    difference between BV and non-BV samples for all beta diversity metrics with the following command:
+    <pre>mkdir -p beta_tests
+for metric in bray_curtis jaccard unweighted_unifrac weighted_unifrac; do
+    qiime diversity beta-group-significance \
+        --i-distance-matrix core-metrics-results/${metric}_distance_matrix.qza \
+        --m-metadata-file meta.tsv \
+        --m-metadata-column BV \
+        --o-visualization beta_tests/${metric}_significance.qzv \
+        --p-permutations 9999
+done</pre>
+    Again, we got a visualisation for each metric. Have a look at them in <a href="https://view.qiime2.org/">https://view.qiime2.org/</a> like before. What do you find? Are all of them in agreement this time?
+
+
+
+
+    <br><br><br><br><br>
+    <p><b>Acknowledgements:</b>Many thanks to Dr. Suzanna Francis for providing the data.</p>
 
   </div>
 
