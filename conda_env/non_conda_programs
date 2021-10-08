@@ -1,7 +1,6 @@
 multiqc
 aliview
 tempest
-guppy
 tablet
 artemis (art/act)
 albacore (installed into the nanopore conda env)
