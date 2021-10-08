@@ -69,13 +69,13 @@
           <tbody>
             <tr>
               <th style="text-align:center" , scope="row">BB_1</th>
-              <td style="text-align:center">yes</td>
+              <td style="text-align:center">no</td>
               <td style="text-align:center">4.4</td>
             </tr>
             <tr>
               <th style="text-align:center" , scope="row">BB_2</th>
-              <td style="text-align:center">yes</td>
-              <td style="text-align:center">5.3</td>
+              <td style="text-align:center">no</td>
+              <td style="text-align:center">3.6</td>
             </tr>
             <tr>
               <th style="text-align:center" , scope="row">BB_3</th>
@@ -85,21 +85,21 @@
             <tr>
               <th style="text-align:center" , scope="row">BB_4</th>
               <td style="text-align:center">no</td>
-              <td style="text-align:center">3.6</td>
+              <td style="text-align:center">5.3</td>
             </tr>
             <tr>
               <th style="text-align:center" , scope="row">BB_5</th>
               <td style="text-align:center">yes</td>
-              <td style="text-align:center">4.1</td>
+              <td style="text-align:center">5.6</td>
             </tr>
             <tr>
               <th style="text-align:center" , scope="row">BB_6</th>
               <td style="text-align:center">yes</td>
-              <td style="text-align:center">5.0</td>
+              <td style="text-align:center">5.3</td>
             </tr>
             <tr>
               <th style="text-align:center" , scope="row">BB_7</th>
-              <td style="text-align:center">no</td>
+              <td style="text-align:center">yes</td>
               <td style="text-align:center">4.7</td>
             </tr>
             <tr>
@@ -110,22 +110,22 @@
             <tr>
               <th style="text-align:center" , scope="row">BB_9</th>
               <td style="text-align:center">no</td>
-              <td style="text-align:center">4.7</td>
+              <td style="text-align:center">4.4</td>
             </tr>
             <tr>
               <th style="text-align:center" , scope="row">BB_10</th>
-              <td style="text-align:center">yes</td>
-              <td style="text-align:center">5.3</td>
+              <td style="text-align:center">no</td>
+              <td style="text-align:center">3.6</td>
             </tr>
             <tr>
               <th style="text-align:center" , scope="row">BB_11</th>
-              <td style="text-align:center">no</td>
-              <td style="text-align:center">4.1</td>
+              <td style="text-align:center">yes</td>
+              <td style="text-align:center">4.7</td>
             </tr>
             <tr>
               <th style="text-align:center" , scope="row">BB_12</th>
-              <td style="text-align:center">no</td>
-              <td style="text-align:center">3.6</td>
+              <td style="text-align:center">yes</td>
+              <td style="text-align:center">5.0</td>
             </tr>
           </tbody>
         </table>
@@ -144,9 +144,9 @@
         more technically inclined users. We will stick to the CLI for today. <br>
         One idiosyncrasy of QIIME2 is the
         use of
-        so-called "artifacts". These are zip-archives with a special file extension (<code>.qza</code> for data
-        artifacts and <code>.qzv</code> for visualisation artifacts) that hold bulk data in addition to unique IDs and
-        provenance metadata, which describe all steps that lead to the creation of that particular artifact. This has
+        so-called "artefacts". These are zip-archives with a special file extension (<code>.qza</code> for data
+        artefacts and <code>.qzv</code> for visualisation artefacts) that hold bulk data in addition to unique IDs and
+        provenance metadata, which describe all steps that lead to the creation of that particular artefact. This has
         the
         advantage that for every intermediate or final result of <code>qiime</code> it is perfectly clear how it was
         generated from start to finish. However, there is the small downside, that we have to import our data into the
@@ -185,11 +185,22 @@
         If running a VM or remote desktop, you should be able to simply double-click on the file in the file browser
         in order for it to open (the command line equivalent of double-clicking would be <kbd>xdg-open
           multiqc/multiqc_report.html</kbd> in this case). If you are following the practical in a remote shell via
-        SSH, however, using the browser on the server-side would be very slow. Instead, you would preferably transfer
-        the file to your local machine with <code>scp</code>, connect to the server in your local file browser if you
+        SSH, however, using the browser on the server-side would be very slow. Instead, you would preferably either
+        transfer
+        the file to your local machine with <kbd>scp&nbsp;user@ipaddress:/absolute/path/on/remote&nbsp;.</kbd>, connect
+        to the server in your local file browser if you
         are running macOS or Linux, or open it from the file panel in MobaXterm / PuTTY on Windows.
       </div>
-      Scroll through the report and make note of the Sequence Counts barplots and the quality histograms. From the
+      <div class="alert alert-primary">
+        Hint: If you quickly need to get the absolute path of a file (e.g. for use in <code>scp</code>), type
+        <kbd>find&nbsp;$PWD/filename</kbd> and copy the output.
+      </div>
+      Scroll through the report and make note of the Sequence Counts barplots and the quality histograms.
+    </p>
+    <div class="text-center"><img src="img/microbiome_1.png" class="img-fluid"></div>
+    <div class="text-center"><img src="img/microbiome_2.png" class="img-fluid"></div>
+    <p>
+      From the
       counts plot we can tell that two samples (BB_3 and BB_8) have significantly fewer reads than the others. Looks
       like something went wrong during library preparation for these two samples and perhaps we should exclude them
       from further analysis. Also note that the reads of the other samples have decent quality up until ~200&nbsp;bp
@@ -268,14 +279,16 @@ BB_12   /home/user/data/metagenomics/fastq/BB_12_1.fastq.gz     /home/user/data/
       tries to merge ("denoise") sequences that differ only due to sequencing errors as opposed to actual biological
       variation.
       <pre>time qiime dada2 denoise-paired \
-        --i-demultiplexed-seqs fastq_imported.qza \
-        --p-trunc-len-f 190 \
-        --p-trunc-len-r 190 \
-        --p-n-threads 1 \
-        --verbose \
-        --o-table table.qza \
-        --o-representative-sequences rep_seqs.qza \
-        --o-denoising-stats denoising_stats.qza</pre>
+    --i-demultiplexed-seqs fastq_imported.qza \
+    --p-trunc-len-f 190 \
+    --p-trunc-len-r 190 \
+    --p-n-threads 1 \
+    --verbose \
+    --o-table table.qza \
+    --o-representative-sequences rep_seqs.qza \
+    --o-denoising-stats denoising_stats.qza</pre>
+      This will produce an artefact holding a list of unique sequences (<code>rep_seqs.qza</code>) as well as a table
+      with the number of occurrences of each representative sequence per sample.
       <a href="https://www.nature.com/articles/nmeth.3869">DADA2</a> fits the error model on all reads of a sequencing
       run simultaneously (as opposed to <a href="https://journals.asm.org/doi/10.1128/mSystems.00191-16">Deblur</a>,
       which fits a model for each sample). It is therefore considerably slower and we will have to wait a few minutes
@@ -286,398 +299,176 @@ BB_12   /home/user/data/metagenomics/fastq/BB_12_1.fastq.gz     /home/user/data/
         Hint: You can put <code>time</code> in front of any command to see how long it took. Try it with <kbd>time sleep
           5</kbd> in a new terminal.
         <br>
-        Also note that we told the program to truncate forward and reverse reads after 190&nbsp;bp due to degrading quality.
+        Also note that we told the program to truncate forward and reverse reads after 190&nbsp;bp due to degrading
+        quality.
         As the amplicon is only expected to be ~310&nbsp;bp long, this should still give us sufficient overlap.
       </div>
     </p>
-
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    These files are produced
-    by certain <code>qiime</code> commands and provide human-readable information like plots or tables of summary
-    statistics. There are several ways to view such files. The easiest one is to go to <a
-      href="https://view.qiime2.org/">https://view.qiime2.org/</a> and drag & drop them into your browser window.
-    <div class="alert alert-primary" role="alert">
-      Note that the tables and plots generated at <a href="https://view.qiime2.org/">https://view.qiime2.org/</a> are
-      all rendered in your local browser and that your data is not uploaded to be processed on a server.
-    </div>
-    <div class="alert alert-primary" role="alert">
-      If you are following this practical using a remote machine in the cloud, viewing these files is going to be
-      slightly more cumbersome since running a browser on the VM and using the graphical interface via SSH would be very
-      slow. Therefore, a better solution is to view the files with your local browser. One way to do this is to transfer
-      the file using <kbd>scp</kbd> onto your machine by typing <kbd>scp user@ipaddress:/path/to/file .</kbd> in a local
-      terminal (for macOS and Linux users). Windows users should be able to drag & drop the files into the browser from
-      the file panel of MobaXterm or PuTTY. Linux or macOS should also be able to connect to remote servers in their
-      file browsers. However, in case you have to rely on <kbd>scp</kbd>, a convenient way of obtaining the absolute
-      path of a file is to use the <kbd>find</kbd> command
-      <pre><code>find $PWD/fastq_imported.qzv</code></pre>
-    </div>
-
-
-
-    <pre><code>cd ~/data/metagenomics</pre></code>
-    <p>FOr this practical we will be using an old version of python so in order to use it run the commnad:</p>
-    <pre><code>source activate mothur</pre></code>
-    <p>Now, to start the software type in the command:</p>
-    <pre><code>mothur</pre></code>
-    <p>You should see a screen like this:</p>
-    <div class="text-center"><img src="img/microbiome_1.svg" class="img-fluid" alt="Microbiome_1"></div>
-    <br>
-    <p>So far so good, now to initiate the analysis we only need a database, to which we will map
-      our dataset (it has been provided to you in the folder database under the name
-      silva.bacteria.fasta, here you can find more information about the database
-      <a href="https://www.arb-silva.de/" target="_blank">https://www.arb-silva.de/</a>). The second thing is the fastq
-      files (they are stored
-      in fastq folder) and finally we need a file that links the files together,
-      called in this case BV.files.</p>
-    <p>To check how this file looks like type in:</p>
-    <pre><code>system(cat BV.files)</pre></code>
-    <p><b>Note that in mothur the commands that are not specifically developed in the framework
-        will need to be typed under the command <i>system()</i>.</b></p>
-    <p>Once we are ready let us start with the analysis, the first step will be to reconstruct
-      the reads by assembling the paired reads into contigs. In this step we are assembling the
-      reads that should overlap due to the design of our primers. In the following example,
-      check how the reads should map against a contig:</p>
-    <div class="text-center"><img src="img/Microbiome_2_1.jpg" class="img-fluid"></div>
-    <p>To generate these contigs we run the following command:</p>
-    <pre><code>make.contigs(file=BV.files, processors=4)</pre></code>
-    <p>Note that we are using 4 processors to speed things up, and it will take at most 5-10
-      minutes. Once finished you will see a list of the samples with the amount of reads in
-      each sample:</p>
-
-    <div class="row">
-      <div class="col-sm-6">
-        <div class="alert alert-info" style="white-space:pre-wrap;"><samp>
-            Group count:
-            BB_1 56715
-            BB_2 53890
-            BB_3 61157
-            BB_4 72766
-            BB_5 2193
-            BB_6 989
-
-            Total of all groups is 247710</samp>
-        </div>
+    <h5>Building a tree</h5>
+    <p>
+      <code>qiime</code> includes a tree-building pipeline which allows us to generate a phylogenetic tree from the
+      denoised sequences with a single command. <a href="https://mafft.cbrc.jp/alignment/software/">MAFFT</a> is used
+      for the alignment and multiple tree-inference methods are available (have a look at the <a
+        href="https://docs.qiime2.org/2021.8/plugins/available/phylogeny/?highlight=phylogeny">phylogeny</a> plugin for
+      details). We will use <a href="http://www.microbesonline.org/fasttree/">FastTree</a>, which is very quick but not
+      as accurate in some cases.
+      <pre>time qiime phylogeny align-to-tree-mafft-fasttree \
+    --i-sequences rep_seqs.qza \
+    --o-alignment aligned_rep_seqs.qza \
+    --o-masked-alignment masked_aligned_rep_seqs.qza \
+    --o-tree unrooted_tree.qza \
+    --o-rooted-tree rooted_tree.qza</pre>
+      As you can see, this will create an alignment, mask locations that aligned badly, and then generate the tree
+      (unrooted and rooted at midpoint).
+      <div class="alert alert-primary" role="alert">
+        We have built a new tree here because the pipeline with <a
+          href="http://www.microbesonline.org/fasttree/">FastTree</a> runs quite fast and we don't want to have to wait
+        during a practical. However, instead of creating one from scratch, an existing phylogeny can instead be used by
+        inserting new sequences into it. <code>qiime</code> offers such trees for two popular 16S databases and an
+        insertion algorithm in the <a
+          href="https://docs.qiime2.org/2021.8/plugins/available/fragment-insertion/?highlight=fragment%20insertion">fragment-insertion</a>
+        plugin.
+        <br>
+        In general, it needs to be said that phylogenomics is an incredibly deep topic. Since the tree is not
+        substantial for our analysis, we can simply use
+        <code>qiime</code>'s pipeline with the default parameters. However, if you ever rely on a high-quality phylogeny
+        for a different project, you should definitely try to find the best approach for your situation and have a close
+        look at the literature.
       </div>
-      <div class="col-sm-6 text-center">
-        <div class="alert alert-warning">
-          What can you infer from the number of groups (contigs) in each sample breakdown? Are
-          samples 5 and 6 directly comparable to the rest of the samples? Do you think this will
-          have an impact on the representativeness of the microbial community in these samples?
-        </div>
-        <p><b>NOTE: The 247710 number refers to the number of total conitgs.</b></p>
+    </p>
+    <h5>Estimating diversity</h5>
+    <p>
+      The main reason for generating a phylogeny in many microbiome analyses is so that they can be used in
+      phylogeny-based diversity metrics. Let's generate these now. Before we can run the corresponding command, though,
+      we need to look up the lowest number of denoised reads per sample.
+      <div class="alert alert-primary" role="alert">
+        Large differences in sequencing depth between samples can distort the results of diversity metrics. Therefore,
+        it is common practice to down-sample (in ecology-speech "<a
+          href="https://en.wikipedia.org/wiki/Rarefaction_(ecology)">rarify</a>") the reads of each sample to a number
+        that is equal or smaller than the number of reads in the least deeply sequenced sample. This simply means that
+        we randomly select N reads from each sample where N is the smallest number of reads in any sample.
       </div>
-    </div>
-
-    <p>In the output you will also have a list of the output files. You can check what they look
-      like using the following commands:</p>
-    <pre><code>system(head BV.trim.contigs.fasta)</pre></code>
-    <div class="text-center"><img src="img/Microbiome_3.jpg" class="img-fluid"></div><br>
-    <pre><code>system(head BV.contigs.report)</pre></code>
-    <div class="text-center"><img src="img/Microbiome_5.jpg" class="img-fluid"></div><br>
-    <p>The BV.contigs.report stores the summary of the contig quality and the file BV.contigs.groups
-      links the individual reads with the different samples.</p>
-    <p>A good way to summarize the overall quality of the reads is by running the command:</p>
-    <pre><code>summary.seqs(fasta=BV.trim.contigs.fasta)</pre></code>
-    <div class="alert alert-info" style="white-space:pre-wrap;"><samp>
-        Start End NBases Ambigs Polymer NumSeqs
-        Minimum: 1 298 298 0 3 1
-        2.5%-tile: 1 305 305 0 4 6193
-        25%-tile: 1 308 308 0 4 61928
-        Median: 1 320 320 0 4 123856
-        75%-tile: 1 339 339 0 4 185783
-        <b>97.5%-tile: 1 340 340 8 5</b> 241518
-        <b>Maximum: 1 600 600 203 282</b> 247710
-        Mean: 1 323.44 323.44 0.758968 4.11695
-        <b># of Seqs: 247710</b>
-      </samp></div>
-    <p>Interestingly, the longest read in the dataset is 600 bp. Be suspicious of this. Recall that
-      the reads are supposed to be 300 bp each. This read clearly did not assemble well (or at all).
-      Also note that at least 2.5% of our sequences had some ambiguous base calls and that the
-      maximum homopolymer (i.e. the same base repeated multiple times &ndash; e.g. AAAAAAAA)
-      is 282 bp in a row, these sequences are normally errors created in the sequencing process.
-      We will take care of these issues in the next step when we run screen.seqs.</p>
-    <pre><code>screen.seqs(fasta=BV.trim.contigs.fasta, group=BV.contigs.groups, summary=BV.trim.contigs.summary, maxambig=0, maxlength=340, maxhomop=6)</pre>
-    </code>
-    <p>With this command we are telling mothur to select only the reads with a <b>maximum length
-        of 340 bp</b>, with a number of <b>maximum homopolymers of 6</b> and with <b>0 ambiguous
-        calls</b>.</p>
-    <p>We anticipate that many of our sequences are duplicates of each other because of the
-      amplification. Because it is computationally wasteful to align the same thing a million
-      times, we'll analyse only the unique sequences and infer the result to the rest using the
-      unique.seqs command:</p>
-    <pre><code>unique.seqs(fasta=BV.trim.contigs.good.fasta)</pre></code>
-    <p>If two sequences have the same identical sequence, then they are considered duplicates
-      and will get merged. In the screen output there are two columns - the first is the number
-      of sequences characterized and the second is the number of unique sequences remaining. So
-      after running <i>unique.seqs</i><b> the number of sequences reduces from 204,240 to 13,611</b>.
-      This will make the analysis easier and faster.</p>
-    <p>The next command will rename the sequences to make the processing faster and generate a
-      file called <i>BV.trim.contigs.good.count_table</i>. In subsequent commands we will use it by
-      applying the count option:</p>
-    <pre><code>count.seqs(name=BV.trim.contigs.good.names, group=BV.contigs.good.groups)</pre></code>
-    <p>Now that our reads are ordered and clean is the time to align our reads to the reference
-      database and check what we have in there.</p>
-    <pre><code>align.seqs(fasta=BV.trim.contigs.good.unique.fasta, reference=database/silva.bacteria.fasta, flip=T)</pre>
-    </code>
-    <pre><code>summary.seqs(fasta=BV.trim.contigs.good.unique.align, count=BV.trim.contigs.good.count_table)</pre>
-    </code>
-    <div class="alert alert-info" style="white-space:pre-wrap;"><samp>
-        Start End NBases Ambigs Polymer NumSeqs
-        Minimum: <b>1044 6330</b> 275 0 3 1
-        2.5%-tile: <b>1044 6333</b> 305 0 4 5107
-        25%-tile: <b>1044 6333</b> 308 0 4 51061
-        Median: <b>1044 6333</b> 315 0 4 102121
-        75%-tile: <b>1044 6333</b> 339 0 4 153181
-        97.5%-tile: <b>1044 6333</b> 339 0 5 199135
-        Maximum: <b>1462 6443</b> 340 0 6 204240
-        Mean: 1044.05 6333.36 321.816 0 4.08212
-        # of unique seqs: 13611
-        total # of seqs: 204240
-      </samp></div>
-    <p>So what does this mean? You will see that the bulk of the sequences start at position
-      1044 and end at position 6333 (these designate the coordinates in the SILVA database and
-      not the actual positions in the 16S rRNA gene).
-      Some sequences start at position 1044 and end at 6330
-      or 6443. These deviants from the mode positions are likely due to an insertion or
-      deletion at the terminal ends of the alignments. Sometimes you will see sequences that
-      start and end at the same position indicating a very poor alignment, which is generally
-      due to non-specific amplification. To make sure that everything overlaps the same region
-      we will re-run <i>screen.seqs</i> to obtain sequences that start at or before position 1148
-      and end at or after position 5716 (corresponding to 27&ndash;338 in the 16S gene).</p>
-    <pre><code>screen.seqs(fasta=BV.trim.contigs.good.unique.align, count=BV.trim.contigs.good.count_table, summary=BV.trim.contigs.good.unique.summary, start=1148, end=5716, maxhomop=6)</pre>
-    </code>
-    <p>Now we know our sequences overlap the same alignment coordinates, we want to make
-      sure they only overlap that region. So we will filter the sequences to remove the
-      overhangs at both ends. In addition, there are many columns in the alignment that
-      only contain gap characters (i.e. "-"). These can be pulled out without losing any
-      information. We will do all this with <i>filter.seqs</i>:</p>
-    <pre><code>filter.seqs(fasta=BV.trim.contigs.good.unique.good.align, vertical=T, trump=.)</pre></code>
-    <div class="alert alert-info" style="white-space:pre-wrap;"><samp>Length of filtered alignment: 570
-        Number of columns removed: 49430
-        Length of the original alignment: 50000
-        Number of sequences used to construct filter: 13610</samp></div>
-    <p>This means that our initial alignment was 50000 columns wide and that we were able to
-      remove 49430 terminal gap characters using <i>trump=.</i> and vertical gap characters using
-      <i>vertical=T</i>. The final alignment length is 570 columns. Because we have perhaps created
-      some redundancy across our sequences by trimming the ends, we can re-run <i>unique.seqs</i>:</p>
-    <pre><code>unique.seqs(fasta=BV.trim.contigs.good.unique.good.filter.fasta, count=BV.trim.contigs.good.good.count_table)</pre>
-    </code>
-    <p>This identified 3182 duplicate sequences that we have now merged with previous unique
-      sequences. The next thing we want to do to further de-noise our sequences is to pre-cluster
-      the sequences using the pre.cluster command allowing for up to 3 differences between
-      sequences. This command will split the sequences by group and then sort them by abundance
-      and go from most abundant to least and identify sequences that are within 3 nt of each other.
-      If they are then they get merged. We generally favour allowing 1 difference for every 100 bp
-      of sequence:</p>
-    <pre><code>pre.cluster(fasta=BV.trim.contigs.good.unique.good.filter.unique.fasta, count=BV.trim.contigs.good.unique.good.filter.count_table, diffs=3)</pre>
-    </code>
-    <p>At this point we have removed as much sequencing error as we can and it is time to turn
-      our attention to removing chimeras(<a href="http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3044863/"
-        target="_blank">http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3044863/</a>). We will do this using the
-      <i>UCHIME</i> algorithm that is called within <i>mothur</i> using the <i>chimera.uchime</i>
-      command. Again, this command will split the data by sample and check for chimeras. Our
-      preferred way of doing this is to use the abundant sequences as our reference. In addition,
-      if a sequence is flagged as chimeric in one sample, the default <i>dereplicate=F</i> is to
-      remove it from all samples. We have found that this is a bit aggressive since we have seen
-      rare sequences get flagged as chimeric when they're the most abundant sequence in another
-      sample. This is how we do it:</p>
-    <pre><code>chimera.uchime(fasta=BV.trim.contigs.good.unique.good.filter.unique.precluster.fasta, count=BV.trim.contigs.good.unique.good.filter.unique.precluster.count_table, dereplicate=T)</pre>
-    </code>
-    <p>Running <i>chimera.uchime</i> with the count file will remove the chimeric sequences from that
-      file. But we still need to remove those sequences from the fasta file. We do this using
-      <i>remove.seqs</i>:</p>
-    <pre><code>remove.seqs(fasta=BV.trim.contigs.good.unique.good.filter.unique.precluster.fasta, accnos=BV.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.accnos)</pre>
-    </code>
-    <p>You should see the following line:</p>
-    <div class="alert alert-info" style="white-space:pre-wrap;"><samp>Removed 838 sequences from your fasta file.</samp>
-    </div>
-    <p>Let us see what we have left:</p>
-    <pre><code>summary.seqs(fasta=current, count=current)</pre></code>
-    <div class="alert alert-info" style="white-space:pre-wrap;"><samp> Start End NBases Ambigs Polymer NumSeqs
-        Minimum: 1 570 235 0 3 1
-        2.5%-tile: 1 570 266 0 4 5038
-        25%-tile: 1 570 269 0 4 50373
-        Median: 1 570 276 0 4 100746
-        75%-tile: 1 570 300 0 4 151119
-        97.5%-tile: 3 570 300 0 5 196454
-        Maximum: 3 570 303 0 6 201491
-        Mean: 1.26688 570 282.837 0 4.08113
-        # of unique seqs: <b>613</b>
-        total # of seqs: <b>201491</b>
-      </samp></div>
-    <p>Note that we went <b>from 204,240 to 201,491 sequences</b> for a reduction of 0.01%; this is a
-      reasonable number of sequences to be flagged as chimeric (it can go up to around
-      10%).</p>
-    <p>As a final quality control step, we need to see if there are any "undesirables"
-      in our dataset. Sometimes when we pick a primer set they will amplify other stuff
-      that gets to this point in the pipeline such as 18S rRNA gene fragments or 16S
-      rRNA from <i>Archaea</i>, chloroplasts, and mitochondria. There is also just the random
-      stuff that we want to remove (we will provide you with the list, no worries).</p>
-    <p>Let us go ahead and classify those sequences using the Bayesian classifier
-      with the <i>classify.seqs</i> command:</p>
-    <pre><code>classify.seqs(fasta=BV.trim.contigs.good.unique.good.filter.unique.precluster.pick.fasta, count=BV.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.count_table, reference=database/silva.bacteria.fasta, taxonomy=database/silva.bacteria.silva.tax, cutoff=80)</pre>
-    </code>
-    <p>And then remove the undesirable ones:</p>
-    <pre><code>remove.lineage(fasta=BV.trim.contigs.good.unique.good.filter.unique.precluster.pick.fasta, count=BV.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.count_table, taxonomy=BV.trim.contigs.good.unique.good.filter.unique.precluster.pick.silva.wang.taxonomy, taxon=Chloroplast-Mitochondria-unknown-Archaea-Eukaryota-unknown-Bradyrhizobium-Paracoccus-Comamonas-Moraxella-Pseudomonas-Acidobacteria-Cyanobacteria-Deinococcus-Thermus-Acidobacteria-Chloroplast-Cyanobacteria-Deinococci-ML635J-21-Sphingobacteriia-Deinococcales-Sphingobacteriales-Subgroup_2-Subgroup_3-Subgroup_4-Subgroup_5-Subgroup_6-SubsectionI-SubsectionII-SubsectionIII-Chitinophagaceae-Comamonadaceae-env.OPS_17-FamilyI-FamilyI-FamilyII-mitochondria-Moraxellaceae-NS9_marine_group-Sphingobacteriaceae-Trueperaceae-Unknown_Family-Unknown_Family-Acinetobacter-Afipia-Alicycliphilus-Alteromonas-Aquabacterium-Aquamicrobium-Azospira-Azospirillum-Blastocatella-Bosea-Bradyrhizobium-Brevundimonas-Bryobacter-Candidatus_Solibacter-Caulobacter-Chroococcidiopsis-Chroogloeocystis-Chryseobacterium-Cloacibacterium-Comamonas-Craurococcus-Crinalium-Cupriavidus-Curvibacter-Delftia-Diaphorobacter-Enhydrobacter-Flavisolibacter-Flavobacterium-Globicatella-Hydrotalea-Lautropia-Leptolyngbya-Marinobacter-Massilia-Mesorhizobium-Methylobacillus-Methylobacterium-Methylophilus-Methyloversatilis-Moraxella-Nitrosospira-Noviherbaspirillum-Novosphingobium-Paracoccus-Pedobacter-Pedomicrobium-Pelagibacterium-Phenylobacterium-Propionibacterium-Propioniciclava-Propioniferax-Propionimicrobium-Pseudomonas-Psychrobacter-Ralstonia-Rhizobium-Roseomonas-Salinimicrobium-Schlegelella-Sediminibacterium-Sphingobacterium-Sphingomonas-Stenotrophomonas-Sulfuritalea-Terrimonas-Tessaracoccus-Truepera-Undibacterium-Variovorax-Weeksella)</pre>
-    </code>
-    <p>To see the output of this classification we will use another software called
-      <i>KronaTools</i>. For this type:</p>
-    <pre><code>system(python2 mothur_krona_XML.py BV.trim.contigs.good.unique.good.filter.unique.precluster.pick.silva.wang.tax.summary > BV_krona.xml)</pre>
-    </code>
-
-    <p>This will create and output in XML format that can then be loaded into
-      <i>KronaTools</i> to create an interactive plot to navigate through.
-      To do this type:</p>
-    <pre><code>system(ktImportXML BV_krona.xml -o BV_krona.html)</pre></code>
-    <p>This will create the file <i>BV_krona.html</i> that you can open by navigating
-      to the folder <b>~/data/metagenomics/</b> and double clicking it (or by running <kbd>system(xdg-open
-        BV_krona.html)</kbd>). It should open in
-      the Web browser.</p>
-    <div class="text-center"><img src="img/Microbiome_6.jpg" class="img-fluid"></div>
-    <br>
-    <div class="alert alert-warning">
-      Using the table with the phenotypes (provided below) and using the plots just generated
-      for the samples, what conclusions could you extract from it? What do you think is the
-      role of the <i>Lactobacillus</i> genus?
-    </div>
-    <div class="row">
-      <div class="col-sm-2"></div>
-      <div class="col-sm-8 text-center">
-        <table class="table">
-          <thead class="thead-dark">
-            <tr>
-              <th scope="col">Sample</th>
-              <th scope="col">BV +/-</th>
-              <th scope="col">pH</th>
-              <th scope="col">HIV +/-</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="row">BB_1</th>
-              <td>BV(-)</td>
-              <td>4.1</td>
-              <td>HIV(-)</td>
-            </tr>
-            <tr>
-              <th scope="row">BB_2</th>
-              <td>BV(+)</td>
-              <td>4.7</td>
-              <td>HIV(-)</td>
-            </tr>
-            <tr>
-              <th scope="row">BB_3</th>
-              <td>BV(+)</td>
-              <td>5.3</td>
-              <td>HIV(-)</td>
-            </tr>
-            <tr>
-              <th scope="row">BB_4</th>
-              <td>BV(-)</td>
-              <td>4.4</td>
-              <td>HIV(-)</td>
-            </tr>
-            <tr>
-              <th scope="row">BB_5</th>
-              <td>BV(+)</td>
-              <td>5.5</td>
-              <td>HIV(-)</td>
-            </tr>
-            <tr>
-              <th scope="row">BB_6</th>
-              <td>BV(-)</td>
-              <td>4.4</td>
-              <td>HIV(-)</td>
-            </tr>
-          </tbody>
-        </table>
+      To this end, we can create a <code>qiime</code> visualisation of our counts table with
+      <pre>time qiime feature-table summarize \
+    --i-table table.qza \
+    --o-visualization table.qzv</pre>
+      <div class="alert alert-primary" role="alert">
+        Visualisation files are produced
+        by certain <code>qiime</code> commands and provide human-readable information like plots or tables of summary
+        statistics. There are several ways to view such files. The easiest one is to go to <a
+          href="https://view.qiime2.org/">https://view.qiime2.org/</a> and drag & drop them into your browser window.
       </div>
-      <div class="col-sm-2"></div>
-    </div>
-    <div class="alert alert-warning">
-      Why do you think sample 6 is not present in the plots?
-    </div>
-    <div class="alert alert-warning">
-      What information can be taken from the pH distribution of the samples? Is this correlated with the Bacteria we
-      find in the samples?
-    </div>
-    <hr>
-    <h4>OTU Classification</h4><br>
-    <p>Now we are going to cluster the sequences into OTUs.</p>
-    <p><b>So what is an OTU?</b></p>
-    <p>OTU's are used to categorize bacteria based on sequence similarity. In 16S metagenomics
-      approaches, OTUs are clusters of similar sequence variants of the 16S rDNA marker gene
-      sequence. Each of these clusters is intended to represent a taxonomic unit of a bacterial
-      species or genus depending on the sequence similarity threshold. Typically, OTU cluster
-      are defined by a 97% identity threshold of the 16S gene sequence variants, but also the
-      use of 99% identity is suggested for species separation.</p>
-    <p>OTU classification resolution depends on the 16S approach which has some limits in
-      distinguishing at the species level, for example, <i>Escherichia coli</i> and
-      <i>Shigella spp.</i> have almost identical 16S rRNA gene sequences.</p>
-    <p>To do the classification we will use <i>dist.seqs</i>:</p>
-    <pre><code>dist.seqs(fasta=BV.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.fasta, cutoff=0.20)</pre>
-    </code>
-    <pre><code>cluster(column=BV.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.dist, count=BV.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.pick.count_table)</pre>
-    </code>
-    <p>Once finished we want
-      to know how many sequences are in each OTU from each group, and we can do this using the
-      <i>make.shared</i> command. Here we tell mothur that we are really only interested in the
-      0.03 cut-off level.</p>
-    <pre><code>make.shared(list=BV.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.opti_mcc.list, count=BV.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.pick.count_table, label=0.03)</pre>
-    </code>
-    <p>Finally we will classify the OTU's obtained based on our database taxonomy.</p>
-    <pre><code>classify.otu(list=BV.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.opti_mcc.list, count=BV.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.pick.count_table, taxonomy=BV.trim.contigs.good.unique.good.filter.unique.precluster.pick.silva.wang.pick.taxonomy, label=0.03)</pre>
-    </code>
-    <p>To see the output like the one below type:</p>
-    <pre><code>system(head BV.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.opti_mcc.0.03.cons.taxonomy)</pre>
-    </code>
-    <div class="text-center"><img src="img/Microbiome_7.jpg" class="img-fluid"></div>
-    <br>
-    <p>This is telling you that Otu001 was observed 82356 times in your samples and that
-      all of the sequences (100%) were classified as being members of the
-      <i>Lactobacillus</i> genus.</p>
-    <hr>
-    <h4>Assessing alpha diversity</h4><br>
-    <p>To make this part is easier, rename the shared file as follows:</p>
-    <pre><code>system(cp BV.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.opti_mcc.shared BV.an.shared)</pre>
-    </code>
-    <p>Then run the following command:</p>
-    <pre><code>rarefaction.single(shared=BV.an.shared, calc=sobs, freq=100)</pre></code>
-    <p>This will produce the file <i>BV.an.groups.rarefaction</i>. that includes the rarefaction curves for the 6
-      samples. To plot this rarefaction curves we will use the statistical software <i>R</i>. Open a new
-      command line and navigate to <i>~/data/metagenomics/</i> and type <i>R</i>.</p>
-    <pre><code>cd ~/data/metagenomics/
-R</pre></code>
-    <p><b>This will start <i>R</i>. Then copy the following script to plot the graphics.</b></p>
-    <pre><code>data<-read.table("~/data/metagenomics/BV.an.groups.rarefaction",sep="\t",header=T)
-data_all<-c(data$X0.03.BB_1,data$X0.03.BB_2,data$X0.03.BB_3,data$X0.03.BB_4,data$X0.03.BB_5,data$X0.03.BB_6)
-max_all<-max(data_all,na.rm=TRUE)
-plot(data$numsampled,data$X0.03.BB_1,main="Rarefaction curves",xlab="Number of Reads Sampled",ylab="Number of Different OTUs", ylim=c(0,max_all),col=1,type="l")
-points(data$numsampled,data$X0.03.BB_2,type="l",col=2)
-points(data$numsampled,data$X0.03.BB_3,type="l",col=3)
-points(data$numsampled,data$X0.03.BB_4,type="l",col=4)
-points(data$numsampled,data$X0.03.BB_5,type="l",col=5)
-points(data$numsampled,data$X0.03.BB_6,type="l",col=6)
-legend("topright", c("BB_1","BB_2","BB_3","BB_4","BB_5","BB_6"), lty=c(1,1,1,1,1,1), lwd=c(2.5,2.5,2.5,2.5,2.5,2.5),col=c(1:6))</pre>
-    </code>
-    <p>The output should look like this:</p>
-    <div class="text-center"><img src="img/Microbiome_8.jpg" class="img-fluid"></div>
-    <br>
-    <p><b>Rarefaction</b> is a technique to assess species richness from the results of sampling.
-      Rarefaction allows the calculation of species richness for a given number of individual
-      samples, based on the construction of so-called rarefaction curves. This curve is a plot
-      of the number of species as a function of the number of samples. On the left, the steep
-      slope indicates that a large fraction of the species diversity remains to be discovered.
-      If the curve becomes flatter to the right, a reasonable number of individual samples
-      have been taken: more intensive sampling is likely to yield only few additional species.</p>
-    <div class="alert alert-warning">Knowing this, what are your conclusions about sample BB_5 and
-      BB_6? Also, what other important information can be spotted between the BV positive samples
-      and the Healthy samples?
-    </div>
+      <div class="alert alert-primary" role="alert">
+        Note that the tables and plots generated at <a href="https://view.qiime2.org/">https://view.qiime2.org/</a> are
+        all rendered in your local browser and that nothing is uploaded to be processed on an external server, which is
+        important when working with sensitive data.
+      </div>
+      <div class="alert alert-primary" role="alert">
+        If you are following this practical using a remote machine in the cloud, viewing these files is again going to
+        be slightly more cumbersome as using a browser through SSH is going to be very slow. Instead use
+        <code>scp</code> to transfer the files to your local machine or drag and drop them from MobaXterm / PuTTY (if
+        you are on Windows) into the browser. If you are running macOS or Linux, you might also be able to connect your
+        file browser to a remote server. Alternatively, you could also download <a
+          href=https://filezilla-project.org/download.php?platform=osx">FileZilla </a>. </div> Once the visualisation
+          has loaded, there should be a table looking like this: <div class="text-center"><img
+            src="img/microbiome_3.png" class="img-fluid"></div>
+      So, we need to rarify to a sampling depth of 24,336 reads. Let's generate the diversity metrics now with (again,
+      adjust the number of threads according to your setup):
+      <pre>time qiime diversity core-metrics-phylogenetic \
+    --i-phylogeny rooted_tree.qza \
+    --i-table table.qza \
+    --p-sampling-depth 24366 \
+    --p-n-jobs-or-threads 1 \
+    --m-metadata-file meta.tsv \
+    --output-dir core-metrics-results</pre>
+      This will generate a new directory <code>core-metrics-results</code> holding (all based on multiple different
+      diversity metrics) sample-wise diversity values ("alpha diversity"), pairwise inter-sample distance matrices
+      ("beta diversity"), and visualisations of <a
+        href="https://en.wikipedia.org/wiki/Multidimensional_scaling#Types">PCoA</a> plots (ending in
+      <code>.qzv</code>).
+      These can again be inspected with <a href="https://view.qiime2.org/">https://view.qiime2.org/</a>. For example,
+      the <a href="https://en.wikipedia.org/wiki/Multidimensional_scaling#Types">PCoA</a> plot based on <a
+        href="https://en.wikipedia.org/wiki/Bray%E2%80%93Curtis_dissimilarity">Bray&ndash;Curtis distance</a> with
+      BV-negative samples in red and BV-positive samples in blue looks like this:
+      <div class="text-center"><img src="img/microbiome_4.png" class="img-fluid" id="PCoA_plot"></div>
+      <div class="alert alert-warning" role="alert">
+        What does the plot tell us about our samples and the impact of BV on alpha and beta diversity.
+      </div>
+    </p>
+
+    <h5>Taxonomic classification</h5>
+    <p>
+      We are not only interested in the ecological diversity of our samples; we also want to know which species were
+      found. Again, there are multiple ways of achieving this. We will use a Naïve Bayes classifier (pre-trained on the
+      <a href="https://greengenes.secondgenome.com/">Greengenes 13_8</a> database) available from the <a
+        href="https://docs.qiime2.org/2021.8/data-resources/">Qiime2 website</a>. You can find it in the <code>db</code>
+      directory and use it with the following command (again, adjust the number of threads / jobs if you have more CPUs
+      available):
+      <pre>time qiime feature-classifier classify-sklearn \
+    --i-classifier db/gg-13-8-99-nb-classifier.qza \
+    --i-reads rep_seqs.qza \
+    --p-n-jobs 1 \
+    --o-classification taxonomy.qza</pre>
+      The produced table in <code>taxonomy.qza</code> simply links the taxonomic classifications (from phylum to species
+      level) to the corresponding sequences. If you want to inspect the result, run
+      <pre>time qiime metadata tabulate \
+    --m-input-file taxonomy.qza \
+    --o-visualization taxonomy.qzv</pre>
+      and open the visualisation <code>taxonomy.qzv</code> in <a
+        href="https://view.qiime2.org/">https://view.qiime2.org/</a>.
+
+      <br><br>
+      To get a more intuitive understanding of the microbial composition of our samples we can now ask
+      <code>qiime</code> to plot it for us:
+      <pre>time qiime taxa barplot \
+    --i-table table.qza \
+    --i-taxonomy taxonomy.qza \
+    --m-metadata-file meta.tsv \
+    --o-visualization taxa_barplot.qzv</pre>
+      The resulting visualisation looks like this in <a href="https://view.qiime2.org/">https://view.qiime2.org/</a>
+      when choosing the species level ("Level 7"):
+      <div class="text-center"><img src="img/microbiome_5.png" class="img-fluid"></div>
+      <div class="alert alert-primary" role="alert">
+        You can adjust the with of the bars with the slider above the plot.
+      </div>
+      We can see that for the
+    </p>
+
+    <h5>Testing differences in alpha diversity</h5>
+    <p>
+      In the <a href="#PCoA_plot">PCoA plot from earlier</a> it looked
+      like the samples without BV were considerable closer to each other than the samples with BV. We can check if this
+      observation is also statistically significant by running a <a
+        href="https://en.wikipedia.org/wiki/Kruskal%E2%80%93Wallis_one-way_analysis_of_variance">Kruskal&ndash;Wallis
+        test</a> on the four metrics of alpha diversity that we calculated for our samples. Let's create a new
+      directory to write the results into and run:
+      <pre>mkdir alpha_tests
+for metric in faith_pd evenness shannon observed_features; do
+    qiime diversity alpha-group-significance \
+        --i-alpha-diversity core-metrics-results/${metric}_vector.qza \
+        --m-metadata-file meta.tsv \
+        --o-visualization alpha_tests/${metric}_group_significance.qzv
+done</pre>
+      This creates four more visualisations to look at.
+      <div class="alert alert-warning" role="alert">
+        Not all of the metrics see a significant difference between BV and non-BV samples. After looking at the short
+        definitions of the metrics provided below, can you think of a reason for this discrepancy?
+        <br>
+        faith_pd: <a href="https://en.wikipedia.org/wiki/Phylogenetic_diversity">Faith's phylogenetic diversity</a> is
+        defined as the sum of branch-lengths in the phylogeny between all species found in a sample.
+        <br>
+        evenness: <a href="https://en.wikipedia.org/wiki/Species_evenness">Pielou's evenness index</a> quantifies how
+        differently abundant species making up an ecosystem are.
+        <br>
+        shannon: The <a href="https://en.wikipedia.org/wiki/Diversity_index#Shannon_index">Shannon index or Shannon
+          entropy</a> quantifies how difficult it is to guess the species of a random specimen taken from the sample
+        (the more species and the more equally abundant they are, the more difficult).
+        <br>
+        observed_features: Simply the number of unique taxa found in the sample.
+      </div>
+
+    </p>
+
     <p><b>Acknowledgements:</b> Dr. Suzanna Francis</p>
 
   </div>
