@@ -39,20 +39,20 @@
     </object>
     <hr>
     <h4>Microbiomes Practical</h4><br>
-    <p> Bacterial vaginosis (BV) is a common dysbiotic condition caused by excessive growth of bacteria replacing the
-      common vaginal microbiome. Common symptoms include increased discharge, burning with urination, and itching. BV
+    <p> Bacterial vaginosis (BV) is a dysbiotic condition caused by excessive growth of certain bacteria replacing the
+      regular vaginal microbiome. Common symptoms include increased discharge, burning with urination, and itching. BV
       increases the risk of infection by a number of sexually transmitted infections including HIV/AIDS as well as the
       risk of early delivery when pregnant. The changed composition of the microbiome leads to a higher pH and a hundred
-      to thousand-fold increase in total numbers of bacteria present.
+      to thousand-fold increase in the total number of bacteria present.
     </p>
-    <p>For this practical we are considering 6 samples of vaginal swab that were taken at a polyclinic by a GP in a
+    <p>For this practical we are considering 12 samples of vaginal swab that were taken at a polyclinic by a GP in a
       setting of high
       transmission of HIV. DNA was extracted from the swabs and amplified using primers specific for the first two
       hypervariable regions (V1 and V2) of the 16S
       rRNA gene (27F and 338R). These samples were then sequenced with MiSeq Illumina producing
-      PAIRED END data of 300 bp length per read. The 6 pairs of files generated are found in the
-      <code>metagenomics/fastq/</code> folder. The patients’
-      phenotype was determined by the doctors at the time of the sample collection giving the following results:</p>
+      paired end data of 300&nbsp;bp length per read. The 12 pairs of files generated are found in the
+      <code>data/metagenomics/fastq/</code> directory. The patients’
+      phenotype was determined by the doctors at the time of sample collection with the following results:</p>
 
 
     <div class="row">
@@ -135,13 +135,13 @@
 
     <h4>Analysing the microbiome samples with <i>QIIME2</i></h4>
     <p>Out of all tookits aiming at the unification of the analysis of microbiome data, QIIME (pronounced "chime") and
-      its successor QIIME2 have grown the largest user base in the last couple of years (mostly due to its ease of use
+      its successor QIIME2 have grown the largest user base in recent years (mostly due to the ease of use
       and
-      great <a href=https://docs.qiime2.org/>online documentation</a>). QIIME2 wraps an extensive suite of third party
-        tools (covering most of the "standard" microbiome pipeline from preprocessing and filtering of raw sequencing
-        reads to statistical tests on diversity metrics and analyses on differential abundance of single taxa) into a
-        single command line interface. In addition, it also provides a GUI as well as a python API for both less and
-        more technically inclined users. We will stick to the CLI for today. <br>
+      comprehensive <a href=https://docs.qiime2.org/>online documentation</a>). QIIME2 wraps an extensive suite of third
+        party tools (covering most of the "standard" microbiome pipeline from preprocessing and filtering of raw
+        sequencing reads to statistical tests on diversity metrics and analyses on differential abundance of single
+        taxa) into a single command line interface. In addition, it also provides a GUI as well as a python API for both
+        less and more technically inclined users. We will stay on the middle ground by using the CLI today. <br>
         One idiosyncrasy of QIIME2 is the
         use of
         so-called "artefacts". These are zip-archives with a special file extension (<code>.qza</code> for data
@@ -149,72 +149,73 @@
         provenance metadata, which describe all steps that lead to the creation of that particular artefact. This has
         the
         advantage that for every intermediate or final result of <code>qiime</code> it is perfectly clear how it was
-        generated from start to finish. However, there is the small downside, that we have to import our data into the
-        QIIME2 format before we can run any analyses. However, before we do that, let's have a look at the quality of
-        our reads (<code>qiime</code> also provides functionality for sequencing read quality control, but it is not as
-        detailed as the output of FastQC).
+        generated from start to finish. There is a small downside, though, since we have to import our data into the
+        QIIME2 format prior to running any analyses. However, before we do that, let's have a look at the quality of
+        our reads (<code>qiime</code> also provides functionality for sequencing data quality control, but it is not as
+        detailed as the output of some dedicated tools like <a
+          href="https://www.bioinformatics.babraham.ac.uk/projects/fastqc/">FastQC</a>).
     </p>
     <h5>Quality control</h5>
     <p>
-      Go into the module directory with <kbd>cd metagenomics</kbd> and have a look at it's contents with
-      <kbd>ls</kbd>. There should be a directory with the 16S sequencing data (<code>fastq</code>), a 16S database
-      (<code>db</code>), and a CSV file with our metadata. Let's check if our reads are there with <kbd>ls
+      Go into the module directory with <kbd>cd data/metagenomics</kbd> and have a look at its contents with
+      <kbd>ls</kbd>. There should be a directory with the 16S sequencing data (in <code>fastq</code>), a 16S database
+      (in <code>db</code>), and a CSV file with our metadata. Let's check if our reads are there with <kbd>ls
         fastq</kbd>. We can also have a look at the filesizes with <kbd>du -sh fastq/* | sort -h</kbd> (it can't hurt
       to get a feeling for these things).
-
-      <div class="alert alert-warning">
-        Are there some files that look a lot smaller than the rest?
-      </div>
+      <br>
       Now that we have made sure that we have all the reads, let's run <code>fastqc</code> on them and store the
-      reports in a new directory.
+      reports in a new directory by running
       <pre>mkdir fastqc_reports</pre>
       <pre>fastqc -o fastqc_reports -q -t 1 fastq/*</pre>
       <div class="alert alert-primary">
         The <code>-t</code> flag tells <code>fastqc</code> the number of threads to use. If you have more CPUs
         available, adjust this number accordingly.
       </div>
-      This should have produced a FastQC report for each <code>fastq</code> file and put them all into
-      <code>fastqc_reports</code> (run <kbd>ls fastqc_reports</kbd> to double check). Going through 24 (one for the
-      forward and reverse reads of each sample) FastQC reports manually would be quite cumbersome. Thankfully,
+      This should produce a FastQC report for each <code>fastq</code> file and put them all into
+      <code>fastqc_reports</code> (run <kbd>ls fastqc_reports</kbd> to double check). Going through 24 FastQC reports
+      (two per sample; one for the forward and one for the reverse reads) manually would be quite tedious. Thankfully,
       <code>multiqc</code> can combine them for us! Let's create a new directory for it to write the results into and
       run it.
-      <pre>mkdir multicq</pre>
-      <pre>multiqc -o multiqc fastqc_reports</pre>
-      With <kbd>ls multiqc</kbd> you can see that an HTML file has been created, which we can view in a browser.
+      <pre>mkdir fastqc_combined</pre>
+      <pre>multiqc -o fastqc_combined fastqc_reports</pre>
+      With <kbd>ls fastqc_combined</kbd> you can see that an HTML file, which we can view in a browser, has been
+      created.
       <div class="alert alert-primary">
         If running a VM or remote desktop, you should be able to simply double-click on the file in the file browser
         in order for it to open (the command line equivalent of double-clicking would be <kbd>xdg-open
-          multiqc/multiqc_report.html</kbd> in this case). If you are following the practical in a remote shell via
+          fastqc_combined/multiqc_report.html</kbd> in this case). If you are following the practical using a remote
+        machine via
         SSH, however, using the browser on the server-side would be very slow. Instead, you would preferably either
         transfer
-        the file to your local machine with <kbd>scp&nbsp;user@ipaddress:/absolute/path/on/remote&nbsp;.</kbd>, connect
-        to the server in your local file browser if you
+        the file to your local machine by typing <kbd>scp&nbsp;user@ipaddress:/absolute/path/on/remote&nbsp;.</kbd> into
+        a local terminal, connect
+        to the remote server in your local file browser if you
         are running macOS or Linux, or open it from the file panel in MobaXterm / PuTTY on Windows.
       </div>
       <div class="alert alert-primary">
         Hint: If you quickly need to get the absolute path of a file (e.g. for use in <code>scp</code>), type
         <kbd>find&nbsp;$PWD/filename</kbd> and copy the output.
       </div>
-      Scroll through the report and make note of the Sequence Counts barplots and the quality histograms.
+      Scroll through the report and make note of the sequence counts barplots and the quality histograms.
     </p>
     <div class="text-center"><img src="img/microbiome_1.png" class="img-fluid"></div>
     <div class="text-center"><img src="img/microbiome_2.png" class="img-fluid"></div>
     <p>
-      From the
-      counts plot we can tell that two samples (BB_3 and BB_8) have significantly fewer reads than the others. Looks
-      like something went wrong during library preparation for these two samples and perhaps we should exclude them
+      In the
+      counts plot we can see that two samples (BB_3 and BB_8) have significantly fewer reads than the others. This looks
+      like something went wrong during library preparation for these two samples and we should exclude them
       from further analysis. Also note that the reads of the other samples have decent quality up until ~200&nbsp;bp
-      length.
+      length. We will need this information later.
       <div class="alert alert-warning">
         The difference in file sizes of the sequencing files between BB_3 / BB_8 and the other samples was not as
         drastic as the difference in actual read counts. Can you think of a reason why that might be? Hint: What does
         the file extension <code>.gz</code> mean?
       </div>
-      For this dataset, the primers have already been trimmed from the reads and as we could see from the FastQC output,
+      For this dataset, the primers have already been trimmed from the reads and the FastQC output showed us that
       there are no adapters that would need removal. Also, quality-based trimming is <a
         href="https://github.com/benjjneb/dada2/issues/236#issuecomment-406606167">discouraged</a> when using <a
-        href="https://www.nature.com/articles/nmeth.3869">DADA2</a>, the centrepiece of our later analyses. Therefor, no
-      further pre-processing is needed and we can import the data into <code>qiime</code>.
+        href="https://www.nature.com/articles/nmeth.3869">DADA2</a> (an important step in our later analyses). Therefore, no
+      further pre-processing is needed and we can transform the data into the <code>qiime</code> format.
     </p>
 
     <h5>Import into <code>qiime</code></h5>
@@ -448,8 +449,8 @@ BB_12   /home/user/data/metagenomics/fastq/BB_12_1.fastq.gz     /home/user/data/
         href="https://en.wikipedia.org/wiki/Kruskal%E2%80%93Wallis_one-way_analysis_of_variance">Kruskal&ndash;Wallis
         test</a> on the four metrics of alpha diversity that we calculated for our samples. Let's create a new
       directory to write the results into and run:
-      <pre>mkdir alpha_tests
-for metric in faith_pd evenness shannon observed_features; do
+      <pre>mkdir alpha_tests</pre>
+      <pre>for metric in faith_pd evenness shannon observed_features; do
     qiime diversity alpha-group-significance \
         --i-alpha-diversity core-metrics-results/${metric}_vector.qza \
         --m-metadata-file meta.tsv \
@@ -478,8 +479,8 @@ done</pre>
     As opposed to alpha diversity, which quantifies the diversity of a sample (or a group of samples) overall, beta
     diversity gives an estimate of the magnitude of differences between samples or groups of samples. We can test the
     difference between BV and non-BV samples for all beta diversity metrics with the following command:
-    <pre>mkdir -p beta_tests
-for metric in bray_curtis jaccard unweighted_unifrac weighted_unifrac; do
+    <pre>mkdir -p beta_tests</pre>
+    <pre>for metric in bray_curtis jaccard unweighted_unifrac weighted_unifrac; do
     qiime diversity beta-group-significance \
         --i-distance-matrix core-metrics-results/${metric}_distance_matrix.qza \
         --m-metadata-file meta.tsv \
@@ -487,7 +488,9 @@ for metric in bray_curtis jaccard unweighted_unifrac weighted_unifrac; do
         --o-visualization beta_tests/${metric}_significance.qzv \
         --p-permutations 9999
 done</pre>
-    Again, we got a visualisation for each metric. Have a look at them in <a href="https://view.qiime2.org/">https://view.qiime2.org/</a> like before. What do you find? Are all of them in agreement this time?
+    Again, we got a visualisation for each metric. Have a look at them in <a
+      href="https://view.qiime2.org/">https://view.qiime2.org/</a> like before. What do you find? Are all of them in
+    agreement this time?
 
 
 
