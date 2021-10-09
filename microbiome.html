@@ -214,7 +214,8 @@
       For this dataset, the primers have already been trimmed from the reads and the FastQC output showed us that
       there are no adapters that would need removal. Also, quality-based trimming is <a
         href="https://github.com/benjjneb/dada2/issues/236#issuecomment-406606167">discouraged</a> when using <a
-        href="https://www.nature.com/articles/nmeth.3869">DADA2</a> (an important step in our later analyses). Therefore, no
+        href="https://www.nature.com/articles/nmeth.3869">DADA2</a> (an important step in our later analyses).
+      Therefore, no
       further pre-processing is needed and we can transform the data into the <code>qiime</code> format.
     </p>
 
@@ -236,16 +237,17 @@
     with
     <pre>ls fastq | grep -oE 'BB_[0-9]+' | sort -t _ -k 2 -n | uniq | \
       grep -vE 'BB_[38]' | \
-      awk -v path=$(pwd)/fastq 'OFS="\t" \
-          {print $1, path "/" $1 "_1.fastq.gz", path "/" $1 "_2.fastq.gz"}' \
+      awk -v path=$(pwd)/fastq/ 'OFS="\t" \
+          {print $1, path $1 "_1.fastq.gz", path $1 "_2.fastq.gz"}' \
       >> fastq_abs_paths</pre>
     <div class="alert alert-primary" role="alert">
       With the first <code>grep</code> we get the sample IDs from the filenames. We then <code>sort</code> them
       numerically (<code>-n</code>) based on the second field (<code>-k 2</code>) when split at underscores (<code>-t
         _</code>). Since there are two files per sample, we only keep the <code>uniq</code> sample IDs before removing
-      the bad samples (BB_3 and BB_8) with another <code>grep</code> (<code>grep -v</code> keeps all lines that do
+      the low-read-counts samples (BB_3 and BB_8) with another <code>grep</code> (<code>grep -v</code> keeps all lines
+      that do
       <i>not</i> match the <a href="https://en.wikipedia.org/wiki/Regular_expression">regex</a>). The remaining sample
-      IDs are subsequently fed to <code>awk</code> in order to create and print the absolute paths, which are finally
+      IDs are subsequently fed to <code>awk</code> in order to print the absolute paths which are finally
       appended to <code>fastq_abs_paths</code>.
     </div>
     This should have done the trick. <kbd>cat fastq_abs_paths</kbd> let's us see what we got. The output should look
@@ -261,22 +263,26 @@ BB_9    /home/user/data/metagenomics/fastq/BB_9_1.fastq.gz      /home/user/data/
 BB_10   /home/user/data/metagenomics/fastq/BB_10_1.fastq.gz     /home/user/data/metagenomics/fastq/BB_10_2.fastq.gz
 BB_11   /home/user/data/metagenomics/fastq/BB_11_1.fastq.gz     /home/user/data/metagenomics/fastq/BB_11_2.fastq.gz
 BB_12   /home/user/data/metagenomics/fastq/BB_12_1.fastq.gz     /home/user/data/metagenomics/fastq/BB_12_2.fastq.gz</pre>
-    Great! This should be enough to let QIIME2 know where the files that we want to import are.
+    Great! This should be sufficient to let QIIME2 know where the files that we want to import are.
     Now, we can import the reads with
     <pre>qiime tools import \
     --type 'SampleData[PairedEndSequencesWithQuality]' \
     --input-path fastq_abs_paths \
     --output-path fastq_imported.qza \
     --input-format PairedEndFastqManifestPhred33V2</pre>
-    This should hopefully finish successfully in a few secocnds. Afterwards, you can check whether a new file was
+    This hopefully finishes successfully in a few secocnds. Afterwards, you can check whether a new file was
     created with <kbd>ls</kbd> (which is slowly becoming our best friend now &ndash; right after <kbd>cd</kbd> of
     course).
+    <br>
+    <code>qiime</code> also requires the metadata to be in TSV (tab-separated values), whereas our file is a CSV
+    (comma-separated). We can simply fix this with
+    <pre>cat meta.csv | tr ',' '\t' > meta.tsv</pre>
     </p>
     <h5>Denoising with <a href="https://www.nature.com/articles/nmeth.3869">DADA2</a></h5>
     <p>
-      Great, now that we have imported the data we can unleash the power of <code>qiime</code>! Denoising (or OTU
-      clustering) is the heart of every 16S pipeline. We will use <a
-        href="https://www.nature.com/articles/nmeth.3869">DADA2</a>, which fits a sequencing error model to the data and
+      Now that we have imported the data we can unleash the power of <code>qiime</code>! Sequence denoising (or OTU
+      clustering) is the centrepiece of every 16S pipeline. We will use the <a
+        href="https://www.nature.com/articles/nmeth.3869">DADA2</a> which fits a sequencing error model to the data and
       tries to merge ("denoise") sequences that differ only due to sequencing errors as opposed to actual biological
       variation.
       <pre>time qiime dada2 denoise-paired \
@@ -289,10 +295,11 @@ BB_12   /home/user/data/metagenomics/fastq/BB_12_1.fastq.gz     /home/user/data/
     --o-representative-sequences rep_seqs.qza \
     --o-denoising-stats denoising_stats.qza</pre>
       This will produce an artefact holding a list of unique sequences (<code>rep_seqs.qza</code>) as well as a table
-      with the number of occurrences of each representative sequence per sample.
+      with the number of occurrences of each representative sequence per sample (<code>table.qza</code>).
       <a href="https://www.nature.com/articles/nmeth.3869">DADA2</a> fits the error model on all reads of a sequencing
       run simultaneously (as opposed to <a href="https://journals.asm.org/doi/10.1128/mSystems.00191-16">Deblur</a>,
-      which fits a model for each sample). It is therefore considerably slower and we will have to wait a few minutes
+      which fits it separately for each sample). It is therefore considerably slower and we will have to wait a few
+      minutes
       for it to finish. In the meantime you can have a look at the later sections of the practical.
       <div class="alert alert-primary" role="alert">
         If applicable, increase the number of threads in order to speed things up.
@@ -300,8 +307,8 @@ BB_12   /home/user/data/metagenomics/fastq/BB_12_1.fastq.gz     /home/user/data/
         Hint: You can put <code>time</code> in front of any command to see how long it took. Try it with <kbd>time sleep
           5</kbd> in a new terminal.
         <br>
-        Also note that we told the program to truncate forward and reverse reads after 190&nbsp;bp due to degrading
-        quality.
+        Also note that we told the program to truncate forward and reverse reads after 190&nbsp;bp due to the decrease
+        in quality we saw in <code>multiqc_report.html</code>.
         As the amplicon is only expected to be ~310&nbsp;bp long, this should still give us sufficient overlap.
       </div>
     </p>
@@ -309,10 +316,10 @@ BB_12   /home/user/data/metagenomics/fastq/BB_12_1.fastq.gz     /home/user/data/
     <p>
       <code>qiime</code> includes a tree-building pipeline which allows us to generate a phylogenetic tree from the
       denoised sequences with a single command. <a href="https://mafft.cbrc.jp/alignment/software/">MAFFT</a> is used
-      for the alignment and multiple tree-inference methods are available (have a look at the <a
+      for the alignment and multiple tree-inference methods are available (have a look at <code>qiime</code>'s <a
         href="https://docs.qiime2.org/2021.8/plugins/available/phylogeny/?highlight=phylogeny">phylogeny</a> plugin for
-      details). We will use <a href="http://www.microbesonline.org/fasttree/">FastTree</a>, which is very quick but not
-      as accurate in some cases.
+      details). We will use <a href="http://www.microbesonline.org/fasttree/">FastTree</a>, which is the fastest but
+      also least accurate option available.
       <pre>time qiime phylogeny align-to-tree-mafft-fasttree \
     --i-sequences rep_seqs.qza \
     --o-alignment aligned_rep_seqs.qza \
@@ -323,9 +330,10 @@ BB_12   /home/user/data/metagenomics/fastq/BB_12_1.fastq.gz     /home/user/data/
       (unrooted and rooted at midpoint).
       <div class="alert alert-primary" role="alert">
         We have built a new tree here because the pipeline with <a
-          href="http://www.microbesonline.org/fasttree/">FastTree</a> runs quite fast and we don't want to have to wait
-        during a practical. However, instead of creating one from scratch, an existing phylogeny can instead be used by
-        inserting new sequences into it. <code>qiime</code> offers such trees for two popular 16S databases and an
+          href="http://www.microbesonline.org/fasttree/">FastTree</a> runs quite quickly and we don't want to have to
+        wait
+        during the practical. However, instead of creating one from scratch, we could have also inserted our sequences
+        into an existing phylogeny. <code>qiime</code> offers pre-computed trees for two popular 16S databases and an
         insertion algorithm in the <a
           href="https://docs.qiime2.org/2021.8/plugins/available/fragment-insertion/?highlight=fragment%20insertion">fragment-insertion</a>
         plugin.
@@ -333,47 +341,48 @@ BB_12   /home/user/data/metagenomics/fastq/BB_12_1.fastq.gz     /home/user/data/
         In general, it needs to be said that phylogenomics is an incredibly deep topic. Since the tree is not
         substantial for our analysis, we can simply use
         <code>qiime</code>'s pipeline with the default parameters. However, if you ever rely on a high-quality phylogeny
-        for a different project, you should definitely try to find the best approach for your situation and have a close
-        look at the literature.
+        for a different project, you should definitely try to find the best approach for your data and have a close
+        look at the respective literature.
       </div>
     </p>
     <h5>Estimating diversity</h5>
     <p>
-      The main reason for generating a phylogeny in many microbiome analyses is so that they can be used in
+      One reason for generating a phylogeny in a microbiome analysis is so that it can be used in
       phylogeny-based diversity metrics. Let's generate these now. Before we can run the corresponding command, though,
       we need to look up the lowest number of denoised reads per sample.
       <div class="alert alert-primary" role="alert">
-        Large differences in sequencing depth between samples can distort the results of diversity metrics. Therefore,
+        Large differences in sequencing depth between samples can distort the results of diversity estimates. Therefore,
         it is common practice to down-sample (in ecology-speech "<a
           href="https://en.wikipedia.org/wiki/Rarefaction_(ecology)">rarify</a>") the reads of each sample to a number
         that is equal or smaller than the number of reads in the least deeply sequenced sample. This simply means that
         we randomly select N reads from each sample where N is the smallest number of reads in any sample.
       </div>
-      To this end, we can create a <code>qiime</code> visualisation of our counts table with
+      To check the number of denoised reads per sample, we can create a <code>qiime</code> visualisation of our counts
+      table with
       <pre>time qiime feature-table summarize \
     --i-table table.qza \
     --o-visualization table.qzv</pre>
       <div class="alert alert-primary" role="alert">
         Visualisation files are produced
-        by certain <code>qiime</code> commands and provide human-readable information like plots or tables of summary
+        by certain <code>qiime</code> commands and provide human-readable information like plots, tables, or summary
         statistics. There are several ways to view such files. The easiest one is to go to <a
           href="https://view.qiime2.org/">https://view.qiime2.org/</a> and drag & drop them into your browser window.
       </div>
       <div class="alert alert-primary" role="alert">
         Note that the tables and plots generated at <a href="https://view.qiime2.org/">https://view.qiime2.org/</a> are
         all rendered in your local browser and that nothing is uploaded to be processed on an external server, which is
-        important when working with sensitive data.
+        often required when working with sensitive data.
       </div>
       <div class="alert alert-primary" role="alert">
         If you are following this practical using a remote machine in the cloud, viewing these files is again going to
-        be slightly more cumbersome as using a browser through SSH is going to be very slow. Instead use
+        be slightly more cumbersome since using a browser through SSH is going to be very slow. Instead use
         <code>scp</code> to transfer the files to your local machine or drag and drop them from MobaXterm / PuTTY (if
         you are on Windows) into the browser. If you are running macOS or Linux, you might also be able to connect your
-        file browser to a remote server. Alternatively, you could also download <a
+        file browser to the remote server. Alternatively, you could also download <a
           href=https://filezilla-project.org/download.php?platform=osx">FileZilla </a>. </div> Once the visualisation
           has loaded, there should be a table looking like this: <div class="text-center"><img
             src="img/microbiome_3.png" class="img-fluid"></div>
-      So, we need to rarify to a sampling depth of 24,336 reads. Let's generate the diversity metrics now with (again,
+      So, we need to rarify to a sampling depth of 24,336 reads. Let's generate the diversity metrics now (again,
       adjust the number of threads according to your setup):
       <pre>time qiime diversity core-metrics-phylogenetic \
     --i-phylogeny rooted_tree.qza \
@@ -382,7 +391,7 @@ BB_12   /home/user/data/metagenomics/fastq/BB_12_1.fastq.gz     /home/user/data/
     --p-n-jobs-or-threads 1 \
     --m-metadata-file meta.tsv \
     --output-dir core-metrics-results</pre>
-      This will generate a new directory <code>core-metrics-results</code> holding (all based on multiple different
+      This will generate a new directory <code>core-metrics-results</code> holding (based on multiple different
       diversity metrics) sample-wise diversity values ("alpha diversity"), pairwise inter-sample distance matrices
       ("beta diversity"), and visualisations of <a
         href="https://en.wikipedia.org/wiki/Multidimensional_scaling#Types">PCoA</a> plots (ending in
@@ -393,8 +402,8 @@ BB_12   /home/user/data/metagenomics/fastq/BB_12_1.fastq.gz     /home/user/data/
       BV-negative samples in red and BV-positive samples in blue looks like this:
       <div class="text-center"><img src="img/microbiome_4.png" class="img-fluid" id="PCoA_plot"></div>
       <div class="alert alert-warning" role="alert">
-        What does the plot tell us about our samples and the impact of BV on alpha and beta diversity. Look up the term
-        "Anna Karenina Principle" and what it means in terms of the microbiome. Can we say that it applies here as well?
+        What does the plot tell us about our samples and the impact of BV on inter-sample diversity. Look up the term
+        "Anna Karenina Principle" and what it means in terms of the microbiome. Can we say that it applies to our data?
       </div>
     </p>
 
@@ -404,15 +413,14 @@ BB_12   /home/user/data/metagenomics/fastq/BB_12_1.fastq.gz     /home/user/data/
       found. Again, there are multiple ways of achieving this. We will use a Naïve Bayes classifier (pre-trained on the
       <a href="https://greengenes.secondgenome.com/">Greengenes 13_8</a> database) available from the <a
         href="https://docs.qiime2.org/2021.8/data-resources/">Qiime2 website</a>. You can find it in the <code>db</code>
-      directory and use it with the following command (again, adjust the number of threads / jobs if you have more CPUs
-      available):
+      directory and use it with the following command:
       <pre>time qiime feature-classifier classify-sklearn \
     --i-classifier db/gg-13-8-99-nb-classifier.qza \
     --i-reads rep_seqs.qza \
     --p-n-jobs 1 \
     --o-classification taxonomy.qza</pre>
       The produced table in <code>taxonomy.qza</code> simply links the taxonomic classifications (from phylum to species
-      level) to the corresponding sequences. If you want to inspect the result, run
+      level) to the corresponding sequences. If you want to inspect the table, run
       <pre>time qiime metadata tabulate \
     --m-input-file taxonomy.qza \
     --o-visualization taxonomy.qzv</pre>
@@ -427,15 +435,15 @@ BB_12   /home/user/data/metagenomics/fastq/BB_12_1.fastq.gz     /home/user/data/
     --i-taxonomy taxonomy.qza \
     --m-metadata-file meta.tsv \
     --o-visualization taxa_barplot.qzv</pre>
-      The resulting visualisation looks like this in <a href="https://view.qiime2.org/">https://view.qiime2.org/</a>
-      when choosing the species level ("Level 7"):
+      The resulting visualisation at species level ("Level 7") looks like this in <a
+        href="https://view.qiime2.org/">https://view.qiime2.org/</a>:
       <div class="text-center"><img src="img/microbiome_5.png" class="img-fluid"></div>
       <div class="alert alert-primary" role="alert">
         You can adjust the with of the bars with the slider above the plot.
       </div>
       <div class="alert alert-warning" role="alert">
         We can see that some samples are dominated by <i>Lactobacillus iners</i> (green), whereas for others the
-        situation looks very different. Double check with the metadata to find out if this might be associated with
+        situation looks very different. Double check with the metadata to find out if this is associated with
         BV-status.
       </div>
     </p>
@@ -462,7 +470,7 @@ done</pre>
         definitions of the metrics provided below, can you think of a reason for this discrepancy?
         <br>
         faith_pd: <a href="https://en.wikipedia.org/wiki/Phylogenetic_diversity">Faith's phylogenetic diversity</a> is
-        defined as the sum of branch-lengths in the phylogeny between all species found in a sample.
+        defined as the sum of branch-lengths in the phylogeny between all species found in a sample (regardless of abundance).
         <br>
         evenness: <a href="https://en.wikipedia.org/wiki/Species_evenness">Pielou's evenness index</a> quantifies how
         differently abundant species making up an ecosystem are.
@@ -477,7 +485,7 @@ done</pre>
 
     <h5>Testing beta diversity</h5>
     As opposed to alpha diversity, which quantifies the diversity of a sample (or a group of samples) overall, beta
-    diversity gives an estimate of the magnitude of differences between samples or groups of samples. We can test the
+    diversity gives an estimate of the magnitude of differences between individual samples or groups of samples. We can test the
     difference between BV and non-BV samples for all beta diversity metrics with the following command:
     <pre>mkdir -p beta_tests</pre>
     <pre>for metric in bray_curtis jaccard unweighted_unifrac weighted_unifrac; do
@@ -489,14 +497,14 @@ done</pre>
         --p-permutations 9999
 done</pre>
     Again, we got a visualisation for each metric. Have a look at them in <a
-      href="https://view.qiime2.org/">https://view.qiime2.org/</a> like before. What do you find? Are all of them in
+      href="https://view.qiime2.org/">https://view.qiime2.org/</a>. What do you find? Are all of them in
     agreement this time?
 
 
 
 
-    <br><br><br><br><br>
-    <p><b>Acknowledgements:</b>Many thanks to Dr. Suzanna Francis for providing the data.</p>
+    <br><br><br><br>
+    <p><b>Acknowledgements: </b>Many thanks to Dr. Suzanna Francis for providing the data.</p>
 
   </div>
 
