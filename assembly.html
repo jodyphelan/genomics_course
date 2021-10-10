@@ -50,7 +50,7 @@
       <h4>Introduction</h4>
       <p>The main challenge of sequencing a genome is determining how to arrange reads into chromosomes.
         We have already explored mapping, where the sequence data is aligned to a known reference genome.
-        A complementary technique, where no reference is used or available, is called <b>de novo assembly</b>.</p>
+        A complementary technique, where no reference is used or available, is called <b><i>de novo</i> assembly</b>.</p>
       <p><i>De novo</i> assembly is the process of reconstruction of the sample genome sequence without
         comparison to other genomes. It follows a bottom-up strategy by which reads are overlapped and
         grouped into contigs. Contigs are joined into scaffolds covering, ideally, the whole of each
@@ -126,7 +126,7 @@
             amounts of data from high-coverage sequencing and have become the programs of
             choice when processing short reads produced by Illumina and other established
             platforms (>100bp).</p>
-          <h4>Exercise 1: De Novo Assembly using Spades</h4>
+          <h4>Exercise 1: <i>De Novo</i> Assembly using Spades</h4>
           <p><i>De novo</i> assembly is one the most computationally demanding processes in bioinformatics.
             Large genomes require many hours or days of processing. A small bacterial genome may
             take up to several hours to assemble. Here we will assemble <i>M. tuberculosis</i> genomes
@@ -134,6 +134,8 @@
             the quality, and review how resulting contigs can be aligned, ordered and orientated
             along the reference genome using Abacas (Assefa, Keane, Otto, Newbold, & Berriman, 2009).</p>
           <p><b>Quick start and data checks</b></p>
+          <p>Activate the relevant <code>conda</code> environment</p>
+          <pre>conda activate assembly</pre>
           <p>Change to the data directory:</p>
           <pre><code>cd ~/data/tb</pre></code>
           <p>And list the files there:</p>
@@ -369,7 +371,7 @@ samtools index sample1_asm.bam</pre></code>
                 <pre><code>cd ~/data/tb
 samtools view -b sample1.bam Chromosome:79000-84000  | samtools fastq - > region.fastq</pre></code>
                 <p>
-                  The next step is to perform de novo assembly of the extracted reads.
+                  The next step is to perform <i>de novo</i> assembly of the extracted reads.
                   We will be using another assembler called <i>spades</i>. 
                 </p>
                 <pre><code>spades.py -s region.fastq -o region_assembly</pre></code>
