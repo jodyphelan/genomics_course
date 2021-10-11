@@ -312,6 +312,13 @@ CGCCGCCGCCTTGGCGATCGCAGAAGCACCCGCCCGCGCTTACAACCCCCTGTTCATCTGGGGCGAGTCC</samp>
         as the value and that causes the error.
     </p>
     <hr>
+    <h5>Command not found</h5>
+    The different software used for the practicals is installed in so-called <code>conda</code> environments. These allow to have multiple versions of the same program to be installed or &ndash; which is more relevant in our case &ndash; to use programs that have conflicting dependencies. If you run into a <kbd>command&nbsp;not&nbsp;found</kbd> error, it is always a good idea to check if the correct <code>conda</code> environment for the current practical is activated (the name of the currently active environment is usually printed in parenthesis to the left of your prompt). You can activate an environment with 
+    <pre>conda activate environment_name</pre>
+    and check which environments are available with
+    <pre>conda env list</pre>
+
+    <hr>
     <h4>R - A statistical package</h4>
     <p>
         In some parts of the practial you will be asked to open <b>R</b>. R is a free software environment for statistical
