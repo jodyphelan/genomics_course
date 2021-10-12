@@ -321,8 +321,8 @@ bwa index -a is sample1_asm.fasta
 bwa mem -k 20 -c 100 -L 20 -U 20 -M -T 50 sample1_asm.fasta ~/data/tb/sample1_1.fastq.gz ~/data/tb/sample1_2.fastq.gz | samtools sort -o sample1_asm.bam
 samtools index sample1_asm.bam</pre></code>
               <p>This process indexes, maps and stores the fastq paired-end reads against the ABACAS
-                ordered pseudomolecule (<i>sample1/sample1_asm.fasta</i>) for sample1 created by velvet with k-mer
-                of 45. The output is a BAM file (<i>sample1/sample1_asm.bam</i>).</p>
+                ordered pseudomolecule (<i>sample1/sample1_asm.fasta</i>) for sample1 created by spades. 
+                The output is a BAM file (<i>sample1/sample1_asm.bam</i>).</p>
               <p>This script can be modified to create a BAM file for the sequence data mapped against
                 any reference genome, just as you have done in the previous class.</p>
               <p>These files can be visualised in ACT. <i>Select File > sample1_asm.fasta > Read BAM/VCF...</i> and
@@ -366,7 +366,7 @@ samtools index sample1_asm.bam</pre></code>
                   This region has been investigated above, in the context of a large assembly, and interesting
                   mapping and assembly results have been found.</p>
                 <p>The reads are extracted from the BAM file using <i>samtools</i>. Extracting a wider range (by at
-                  least 400bp) than the candidate region enables velvet to construct good contigs either side
+                  least 400bp) than the candidate region enables spades to construct good contigs either side
                   of the possible SV.</p>
                 <pre><code>cd ~/data/tb
 samtools view -b sample1.bam Chromosome:79000-84000  | samtools fastq - > region.fastq</pre></code>
@@ -378,7 +378,7 @@ samtools view -b sample1.bam Chromosome:79000-84000  | samtools fastq - > region
                 <p>We map the output contigs back to the reference by a technique known as <i>blasting</i> it.
                   This is available as an online tool that uses a cluster to perform blasts for
                   researchers around the world. It is also available to download as a command line tool,
-                  in the same way as <i>velvet</i>, <i>samtools</i> and <i>bwa</i>. The web address
+                  in the same way as <i>spades</i>, <i>samtools</i> and <i>bwa</i>. The web address
                   is <a href="https://blast.ncbi.nlm.nih.gov/Blast.cgi?PROGRAM=blastn&PAGE_TYPE=BlastSearch&LINK_LOC=blasthome" target="_blank">http://blast.ncbi.nlm.nih.gov/Blast.cgi</a>
                   and navigate to the <i>Nucleotide</i> BLAST page. Check the <i>“Align two or more sequences”</i> box.
                   Upload the contigs file (<i>~/data/tb/target51/contigs.fa</i>) as the subject and the tb reference
@@ -430,7 +430,7 @@ samtools view -b sample1.bam Chromosome:79000-84000  | samtools fastq - > region
                   and repeats). A good assembly of a bacterial genome will return 20-100 supercontigs. It is
                   possible to manually / visually improve assemblies and annotation within <i>Artemis</i>. To improve
                   the assembly in a more automated fashion, there is other software:</p>
-                <p><b>SSPACE</b>: This tool can scaffold contigs. Although velvet can also scaffold contigs, SSPACE
+                <p><b>SSPACE</b>: This tool can scaffold contigs. Although spades can also scaffold contigs, SSPACE
                   generally performs better.</p>
                 <p><b>Abacas</b>:  has the option to design primers that can be used to generate a PCR product to
                   span a possible gap. The resulting new sequence can then be included in the assembly. This
