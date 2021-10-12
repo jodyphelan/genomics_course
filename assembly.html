@@ -296,18 +296,7 @@ abacas.pl -r tb.fasta -q contigs.fasta -p nucmer -b -d -a -m -N -g sample1 -o sa
               </div>
               <div class="col-sm-3 text-center"></div>
             </div>
-            <p><b>Task</b></p>
-            <p>Run abacas on the assembly for each sample. As you’ve used previously, the Mtb reference
-              fasta is located in a file called <i>tb.fasta</i>.</p>
-            <p>In ACT find the reference regions around 54kb, 73kb, 203kb, 338kb and 1100kb in sample1;
-              80kb, 336k and 840k in sample2; and 336k, 745k and 840kb in sample3 investigate what is
-              happening in nearby regions. Use the annotations and the Internet to find out the properties
-              of the genes in these areas.</p>
-            <p>View the <i>.gaps</i> files (more <i>sample1_asm.gaps</i>) and <i>.crunch</i> files (more <i>sample1_asm.crunch</i>).
-              The columns related to the length and the start/stop positions of gaps and overlaps between the
-              reference and pseudomolecule.</p>
-            <div class="alert alert-warning">Do you find it easier to read these files in the graphical
-              interface of ACT?</div>
+              
             <h4>Exercise 3: Mapping back to the Reference</h4>
               <p>Contigs aligning with large internal gaps or low confidence indicate either structural variants or
                 misassemblies, and should be carefully monitored. If paired-end reads are available then mapping
@@ -344,7 +333,7 @@ samtools index sample1_asm.bam</pre></code>
                   <div class="col-sm-3 text-center"></div>
                 </div>
                 <p><b>Task</b></p>
-                <p>Remap the sequence data each sample, again using the optimal k-mer previously chosen.
+                <p>Remap the sequence data each sample, again using the spades assembly for each sample.
                   Load it into ACT with the mapped and remapped BAM files as described above.</p>
                 <p>In ACT find the same regions as above.</p>
                 <div class="alert alert-warning">How does the coverage vary across the pseudo molecule?</div>
@@ -362,7 +351,7 @@ samtools index sample1_asm.bam</pre></code>
                   candidate SV regions</i>. It consists of obtaining the reads from the predicted SV region,
                   performing <i>de novo</i> assembly and mapping the resulting contig back to the reference. The
                   nature of the contig alignment can reveal the SV.</p>
-                <p>We have previously identified a deletion in sample2 in the region 79570-83050 using <i>delly</i>.
+                <p>We have previously identified a deletion in sample1 in the region 79570-83050 using <i>delly</i>.
                   This region has been investigated above, in the context of a large assembly, and interesting
                   mapping and assembly results have been found.</p>
                 <p>The reads are extracted from the BAM file using <i>samtools</i>. Extracting a wider range (by at
