@@ -186,9 +186,9 @@ HHHHFFHBHHHHHHHEGDDDGGEGFHHHHHHGHHHDFFEFFFDD>DB@CDAEFF?FBFGDDCCC.=?5=<@@;DA</sam
           since it depends on coverage, read length, error rates and the sample properties (repeat
           regions, etc). Therefore, it is advisable to perform several assemblies using different
           values of k-mer length to decide a value.</p>
-          <p>Thankfully spades automatically chooses a range of kmer lengths to test and chooses the best one.
+          <p>Thankfully spades automatically chooses a range of k-mer lengths to test and chooses the best one.
             The pipeline also performs reads correction, which aims to correct random errors in reads which will
-            have a knock on effect on the kmers used in the assembly. 
+            have a knock on effect on the k-mers used in the assembly. 
           </p>
         <p>Eventually, after spades finishes running there will be several files will be obtained in the directory the most 
           important for our purposes are:</p>
@@ -247,7 +247,7 @@ quast -r ../tb.fasta -o quast contigs.fasta </pre></code>
               repeat content of the sequenced genome. A coverage limit is reached above which no improvement
               on assembly metrics is observed. As shown to the left, coverage greater that 50x does
               not significantly improve N50 in an assembly of <i>E. coli</i>. Although such thresholds will
-              not necessary be the same for other genomes, the principles apply for all.</p>
+              not necessarily be the same for other genomes, the principles apply for all.</p>
             </div>
           </div>
           <p>More data requires more memory too, as the lower graph demonstrates. Again the figures are genome
@@ -281,7 +281,7 @@ abacas.pl -r tb.fasta -q contigs.fasta -p nucmer -b -d -a -m -N -g sample1 -o sa
             (<i>sample1_asm.fasta</i>) as the two sequence files with the associated comparison
             file (<i>sample1_asm.crunch</i>) – you will have to navigate the directories. Then press Apply. A map between
             the two sequences will be displayed. To load annotation click on <i>File > tb.fasta > Read An
-            Entry...</i> and select the <i>tb.gff</i> file. To make stop codons disappear (represented as black
+            Entry...</i> and select the <i>tb.gff</i> file from the <i>~/data/tb/</i> directory. To make stop codons disappear (represented as black
             vertical lines) right-click on the reference and the pseudo molecule panels and deselect <i>Stop
             Codons</i> option in the right-click menu.</p>
           <p>Right-click on a contig and select <i>View Selected Matches</i> to find out the first and last position
@@ -300,8 +300,7 @@ abacas.pl -r tb.fasta -q contigs.fasta -p nucmer -b -d -a -m -N -g sample1 -o sa
             <p>Run abacas on the assembly for each sample. As you’ve used previously, the Mtb reference
               fasta is located in a file called <i>tb.fasta</i>.</p>
             <p>In ACT find the reference regions around 54kb, 73kb, 203kb, 338kb and 1100kb in sample1;
-              80kb, 336k and 840k in sample2; and 336k, 745k and 840kb in sample3 investigate what is
-              happening in nearby regions. Use the annotations and the Internet to find out the properties
+              80kb, 336k and 840k in sample2; and 336k, 745k and 840kb in sample3. Investigate the nearby regions. Use the annotations and the Internet to find out the properties
               of the genes in these areas.</p>
             <p>View the <i>.gaps</i> files (more <i>sample1_asm.gaps</i>) and <i>.crunch</i> files (more <i>sample1_asm.crunch</i>).
               The columns related to the length and the start/stop positions of gaps and overlaps between the
@@ -344,7 +343,7 @@ samtools index sample1_asm.bam</pre></code>
                   <div class="col-sm-3 text-center"></div>
                 </div>
                 <p><b>Task</b></p>
-                <p>Remap the sequence data each sample, again using the optimal k-mer previously chosen.
+                <p>Remap the sequence data for each sample, again using the optimal k-mer previously chosen.
                   Load it into ACT with the mapped and remapped BAM files as described above.</p>
                 <p>In ACT find the same regions as above.</p>
                 <div class="alert alert-warning">How does the coverage vary across the pseudo molecule?</div>
