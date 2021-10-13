@@ -288,7 +288,6 @@ abacas.pl -r tb.fasta -q contigs.fasta -p nucmer -b -d -a -m -N -g sample1 -o sa
             the contig maps to the reference and to the pseudo molecule. The percentage of identity between them
             is also shown.</p>
             <div class="text-center"><img src="img/assembly_5.png" class="img-fluid"></div>
-            <br>
             <div class="row">
               <div class="col-sm-3 text-center"></div>
               <div class="col-sm-6"><p>An example ACT screen with the Mtb reference at the top and sample1
@@ -321,10 +320,9 @@ samtools index sample1_asm.bam</pre></code>
                 be presented by right-clicking on the pileups and selecting <i>Graph > Coverage or View >
                   Inferred Size</i>.</p>
               <p>The graph shown gives a good insight into the quality and depth of the assembly and is
-                very useful for finding regions that have been misaligned (<i>i.e.</i> joined in error) is the
-                coverage is very low or very high.</p>
+                very useful for finding regions that have been misaligned (<i>i.e.</i> joined in error) as their
+                coverage should be very low or very high.</p>
                 <div class="text-center"><img src="img/assembly_6.png" class="img-fluid"></div>
-                <br>
                 <div class="row">
                   <div class="col-sm-3 text-center"></div>
                   <div class="col-sm-6"><p>The ACT screen with coverage for the reference (top) and
@@ -333,7 +331,7 @@ samtools index sample1_asm.bam</pre></code>
                   <div class="col-sm-3 text-center"></div>
                 </div>
                 <p><b>Task</b></p>
-                <p>In ACT find the same region between 76000 and 89000</p>
+                <p>In ACT inspect the region between 76,000 and 89,000</p>
                 <div class="alert alert-warning">How does the coverage vary across the pseudo molecule?</div>
                 <div class="alert alert-warning">How does this compare to the coverage across the matching
                   regions mapped against the reference?</div>
@@ -356,32 +354,27 @@ samtools index sample1_asm.bam</pre></code>
 samtools view -b sample1.bam Chromosome:79000-84000  | samtools fastq - > region.fastq</pre></code>
                 <p>
                   The next step is to perform <i>de novo</i> assembly of the extracted reads.
-                  We will be using another assembler called <i>spades</i>. 
                 </p>
                 <pre><code>spades.py -s region.fastq -o region_assembly</pre></code>
-                <p>We map the output contigs back to the reference by a technique known as <i>blasting</i> it.
-                  This is available as an online tool that uses a cluster to perform blasts for
-                  researchers around the world. It is also available to download as a command line tool,
-                  in the same way as <i>spades</i>, <i>samtools</i> and <i>bwa</i>. The web address
-                  is <a href="https://blast.ncbi.nlm.nih.gov/Blast.cgi?PROGRAM=blastn&PAGE_TYPE=BlastSearch&LINK_LOC=blasthome" target="_blank">http://blast.ncbi.nlm.nih.gov/Blast.cgi</a>
+                <p>We map the output contigs back to the reference with BLAST.
+                  This powerful alignment algorithm is available online or for download as a command line tool. Go to the web address
+                  <a href="https://blast.ncbi.nlm.nih.gov/Blast.cgi?PROGRAM=blastn&PAGE_TYPE=BlastSearch&LINK_LOC=blasthome" target="_blank">http://blast.ncbi.nlm.nih.gov/Blast.cgi</a>
                   and navigate to the <i>Nucleotide</i> BLAST page. Check the <i>“Align two or more sequences”</i> box.
-                  Upload the contigs file (<i>~/data/tb/target51/contigs.fa</i>) as the subject and the tb reference
+                  Upload the contigs file (<i>~/data/tb/region_assembly/contigs.fasta</i>) as the subject and the tb reference
                   (<i>~/data/tb/tb.fasta</i>) as the query. Enter an appropriate region of the reference to
                   blast against as there is little point in searching the entire genome when we are
                   only interested in a small range (<i>79100-83900</i>).</p>
                 <p>See screenshots below.</p>
                 <div class="text-center"><img src="img/assembly_8.jpg" class="img-fluid"></div>
-                <br>
                 <div class="row">
                   <div class="col-sm-3 text-center"></div>
                   <div class="col-sm-6"><p>Blast Alignment input screen. Choose the appropriate reference and
-                    sample sequences, enter the range of interest and click Blast</p>
+                    sample sequences, enter the range of interest and click BLAST.</p>
                   </div>
                   <div class="col-sm-3 text-center"></div>
                 </div>
                 <br>
                 <div class="text-center"><img src="img/assembly_10.jpg" class="img-fluid"></div>
-                <br>
                 <div class="row">
                   <div class="col-sm-3 text-center"></div>
                   <div class="col-sm-6"><p>Once the server has blasted your data, it will create a web page for
@@ -390,9 +383,8 @@ samtools view -b sample1.bam Chromosome:79000-84000  | samtools fastq - > region
                   <div class="col-sm-3 text-center"></div>
                 </div>
                 <p><b>Task</b></p>
-                <div class="alert alert-warning">Is it a deletion? Or was it a false positive? Investigate the
-                  same range in the other two samples. Using the output from delly in the variant detection
-                  practical investigate over SVs.</div>
+                <div class="alert alert-warning">Is it a deletion? Or was it a false positive? Using the output from delly in the variant detection
+                  practical have a look at other SVs as well.</div>
                 <h4>Advanced Topics</h4>
                 <p><b>Annotation Transfer</b></p>
                 <p>Once the contigs ordered are against the reference, it is useful to determine the position
