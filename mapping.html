@@ -891,9 +891,9 @@ bwa index ~/data/malaria/Pf3D7_05.fasta
         mutants, allowing for the detection of condition specific gene essentiality.
     </div>
     <p>
-        We will be using selected data from a recent TraDIS screen of Burkholderia pseudomallei (2 circular
-        chromosomes, 6,332 predicted coding sequences within 7.25 Mb). B. pseudomallei is the causative agent
-        of melioidosis, an often fatal infectious disease for which there is no vaccine. B. pseudomallei is
+        We will be using selected data from a recent TraDIS screen of <i>Burkholderia pseudomallei</i> (2 circular
+        chromosomes, 6,332 predicted coding sequences within 7.25 Mb). <i>B. pseudomallei</i> is the causative agent
+        of melioidosis, an often fatal infectious disease for which there is no vaccine. <i>B. pseudomallei</i> is
         listed as a Tier 1 select agent, and current therapeutic options are severely limited due to a natural
         resistance to many antibiotics. We will focus on reads from chromosome 1. The analysis goes through several
         steps, culminating with viewing the mapped regions using Tablet to assess the evidence that loci are
@@ -906,7 +906,7 @@ bwa index ~/data/malaria/Pf3D7_05.fasta
     
     <p>
         The transposon sequence is identifiable, but it is not part of the reference genome. Furthermore, not
-        all sequenced reads will have the transposon in them. Prior to mapping the sequences should then be
+        all sequenced reads will have the transposon in them. Prior to mapping, the sequences should thus be
         filtered and the transposon sequences removed. We have already run a script on the data that 
         removes the reads that did not have the transposon
         signature sequence. The number of lines in the post QC file can be calculated by typing:
@@ -949,7 +949,7 @@ samtools index TraDIS_reads_chr1.bam
 </code></pre>
     <p>
         How many mismatches are we allowing? The file is in SAM format and needs to be indexed and converted
-        to BAM using the following code.
+        to BAM using the above commands.
     </p>
 
     <h4>Visualizing the results in Tablet</h4>
