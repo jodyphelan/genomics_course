@@ -225,7 +225,8 @@ HHHHFFHBHHHHHHHEGDDDGGEGFHHHHHHGHHHDFFEFFFDD>DB@CDAEFF?FBFGDDCCC.=?5=<@@;DA</sam
             developers as spades). To get the statistics first navigate to the assembly directory and 
             run quast
           </p>
-          <pre><code>quast -r ../tb.fasta -o quast contigs.fasta </pre></code>
+          <pre><code>cd sample1_asm
+quast -r ../tb.fasta -o quast contigs.fasta </pre></code>
           <p>
             After it has finished you can examing the outputs. To view the report enter <kbd>cat quast/report.txt</kbd>. 
             
@@ -260,8 +261,7 @@ HHHHFFHBHHHHHHHEGDDDGGEGFHHHHHHGHHHDFFEFFFDD>DB@CDAEFF?FBFGDDCCC.=?5=<@@;DA</sam
             joined by N’s. To display the complete list of possible parameters by typing:</p>
           <pre><code>abacas.pl –h</pre></code>
           <p>The basic usage (for this exercise) is:</p>
-          <pre><code>cd ~/data/tb/sample1_asm
-cp ~/data/tb/tb.fasta .
+          <pre><code>cp ~/data/tb/tb.fasta .
 abacas.pl -r tb.fasta -q contigs.fasta -p nucmer -b -d -a -m -N -g sample1 -o sample1_asm</pre></code>
           <p>This will create a pseudomolecule (into <i>sample1_asm.fasta</i>) from the assembled contigs
             (in <i>contigs.fa</i>). The program creates a number of files with the same base filename for
