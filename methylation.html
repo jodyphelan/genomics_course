@@ -271,8 +271,8 @@ ls</code></pre>
           1) the ipd.csv file, 2) the motif you would like to analyse and 3) the genome assembly for the sample
           (to find the motif locations). Let's analyse the '<b>CTCCAG</b>' motif for tb_pb_14 and tb_pb_16:
       </p>
-      <pre><code>analyse_motif_ipd.py tb_pb_14.ipd.csv.gz CTCCAG tb_pb_14.assembly.fa
-analyse_motif_ipd.py tb_pb_16.ipd.csv.gz CTCCAG tb_pb_16.assembly.fa </code></pre>
+      <pre><code>python analyse_motif_ipd.py tb_pb_14.ipd.csv.gz CTCCAG tb_pb_14.assembly.fa
+python analyse_motif_ipd.py tb_pb_16.ipd.csv.gz CTCCAG tb_pb_16.assembly.fa </code></pre>
       <div class="alert alert-warning" role="alert">
           The script will output the number of times the motif if found in the genome. Why do you think there are differences?
       </div>
@@ -280,7 +280,7 @@ analyse_motif_ipd.py tb_pb_16.ipd.csv.gz CTCCAG tb_pb_16.assembly.fa </code></pr
           Now we can visualise this with the <kbd>plot_ipd.R</kbd> script. We need to provide 1) the sample names, 2)
           the motif we are analysing and 3) the output file. The output will be in PDF format.
       </p>
-      <pre><code>plot_ipd.R tb_pb_14,tb_pb_16 CTCCAG CTCCAG.pdf</code></pre>
+      <pre><code>Rscript plot_ipd.R tb_pb_14,tb_pb_16 CTCCAG CTCCAG.pdf</code></pre>
       <p>
           Using the file browser, locate the PDF file ~/data/methylation/. Double click on the CTCCAG.pdf file and
           it should open in a PDF viewer program. You should be able to see a figure similar to the one below.
@@ -293,9 +293,9 @@ analyse_motif_ipd.py tb_pb_16.ipd.csv.gz CTCCAG tb_pb_16.assembly.fa </code></pr
       <p>
           We will now create the same plot for the '<b>GTAYNNNNATC</b>' motif for samples tb_pb_1 and tb_pb_4.
       </p>
-      <pre><code>analyse_motif_ipd.py tb_pb_2.ipd.csv.gz GTAYNNNNATC tb_pb_2.assembly.fa
-analyse_motif_ipd.py tb_pb_16.ipd.csv.gz GTAYNNNNATC tb_pb_16.assembly.fa
-plot_ipd.R tb_pb_16,tb_pb_2 GTAYNNNNATC GTAYNNNNATC.pdf</code></pre>
+      <pre><code>python analyse_motif_ipd.py tb_pb_2.ipd.csv.gz GTAYNNNNATC tb_pb_2.assembly.fa
+python analyse_motif_ipd.py tb_pb_16.ipd.csv.gz GTAYNNNNATC tb_pb_16.assembly.fa
+Rscript plot_ipd.R tb_pb_16,tb_pb_2 GTAYNNNNATC GTAYNNNNATC.pdf</code></pre>
 
 <div class="accordion" id="accordionExample">
     <div class="card">
