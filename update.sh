@@ -1,12 +1,5 @@
 # Any updates
-cd /home/user/Documents
-git clone https://github.com/jodyphelan/genomics_course.git
-mamba env create --force -f genomics_course/conda_env/assembly.yaml
-mamba env create --force -f genomics_course/conda_env/nanopore.yaml
-
-eval "$(conda shell.bash hook)"
-conda activate nanopore
-pip install /usr/local/src/ont_alba*
-
-chmod 755 genomics_course/scripts/*
-cp genomics_course/scripts/* /usr/local/bin/
+cd ~/data/metagenomics/
+wget https://raw.githubusercontent.com/jodyphelan/genomics_course/master/intermediate_files/denoising_stats.qza
+wget https://raw.githubusercontent.com/jodyphelan/genomics_course/master/intermediate_files/rep_seqs.qza
+wget https://raw.githubusercontent.com/jodyphelan/genomics_course/master/intermediate_files/table.qza
