@@ -351,13 +351,13 @@ tb_pb_2.motif_summary.csv</samp>
       <p>
           We can now pass this file to the <kbd>combine_motifs.py</kbd> script:
       </p>
-      <pre><code>combine_motifs.py files.txt unfiltered_motifs.csv</code></pre>
+      <pre><code>python combine_motifs.py files.txt unfiltered_motifs.csv</code></pre>
       <p>
           Take a look at the '<b>unfiltered_motifs.csv</b>' file using <b>LibreOffice Calc</b>. There are many
           motifs which are present in only one sample. These likely represent noise in the data and should be
           filtered out. Rerun the command with a quality filter:
       </p>
-      <pre><code>combine_motifs.py files.txt filtered_motifs.csv --min_qual 60</code></pre>
+      <pre><code>python combine_motifs.py files.txt filtered_motifs.csv --min_qual 60</code></pre>
       <p>
           We have specified the minimum QV of the motif to be 60. Take a look at the filtered_motifs.csv
           file using LibreOffice Calc and look at the difference. You should now have 5 motifs. This will serve
