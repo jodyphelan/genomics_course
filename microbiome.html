@@ -157,7 +157,9 @@
     </p>
     <h5>Quality control</h5>
     <p>
-      After activating the <code>conda</code> environment for today's practical with <kbd>conda activate microbiome</kbd>, go into the module directory with <kbd>cd data/metagenomics</kbd> and have a look at its contents with
+      After activating the <code>conda</code> environment for today's practical with <kbd>conda activate
+        microbiome</kbd>, go into the module directory with <kbd>cd data/metagenomics</kbd> and have a look at its
+      contents with
       <kbd>ls</kbd>. There should be a directory with the 16S sequencing data (in <code>fastq</code>), a 16S database
       (in <code>db</code>), and a CSV file with our metadata. Let's check if our reads are there with <kbd>ls
         fastq</kbd>. We can also have a look at the filesizes with <kbd>du -sh fastq/* | sort -h</kbd> (it can't hurt
@@ -470,7 +472,8 @@ done</pre>
         definitions of the metrics provided below, can you think of a reason for this discrepancy?
         <br>
         faith_pd: <a href="https://en.wikipedia.org/wiki/Phylogenetic_diversity">Faith's phylogenetic diversity</a> is
-        defined as the sum of branch-lengths in the phylogeny between all species found in a sample (regardless of abundance).
+        defined as the sum of branch-lengths in the phylogeny between all species found in a sample (regardless of
+        abundance).
         <br>
         evenness: <a href="https://en.wikipedia.org/wiki/Species_evenness">Pielou's evenness index</a> quantifies how
         differently abundant species making up an ecosystem are.
@@ -484,11 +487,12 @@ done</pre>
     </p>
 
     <h5>Testing beta diversity</h5>
-    As opposed to alpha diversity, which quantifies the diversity of a sample (or a group of samples) overall, beta
-    diversity gives an estimate of the magnitude of differences between individual samples or groups of samples. We can test the
-    difference between BV and non-BV samples for all beta diversity metrics with the following command:
-    <pre>mkdir -p beta_tests</pre>
-    <pre>for metric in bray_curtis jaccard unweighted_unifrac weighted_unifrac; do
+    <p>As opposed to alpha diversity, which quantifies the diversity of a sample (or a group of samples) overall, beta
+      diversity gives an estimate of the magnitude of differences between individual samples or groups of samples. We
+      can test the
+      difference between BV and non-BV samples for all beta diversity metrics with the following command:
+      <pre>mkdir -p beta_tests</pre>
+      <pre>for metric in bray_curtis jaccard unweighted_unifrac weighted_unifrac; do
     qiime diversity beta-group-significance \
         --i-distance-matrix core-metrics-results/${metric}_distance_matrix.qza \
         --m-metadata-file meta.tsv \
@@ -496,14 +500,15 @@ done</pre>
         --o-visualization beta_tests/${metric}_significance.qzv \
         --p-permutations 9999
 done</pre>
-    Again, we got a visualisation for each metric. Have a look at them in <a
-      href="https://view.qiime2.org/">https://view.qiime2.org/</a>. What do you find? Are all of them in
-    agreement this time?
+      Again, we got a visualisation for each metric. Have a look at them in <a
+        href="https://view.qiime2.org/">https://view.qiime2.org/</a>. What do you find? Are all of them in
+      agreement this time?
+      <br><br>
+      This concludes today's practical. If you are interested in differentially abundant taxa between the BV and non-BV samples, have a look at <code>qiime</code>'s' <a href="https://docs.qiime2.org/2021.8/plugins/available/composition/ancom/?highlight=ancom">ANCOM function</a>.
+    </p>
 
 
-
-
-    <br><br><br><br>
+    <br><br>
     <p><b>Acknowledgements: </b>Many thanks to Dr. Suzanna Francis for providing the data.</p>
 
   </div>
