@@ -267,7 +267,7 @@ ls</code></pre>
 "WBB445_ARS7496|quiver",5,0,C,6,0.936,0.277,0.722,1.296,9,,,</samp>
       </div>
       <p>
-          We will use the <kbd>analyse_motif_ipd.py</kbd> extract the IPD ratios from this file. We need to provide
+          We will use the <code>analyse_motif_ipd.py</code> extract the IPD ratios from this file. We need to provide
           1) the ipd.csv file, 2) the motif you would like to analyse and 3) the genome assembly for the sample
           (to find the motif locations). Let's analyse the '<b>CTCCAG</b>' motif for tb_pb_14 and tb_pb_16:
       </p>
@@ -277,7 +277,7 @@ python analyse_motif_ipd.py tb_pb_16.ipd.csv.gz CTCCAG tb_pb_16.assembly.fa </co
           The script will output the number of times the motif if found in the genome. Why do you think there are differences?
       </div>
       <p>
-          Now we can visualise this with the <kbd>plot_ipd.R</kbd> script. We need to provide 1) the sample names, 2)
+          Now we can visualise this with the <code>plot_ipd.R</code> script. We need to provide 1) the sample names, 2)
           the motif we are analysing and 3) the output file. The output will be in PDF format.
       </p>
       <pre><code>Rscript plot_ipd.R tb_pb_14,tb_pb_16 CTCCAG CTCCAG.pdf</code></pre>
@@ -349,7 +349,7 @@ tb_pb_17.motif_summary.csv
 tb_pb_2.motif_summary.csv</samp>
       </div>
       <p>
-          We can now pass this file to the <kbd>combine_motifs.py</kbd> script:
+          We can now pass this file to the <code>combine_motifs.py</code> script:
       </p>
       <pre><code>python combine_motifs.py files.txt unfiltered_motifs.csv</code></pre>
       <p>
@@ -361,7 +361,7 @@ tb_pb_2.motif_summary.csv</samp>
       <p>
           We have specified the minimum QV of the motif to be 60. Take a look at the filtered_motifs.csv
           file using LibreOffice Calc and look at the difference. You should now have 5 motifs. This will serve
-          as out final high-quality list of motifs.
+          as our final high-quality list of motifs.
       </p>
       <p>
           It is evident that some samples have methylation on certain motifs while others do not. We will now
@@ -384,10 +384,10 @@ tb_pb_2.motif_summary.csv</samp>
       </div>
       <br>
       <p>
-          Open up the tree by launching <kbd>figtree</kbd>. Open the tree by clicking on <kbd>Open...</kbd> and selecting the 'RAxML_bestTree.pacbio.ML'
-          tree. Midpoint root the tree by selecting <kbd>Midpoint Root</kbd> from the <kbd>Tree</kbd> menu. Finally, we
-          will load annotations allowing figtree to display which samples do or don't have methylation. Select <kbd>Import
-          annotations...</kbd> from the <kbd>File</kbd> menu and select the '<b>filtered_motifs.tsv</b>' file. This file was
+          Open up the tree by launching <kbd>figtree</kbd>. Open the tree by clicking on <code>Open...</code> and selecting the 'RAxML_bestTree.pacbio.ML'
+          tree. Midpoint root the tree by selecting <code>Midpoint Root</code> from the <code>Tree</code> menu. Finally, we
+          will load annotations allowing figtree to display which samples do or don't have methylation. Select <code>Import
+          annotations...</code> from the <code>File</code> menu and select the '<b>filtered_motifs.tsv</b>' file. This file was
           created during the merging step and is simply a tab-separated file with the rows being samples and the columns being
           motifs. The values in the file are either <b>0</b> (representing absence of methylation) or <b>1</b> (representing presence of
           methylation).
@@ -450,23 +450,23 @@ tb_pb_2.motif_summary.csv</samp>
       <h6>1. Extracting sample-specific mutations</h6>
       <p>
           The first thing we need to do is extract variants which are only present in the three samples. We can do this using
-          the <kbd>bcftools view</kbd> command. First let find out how many variants are present in the VCF file:
+          the <code>bcftools view</code> command. First let find out how many variants are present in the VCF file:
       </p>
       <pre><code>bcftools view pacbio.vcf.gz -H | wc -l</code></pre>
       <p>
           The command can be broken down into several parts:
           <ul>
-              <li><kbd>bcftools view pacbio.vcf.gz</kbd>: allows to view contents of the VCF file</li>
-              <li><kbd>-H</kbd>: This flag prevents header lines present in the file to be output</li>
-              <li><kbd>|</kbd>: The pipe passes the output from whatever command was written before it and passes it to the next.</li>
-              <li><kbd>wc -l</kbd>: This command counts the number of lines which are passed to it</li>
+              <li><code>bcftools view pacbio.vcf.gz</code>: allows to view contents of the VCF file</li>
+              <li><code>-H</code>: This flag prevents header lines present in the file to be output</li>
+              <li><code>|</code>: The pipe passes the output from whatever command was written before it and passes it to the next.</li>
+              <li><code>wc -l</code>: This command counts the number of lines which are passed to it</li>
           </ul>
       </p>
       <p>
           After running the command we should see an output of <b>9229</b>, i.e. 9229 variants are present across all samples.
           We will now add two more parameters to the command. We select only variants present in a select number of samples
-          using the <kbd>-s</kbd> flag. We can also restrict our analysis to variants which are present exclusively in our samples
-          using the <kbd>-x</kbd> flag. The command will be the following:
+          using the <code>-s</code> flag. We can also restrict our analysis to variants which are present exclusively in our samples
+          using the <code>-x</code> flag. The command will be the following:
       </p>
       <pre><code>bcftools view pacbio.vcf.gz -H  -s tb_pb_10,tb_pb_14,tb_pb_11 -x | wc -l</code></pre>
       <p>
@@ -476,18 +476,18 @@ tb_pb_2.motif_summary.csv</samp>
       <p>
           In order to narrow down the number of variants we need to narrow down out search to only
           variants in the Rv3263 gene. The VCF file currently only contains information on the position
-          of the variants on the chromosome but no information about genes. We can use <kbd>bcftools csq</kbd>
+          of the variants on the chromosome but no information about genes. We can use <code>bcftools csq</code>
           to perform the annotation:
       </p>
       <pre><code>bcftools view pacbio.vcf.gz -s tb_pb_10,tb_pb_14,tb_pb_11 -x | bcftools csq -f tb_genome.fasta -g tb_genome.gff  | grep Rv3263</code></pre>
       <p>
-          We have dropped the <kbd>-H</kbd> we are no longer counting lines and the header is needed by the next command.
+          We have dropped the <code>-H</code> as we are no longer counting lines and the header is needed by the next command.
           The following new parts have been added:
           <ol>
-              <li><kbd>bcftools csq</kbd>: This bcftools function annotates a VCF file</li>
-              <li><kbd>-f tb_genome.fa</kbd>: Provides the reference fasta file</li>
-              <li><kbd>-g tb_genome.gff</kbd>: Provides the GFF file (contains information about gene locations)</li>
-              <li><kbd>grep Rv3263</kbd>: Looks for lines containing 'Rv3263' and prints them</li>
+              <li><code>bcftools csq</code>: This bcftools function annotates a VCF file</li>
+              <li><code>-f tb_genome.fa</code>: Provides the reference fasta file</li>
+              <li><code>-g tb_genome.gff</code>: Provides the GFF file (contains information about gene locations)</li>
+              <li><code>grep Rv3263</code>: Looks for lines containing 'Rv3263' and prints them</li>
           </ol>
       </p>
       <p>
@@ -504,10 +504,10 @@ Chromosome	3644554	.	G	A	225	PASS	VDB=0.847222;SGB=-0.693147;MQSB=0.91807;MQ0F=0
       </p>
       <pre><code>bcftools view pacbio.vcf.gz -s tb_pb_10,tb_pb_14,tb_pb_11 -x | bcftools csq -f tb_genome.fasta -g tb_genome.gff  | bcftools query -f '[%POS\t%SAMPLE\t%TBCSQ{1}\n]' | grep Rv3263</code></pre>
       <p>
-          We have moved the <kbd>grep</kbd> command to the end and added in the following parameters:
+          We have moved the <code>grep</code> command to the end and added in the following parameters:
           <ol>
-              <li><kbd>bcftools query</kbd>: This command allows conversion of VCF into custom formats</li>
-              <li><kbd>-f '[%POS\t%SAMPLE\t%TBCSQ{1}\n]'</kbd>: This specifies the format we want (Position, Sample name and annotations)</li>
+              <li><code>bcftools query</code>: This command allows conversion of VCF into custom formats</li>
+              <li><code>-f '[%POS\t%SAMPLE\t%TBCSQ{1}\n]'</code>: This specifies the format we want (Position, Sample name and annotations)</li>
           </ol>
       </p>
       <div class="alert alert-info" role="alert">
