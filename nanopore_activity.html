@@ -247,8 +247,6 @@
         <pre><code>bwa mem -x ont2d ./reference.fasta basecalled_reads.fastq > alignment.sam</pre></code>
 
 
-
-
         <div><img src="img/bwa_1.gif" class="img-fluid" alt="Responsive image"></div>
 
         <br>
@@ -282,7 +280,7 @@
           <br>
           <br>
 
-          Try bringing up some of the reads you have worked with in previous session. Remember to select the appropriate ‘sorted’ .bam file and the correct reference fasta. Does anything strike you about the contrasting features of the data sets? Scrolling downwards in the alignment viewer on Tablet, what do you notice about the ‘structures’ formed by the reads?
+          Try bringing up some of the reads you have worked with in the previous session. Remember to select the appropriate ‘sorted’ .bam file and the correct reference fasta. Does anything strike you about the contrasting features of the data sets? Scrolling downwards in the alignment viewer on Tablet, what do you notice about the ‘structures’ formed by the reads?
         </div>
 
 
@@ -325,7 +323,7 @@
         <p>You can take a closer look at the individual bases by zooming in, either by using the sliding bar on the ‘Home’ tab at the top of the screen or by using ‘Ctrl’+Mouse Scroll. The red squares in the ‘Variants’ view represent the mismatched reads. </p>
 
         <div class="alert alert-primary">
-          An important aspect of an effective nanopore sequencing analysis is being able to differentiate between errors or low quality basecalls, and true SNPs. You can see that there are random errors dotted around the screen, like static on a TV. Do you notice that some positions in the alignment have a distinct vertical column of red squares. These are most likely the variants we are looking for, and the key to unlocking our sequence data. These columns represent positions which have a high frequency of basecalls which do not agree with the reference sequence.  It is unlikely that random errors will appear in such a manner, and so, in our next analysis we will use these high frequency variants to alter the reference sequence to build a new sequence, in a process called ‘variant calling’.
+          An important aspect of an effective nanopore sequencing analysis is being able to differentiate between errors (or low quality basecalls) and true SNPs. You can see that there are random errors dotted around the screen, like static on a TV. Do you notice that some positions in the alignment have a distinct vertical column of red characters. These are most likely the variants we are looking for, and the key to unlocking our sequence data. These columns represent positions which have a high frequency of basecalls which do not agree with the reference sequence.  It is unlikely that random errors will appear in such a manner, and so, in our next analysis we will use these high frequency variants to alter the reference sequence to build a new sequence, in a process called ‘variant calling’.
         </div>
 
         <br>
@@ -387,7 +385,7 @@
 
 
         <div class="alert alert-primary">
-          Now that we know the coverage and depth, we can move on to the variant calling. For this, we will use a package called ‘bcftools’. Bcftools will look through the alignment and ‘call’ the positions which do not agree with the reference, count them and compile them in to a database called a VCF. Enter the following code in to the terminal to begin the process:
+          Now that we know the coverage and depth, we can move on to the variant calling. For this, we will use a package called ‘bcftools’. Bcftools will look through the alignment and ‘call’ the positions which do not agree with the reference, count them and compile them in to a file format called VCF. Enter the following code in to the terminal to begin the process:
         </div>
 
         <pre><code>bcftools mpileup -q 8 -B -I -Ou -f reference.fasta sorted.bam | bcftools call -mv -Oz -o calls.vcf.gz</code></pre>
@@ -412,7 +410,7 @@
 
         <pre><code>bcftools index calls.vcf.gz</code></pre>
 
-        <p><text>This next line of code will take the calls made in the VCF file and apply them to the reference sequence, changing it based of the differences observe in our reads:
+        <p><text>This next line of code will take the calls made in the VCF file and apply them to the reference sequence, changing it based of the differences observed in our reads:
 </p>
         <pre><code>bcftools consensus -f reference.fasta calls.vcf.gz -o consensus_sequence.fasta</code></pre>
 
@@ -426,11 +424,11 @@
         <br>
 
         <h4>Sequence Alignment</h4>
-        <p>Now we are going add our consensus sequence to a multiple sequence alignment, to prepare the dataset for phylogenetic inference. First, navigate to the ‘phytogeography’ folder:</p>
+        <p>Now we are going add our consensus sequence to a multiple sequence alignment, to prepare the dataset for phylogenetic inference. First, navigate to the 'phylogenetics' folder:</p>
 
         <pre><code>cd ~/data/nanopore_activity/phylogenetics</code></pre>
 
-        <p>In this folder you will find the consensus sequence you have just generated and a pre-built Zika virus sequence dataset, containing the entire* protein coding sequences of all publicly available ZIKV isolates. Let’s open up the dataset in an alignment viewer and take a look at that this kind of data looks like. Like most of the tools you have encountered during this course there are many alternative programs out there that will perform similar tasks, in this instance we will use Aliview. Let’s call up the program and load our dataset:</p>
+        <p>In this folder you will find the consensus sequence you have just generated and a pre-built Zika virus sequence dataset, containing the entire* protein coding sequences of all publicly available ZIKV isolates. Let’s open up the dataset in an alignment viewer and take a look at what this kind of data looks like. Like most of the tools you have encountered during this course there are many alternative programs out there that will perform similar tasks, in this instance we will use Aliview. Let’s call up the program and load our dataset:</p>
 
         <pre><code>aliview zika_dataset.fasta</code></pre>
 
@@ -439,7 +437,7 @@
 
         <br>
         <br>
-        <p>With Aliview open, you should now see the dataset we will be working with for the rest of the activity. In the left pane you should see the sequence metadata: the unique sequence accession number, the species the virus was isolated from, the country of origin and the date of collection.  Spanning across horizontally, you should see the genome sequence to which the metadata is associated with. On the pane at the bottom of the window, you should see a few statistics about the dataset. Have a browse and familiarise yourself with the data and the software interface.</p>
+        <p>With Aliview open, you should now see the dataset we will be working with for the rest of the activity. In the left pane you should see the sequence metadata: the unique sequence accession number, the species the virus was isolated from, the country of origin and the date of collection.  Spanning across horizontally, you should see the genome sequence which the metadata is associated with. On the pane at the bottom of the window, you should see a few statistics about the dataset. Have a browse and familiarise yourself with the data and the software interface.</p>
 
         <br>
         <h4>Question 4</h4>
@@ -451,7 +449,7 @@
             </div>
             <div id="collapseNine" class="collapse" aria-labelledby="headingNine" data-parent="#accordionExample">
               <div class="card-body alert-danger">
-                <strong>False</strong>: Try looking in the bottom right corener of the Aliview window
+                <strong>False</strong>: Try looking in the bottom right corner of the Aliview window
               </div>
             </div>
                 <div class="card-header" id="headingS" data-toggle="collapse" data-target="#collapseTen">
@@ -591,9 +589,11 @@
         <p>Now that RAxML has completed its run we can now visualise the results in Figtree – a phylogenetic tree visualisation software package.</p>
 
 
-        <p><strong>Navigate to the 'figtree' folder and run the following command:</strong></p>
+        <p><strong>Navigate to the 'figtree' folder and run the following commands:</strong></p>
 
         <pre><code>cd ~/data/nanopore_activity/phylogenetics/figtree</code></pre>
+
+        <pre><code>conda activate phylogenetics</code></pre>
 
         <pre><code>figtree RAxML_bipartitions.zika_phylogeny</code></pre>
 
@@ -628,7 +628,7 @@
             </div>
             <div id="collapseEleven" class="collapse" aria-labelledby="headingEleven" data-parent="#accordionExample">
               <div class="card-body alert-danger">
-                <strong>False</strong>: Try looking in the bottom right corener of the Aliview window
+                <strong>False</strong>: Try to search for 'CONSENSUS' again and zoom in to the highlighted leaf of the tree.
               </div>
             </div>
                 <div class="card-header" id="headingS" data-toggle="collapse" data-target="#collapseTwelve">
