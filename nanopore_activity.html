@@ -78,7 +78,6 @@
         <p>Activate the relevant environment, navigate to the <i>~/data/nanopore_activity/basecalling</i> folder in the home directory, and we’ll start the first step.<p>
 
         <pre>conda activate nanopore</pre>
-        <pre>cd ~/data/nanopore_activity/basecalling</pre>
 
         <p><strong>The following line of code is composed of these elements:</strong><p>
 
@@ -111,7 +110,7 @@
           Take a look at the .fastq file using either a <i>head</i> command or using a text editor. Can you identify any of the common elements of a .fastq format files - similar to the ones you may have encountered in previous sessions? Click <a href="https://en.wikipedia.org/wiki/FASTQ_format" target="_blank" style="color: #0881c2">this link</a> to find out more about the FASTQ format.
         </div>
 
-        <pre><code>head workspace/*.fastq</pre></code>
+        <pre><code>head workspace/.basecalled.fastq</pre></code>
 
 
         <br>
@@ -123,7 +122,7 @@
 
         <p>In order to get the run metrics in to a useful form, we will use an <a href="https://tleonardi.github.io/pycoQC/" target="_blank" style="color: #0881c2">pycoQC</a> to produce a range of plots in a HTML output, which we will use to judge the quality of the sequencing run. Something to note, is that in this activity we will only use a small subset of the sequenced reads, or else the analysis would take all day. This subsetting means that the sequencing telemetry may look inconsistent, when compared to a full run.<p>
 
-       <pre><code>pycoQC -f sequencing_summary.txt -o pycoqc_results.html</pre></code>
+       <pre><code>pycoQC -f .sequencing_summary.txt -o pycoqc_results.html</pre></code>
 
        <div class="alert alert-primary">
           After executing the command you should find a file called 'pycoqc_results.html'. Open them up in the file manager or in the terminal (with the below command) and inspect some of the plots and see what you can find out. As mentioned, the data here are only a small subset of reads, so some of the plots are incomplete. But this should give you a good idea of how this analysis should look.
@@ -189,7 +188,7 @@
         <br>
         <p><strong>Let's launch porechop and remove the adapters from the basecalled fastq file:</strong></p>
         <br>
-        <pre><code>porechop -i workspace/fastq_runid_dcb79bbb002d7acdb262be3be0484eca7fc2f015_0.fastq -o basecalled_reads.porechop.fastq</pre></code>
+        <pre><code>porechop -i workspace/.basecalled.fastq -o basecalled_reads.porechop.fastq</pre></code>
 
 <br>
         <h4>Kraken QC</h4>
