@@ -1,0 +1,692 @@
+[INFO] logger started at Fri Nov 19 14:44:00 UTC 2021
+[INFO] executable name: /home/user/programs/tablet_linux_x64_1_21_02_08.sh
+[INFO] install4j version: 8.0.10 (build 8260)
+[INFO] Properties: 
+-- listing properties --
+awt.toolkit=sun.awt.X11.XToolkit
+java.specification.version=11
+file.encoding.pkg=sun.io
+jdk.extensions.version=11.0.10.0
+install4j.launcherId=1334
+sun.jnu.encoding=UTF-8
+java.class.path=i4jruntime.jar:launcher0.jar
+sun.awt.enableExtraMouseButtons=true
+java.vm.vendor=Eclipse OpenJ9
+sun.arch.data.model=64
+com.ibm.vm.bitmode=64
+install4j.exeDir=/home/user/programs/
+user.variant=
+sun.font.fontmanager=sun.awt.X11FontManager
+com.ibm.oti.vm.library.version=29
+java.vendor.url=https://adoptopenjdk.net/
+user.timezone=Etc/UTC
+java.vm.specification.version=11
+os.name=Linux
+sun.java.launcher=SUN_STANDARD
+user.country=US
+sun.boot.library.path=/home/user/programs/tablet_linux_x64_...
+sun.java.command=install4j.Installer2709999874
+sun.cpu.endian=little
+user.home=/home/user
+user.language=en
+java.specification.vendor=Oracle Corporation
+java.version.date=2021-01-19
+java.home=/home/user/programs/tablet_linux_x64_...
+ibm.signalhandling.rs=false
+jdk.extensions.name=Extensions for OpenJDK for Eclipse Op...
+file.separator=/
+line.separator=
+
+java.specification.name=Java Platform API Specification
+java.vm.specification.vendor=Oracle Corporation
+java.compiler=j9jit29
+com.ibm.util.extralibs.properties=
+sun.java.launcher.pid=29614
+exe4j.moduleName=/home/user/programs/tablet_linux_x64_...
+java.awt.graphicsenv=sun.awt.X11GraphicsEnvironment
+com.ibm.oti.configuration=scar
+java.awt.fonts=
+com.ibm.oti.shared.enabled=false
+com.ibm.oti.vm.bootstrap.library.path=/home/user/programs/tablet_linux_x64_...
+com.ibm.cpu.endian=little
+java.fullversion=11.0.10+9
+JRE 11 Linux amd64-64-Bit C...
+java.runtime.version=11.0.10+9
+user.name=user
+path.separator=:
+os.version=5.4.0-81-generic
+java.runtime.name=OpenJDK Runtime Environment
+ibm.signalhandling.sigint=true
+file.encoding=UTF-8
+sun.java2d.noddraw=true
+java.vm.name=Eclipse OpenJ9 VM
+java.vendor.version=AdoptOpenJDK
+ibm.signalhandling.sigchain=true
+install4j.jvmDir=/home/user/programs/tablet_linux_x64_...
+install4j.cwd=/home/user/programs
+install4j.appDir=/home/user/programs/
+java.vendor.url.bug=https://github.com/AdoptOpenJDK/openj...
+java.io.tmpdir=/tmp
+java.version=11.0.10
+com.ibm.system.agent.path=/home/user/programs/tablet_linux_x64_...
+user.dir=/home/user/programs/tablet_linux_x64_...
+os.arch=amd64
+java.vm.specification.name=Java Virtual Machine Specification
+exe4j.totalDataLength=60073337
+java.awt.printerjob=sun.print.PSPrinterJob
+os.encoding=UTF-8
+java.library.path=/home/user/programs/tablet_linux_x64_...
+java.vm.info=JRE 11 Linux amd64-64-Bit Compressed ...
+java.vendor=AdoptOpenJDK
+java.vm.version=openj9-0.24.0
+com.ibm.jcl.checkClassPath=
+ibm.system.encoding=UTF-8
+sun.io.unicode.encoding=UnicodeLittle
+java.class.version=55.0
+install4j.swt=false
+[INFO] Variable changed: sys.resolveUserSpecificInstallationDir=false[class java.lang.String]
+[INFO] com.install4j.runtime.beans.actions.misc.RequestPrivilegesAction [ID 860]: Execute action
+       Property allRequested: false
+       Property failIfNotObtainedMac: true
+       Property failIfNotObtainedWin: true
+       Property failIfNotRootUnix: false
+       Property obtainIfAdminMac: false
+       Property obtainIfAdminWin: true
+       Property obtainIfNormalMac: false
+       Property obtainIfNormalWin: false
+       Property rollbackSupported: false
+       Property updateInstallationDirectory: true
+       Variable changed: sys.resolveUserSpecificInstallationDir=true[class java.lang.Boolean]
+       Execute action successful after 4 ms
+[INFO] com.install4j.runtime.beans.screens.StartupScreen [ID 1]: command: move 1 screens, executing actions, checking condition
+[INFO] com.install4j.runtime.beans.screens.WelcomeScreen [ID 2]: Show screen
+[INFO] com.install4j.runtime.beans.screens.WelcomeScreen [ID 2]: command: move 1 screens, executing actions, checking condition
+[INFO] com.install4j.runtime.beans.screens.LicenseScreen [ID 343]: Show screen
+[INFO] com.install4j.runtime.beans.screens.LicenseScreen [ID 343]: command: move 1 screens, executing actions, checking condition
+[INFO] com.install4j.runtime.beans.screens.InstallationDirectoryScreen [ID 3]: Show screen
+       Variable changed: sys.installationDir=/home/user/programs/tablet[class java.lang.String]
+       checking writable with maximum
+[INFO] com.install4j.runtime.beans.actions.misc.LoadResponseFileAction [ID 4]: Execute action
+       Property excludedVariables: null
+       Property file: null
+       Property overwriteStrategy: Do not overwrite command line
+       Property registerForResponseFile: true
+       Property rollbackSupported: false
+       Response file /home/user/programs/tablet/.install4j/response.varfile does not exist
+       Execute action successful after 2 ms
+[INFO] com.install4j.runtime.beans.screens.InstallationDirectoryScreen [ID 3]: command: move 1 screens, executing actions, checking condition
+[INFO] com.install4j.runtime.beans.screens.StandardProgramGroupScreen [ID 6]: Show screen
+       Variable changed: sys.symlinkDir=/home/user/bin[class java.lang.String]
+       Variable changed: sys.programGroupDisabled=false[class java.lang.Boolean]
+[INFO] com.install4j.runtime.beans.screens.StandardProgramGroupScreen [ID 6]: command: move 1 screens, executing actions, checking condition
+[INFO] com.install4j.runtime.beans.screens.InstallationScreen [ID 7]: Show screen
+[INFO] com.install4j.runtime.beans.actions.UninstallPreviousAction [ID 106]: Execute action
+       Property installationDirectory: null
+       Property installerVariables: {}
+       Property logFiles: []
+       Property onlyIfSameApplicationId: true
+       Property rollbackSupported: false
+       Property uninstallServices: true
+       checking running processes
+       checking running processes ok
+       previous installation id at /home/user/programs/tablet: null
+       no previous installation detected, uninstaller was not started
+       finished
+       Execute action successful after 4 ms
+[INFO] com.install4j.runtime.beans.actions.InstallFilesAction [ID 8]: Execute action
+       Property directoryResolverScript: null
+       Property fileFilterScript: null
+       Property sizeCalculatorScript: null
+       Property acceptAllCertificates: false
+       Property checkFreeSpace: true
+       Property delay: false
+       Property installRuntime: true
+       Property rollbackSupported: true
+       Property saveDownloadedFiles: false
+       Property showFileNames: true
+       Property triggerReboot: true
+       Property updateBundledJre: true
+       Property validateApplicationId: false
+       Install file: /home/user/programs/tablet/jre/bin/java; size: 12768 bytes; exists: false
+       File options set to: [fileTime: Mon Feb 08 09:22:37 UTC 2021, mode: 755, overwriteMode: Always ask except for update, shared: false, uninstallMode: If created, but not for update, delayIfNecessary: false]
+       Install file: /home/user/programs/tablet/jre/bin/jitserver; size: 13184 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/bin/jjs; size: 12816 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/bin/jrunscript; size: 12824 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/bin/keytool; size: 12784 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/bin/pack200; size: 12784 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/bin/rmid; size: 12784 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/bin/rmiregistry; size: 12792 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/bin/unpack200; size: 121488 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/conf/logging.properties; size: 2731 bytes; exists: false
+       File options set to: [fileTime: Mon Feb 08 09:22:37 UTC 2021, mode: 644, overwriteMode: Always ask except for update, shared: false, uninstallMode: If created, but not for update, delayIfNecessary: false]
+       Install file: /home/user/programs/tablet/jre/conf/management/jmxremote.access; size: 3997 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/conf/management/jmxremote.password.template; size: 5690 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/conf/management/management.properties; size: 14292 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/conf/net.properties; size: 5352 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/conf/security/java.policy; size: 2180 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/conf/security/java.security; size: 51998 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/conf/security/policy/README.txt; size: 2390 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/conf/security/policy/limited/default_US_export.policy; size: 146 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/conf/security/policy/limited/default_local.policy; size: 647 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/conf/security/policy/limited/exempt_local.policy; size: 566 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/conf/security/policy/unlimited/default_US_export.policy; size: 146 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/conf/security/policy/unlimited/default_local.policy; size: 193 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/conf/sound.properties; size: 1210 bytes; exists: false
+       File options set to: [fileTime: Mon Feb 08 09:22:38 UTC 2021, mode: 644, overwriteMode: Always ask except for update, shared: false, uninstallMode: If created, but not for update, delayIfNecessary: false]
+       Install file: /home/user/programs/tablet/jre/include/classfile_constants.h; size: 21906 bytes; exists: false
+       File options set to: [fileTime: Mon Feb 08 09:22:37 UTC 2021, mode: 644, overwriteMode: Always ask except for update, shared: false, uninstallMode: If created, but not for update, delayIfNecessary: false]
+       Install file: /home/user/programs/tablet/jre/include/ibmjvmti.h; size: 17570 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/include/jawt.h; size: 12458 bytes; exists: false
+       File options set to: [fileTime: Mon Feb 08 09:22:38 UTC 2021, mode: 644, overwriteMode: Always ask except for update, shared: false, uninstallMode: If created, but not for update, delayIfNecessary: false]
+       Install file: /home/user/programs/tablet/jre/include/jdwpTransport.h; size: 8151 bytes; exists: false
+       File options set to: [fileTime: Mon Feb 08 09:22:37 UTC 2021, mode: 644, overwriteMode: Always ask except for update, shared: false, uninstallMode: If created, but not for update, delayIfNecessary: false]
+       Install file: /home/user/programs/tablet/jre/include/jni.h; size: 74987 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/include/jvmti.h; size: 68042 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/include/jvmticmlr.h; size: 4771 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/include/linux/jawt_md.h; size: 1965 bytes; exists: false
+       File options set to: [fileTime: Mon Feb 08 09:22:38 UTC 2021, mode: 644, overwriteMode: Always ask except for update, shared: false, uninstallMode: If created, but not for update, delayIfNecessary: false]
+       Install file: /home/user/programs/tablet/jre/include/linux/jni_md.h; size: 2003 bytes; exists: false
+       File options set to: [fileTime: Mon Feb 08 09:22:37 UTC 2021, mode: 644, overwriteMode: Always ask except for update, shared: false, uninstallMode: If created, but not for update, delayIfNecessary: false]
+       Install file: /home/user/programs/tablet/jre/legal/java.base/ADDITIONAL_LICENSE_INFO; size: 2114 bytes; exists: false
+       File options set to: [fileTime: Mon Feb 08 09:22:38 UTC 2021, mode: 644, overwriteMode: Always ask except for update, shared: false, uninstallMode: If created, but not for update, delayIfNecessary: false]
+       Install file: /home/user/programs/tablet/jre/legal/java.base/ASSEMBLY_EXCEPTION; size: 1522 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.base/LICENSE; size: 19650 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.base/aes.md; size: 1444 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.base/asm.md; size: 1582 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.base/c-libutl.md; size: 1556 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.base/cldr.md; size: 2926 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.base/epl-2.0.html; size: 17300 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.base/icu.md; size: 2930 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.base/openj9-notices; size: 33947 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.base/openj9-openjdk-notices; size: 6377 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.base/public_suffix.md; size: 17785 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.base/unicode.md; size: 2957 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.compiler/ADDITIONAL_LICENSE_INFO; size: 49 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.compiler/ASSEMBLY_EXCEPTION; size: 44 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.compiler/LICENSE; size: 33 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.datatransfer/ADDITIONAL_LICENSE_INFO; size: 49 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.datatransfer/ASSEMBLY_EXCEPTION; size: 44 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.datatransfer/LICENSE; size: 33 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.desktop/ADDITIONAL_LICENSE_INFO; size: 49 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.desktop/ASSEMBLY_EXCEPTION; size: 44 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.desktop/LICENSE; size: 33 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.desktop/colorimaging.md; size: 167 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.desktop/giflib.md; size: 1288 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.desktop/harfbuzz.md; size: 2753 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.desktop/jpeg.md; size: 3997 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.desktop/lcms.md; size: 1178 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.desktop/libpng.md; size: 5398 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.desktop/mesa3d.md; size: 5732 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.desktop/xwd.md; size: 1348 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.instrument/ADDITIONAL_LICENSE_INFO; size: 49 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.instrument/ASSEMBLY_EXCEPTION; size: 44 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.instrument/LICENSE; size: 33 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.logging/ADDITIONAL_LICENSE_INFO; size: 49 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.logging/ASSEMBLY_EXCEPTION; size: 44 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.logging/LICENSE; size: 33 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.management.rmi/ADDITIONAL_LICENSE_INFO; size: 49 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.management.rmi/ASSEMBLY_EXCEPTION; size: 44 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.management.rmi/LICENSE; size: 33 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.management/ADDITIONAL_LICENSE_INFO; size: 49 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.management/ASSEMBLY_EXCEPTION; size: 44 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.management/LICENSE; size: 33 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.naming/ADDITIONAL_LICENSE_INFO; size: 49 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.naming/ASSEMBLY_EXCEPTION; size: 44 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.naming/LICENSE; size: 33 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.net.http/ADDITIONAL_LICENSE_INFO; size: 49 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.net.http/ASSEMBLY_EXCEPTION; size: 44 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.net.http/LICENSE; size: 33 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.prefs/ADDITIONAL_LICENSE_INFO; size: 49 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.prefs/ASSEMBLY_EXCEPTION; size: 44 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.prefs/LICENSE; size: 33 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.rmi/ADDITIONAL_LICENSE_INFO; size: 49 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.rmi/ASSEMBLY_EXCEPTION; size: 44 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.rmi/LICENSE; size: 33 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.scripting/ADDITIONAL_LICENSE_INFO; size: 49 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.scripting/ASSEMBLY_EXCEPTION; size: 44 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.scripting/LICENSE; size: 33 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.se/ADDITIONAL_LICENSE_INFO; size: 49 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.se/ASSEMBLY_EXCEPTION; size: 44 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.se/LICENSE; size: 33 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.security.jgss/ADDITIONAL_LICENSE_INFO; size: 49 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.security.jgss/ASSEMBLY_EXCEPTION; size: 44 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.security.jgss/LICENSE; size: 33 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.security.sasl/ADDITIONAL_LICENSE_INFO; size: 49 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.security.sasl/ASSEMBLY_EXCEPTION; size: 44 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.security.sasl/LICENSE; size: 33 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.smartcardio/ADDITIONAL_LICENSE_INFO; size: 49 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.smartcardio/ASSEMBLY_EXCEPTION; size: 44 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.smartcardio/LICENSE; size: 33 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.smartcardio/pcsclite.md; size: 1649 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.sql.rowset/ADDITIONAL_LICENSE_INFO; size: 49 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.sql.rowset/ASSEMBLY_EXCEPTION; size: 44 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.sql.rowset/LICENSE; size: 33 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.sql/ADDITIONAL_LICENSE_INFO; size: 49 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.sql/ASSEMBLY_EXCEPTION; size: 44 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.sql/LICENSE; size: 33 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.transaction.xa/ADDITIONAL_LICENSE_INFO; size: 49 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.transaction.xa/ASSEMBLY_EXCEPTION; size: 44 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.transaction.xa/LICENSE; size: 33 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.xml.crypto/ADDITIONAL_LICENSE_INFO; size: 49 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.xml.crypto/ASSEMBLY_EXCEPTION; size: 44 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.xml.crypto/LICENSE; size: 33 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.xml.crypto/santuario.md; size: 11436 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.xml/ADDITIONAL_LICENSE_INFO; size: 49 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.xml/ASSEMBLY_EXCEPTION; size: 44 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.xml/LICENSE; size: 33 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.xml/bcel.md; size: 11503 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.xml/dom.md; size: 3028 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.xml/jcup.md; size: 1158 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.xml/xalan.md; size: 13494 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/java.xml/xerces.md; size: 11852 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.accessibility/ADDITIONAL_LICENSE_INFO; size: 49 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.accessibility/ASSEMBLY_EXCEPTION; size: 44 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.accessibility/LICENSE; size: 33 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.attach/ADDITIONAL_LICENSE_INFO; size: 49 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.attach/ASSEMBLY_EXCEPTION; size: 44 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.attach/LICENSE; size: 33 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.charsets/ADDITIONAL_LICENSE_INFO; size: 49 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.charsets/ASSEMBLY_EXCEPTION; size: 44 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.charsets/LICENSE; size: 33 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.crypto.cryptoki/ADDITIONAL_LICENSE_INFO; size: 49 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.crypto.cryptoki/ASSEMBLY_EXCEPTION; size: 44 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.crypto.cryptoki/LICENSE; size: 33 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.crypto.cryptoki/pkcs11cryptotoken.md; size: 1858 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.crypto.cryptoki/pkcs11wrapper.md; size: 2131 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.crypto.ec/ADDITIONAL_LICENSE_INFO; size: 49 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.crypto.ec/ASSEMBLY_EXCEPTION; size: 44 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.crypto.ec/LICENSE; size: 33 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.crypto.ec/ecc.md; size: 29220 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.dynalink/ADDITIONAL_LICENSE_INFO; size: 49 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.dynalink/ASSEMBLY_EXCEPTION; size: 44 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.dynalink/LICENSE; size: 33 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.dynalink/dynalink.md; size: 1502 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.httpserver/ADDITIONAL_LICENSE_INFO; size: 49 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.httpserver/ASSEMBLY_EXCEPTION; size: 44 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.httpserver/LICENSE; size: 33 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.internal.ed/ADDITIONAL_LICENSE_INFO; size: 49 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.internal.ed/ASSEMBLY_EXCEPTION; size: 44 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.internal.ed/LICENSE; size: 33 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.internal.jvmstat/ADDITIONAL_LICENSE_INFO; size: 49 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.internal.jvmstat/ASSEMBLY_EXCEPTION; size: 44 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.internal.jvmstat/LICENSE; size: 33 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.internal.le/ADDITIONAL_LICENSE_INFO; size: 49 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.internal.le/ASSEMBLY_EXCEPTION; size: 44 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.internal.le/LICENSE; size: 33 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.internal.le/jline.md; size: 1579 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.jdwp.agent/ADDITIONAL_LICENSE_INFO; size: 49 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.jdwp.agent/ASSEMBLY_EXCEPTION; size: 44 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.jdwp.agent/LICENSE; size: 33 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.jsobject/ADDITIONAL_LICENSE_INFO; size: 49 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.jsobject/ASSEMBLY_EXCEPTION; size: 44 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.jsobject/LICENSE; size: 33 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.localedata/ADDITIONAL_LICENSE_INFO; size: 49 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.localedata/ASSEMBLY_EXCEPTION; size: 44 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.localedata/LICENSE; size: 33 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.localedata/cldr.md; size: 33 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.localedata/thaidict.md; size: 1346 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.management.agent/ADDITIONAL_LICENSE_INFO; size: 49 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.management.agent/ASSEMBLY_EXCEPTION; size: 44 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.management.agent/LICENSE; size: 33 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.management/ADDITIONAL_LICENSE_INFO; size: 49 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.management/ASSEMBLY_EXCEPTION; size: 44 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.management/LICENSE; size: 33 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.naming.dns/ADDITIONAL_LICENSE_INFO; size: 49 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.naming.dns/ASSEMBLY_EXCEPTION; size: 44 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.naming.dns/LICENSE; size: 33 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.naming.rmi/ADDITIONAL_LICENSE_INFO; size: 49 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.naming.rmi/ASSEMBLY_EXCEPTION; size: 44 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.naming.rmi/LICENSE; size: 33 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.net/ADDITIONAL_LICENSE_INFO; size: 49 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.net/ASSEMBLY_EXCEPTION; size: 44 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.net/LICENSE; size: 33 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.pack/ADDITIONAL_LICENSE_INFO; size: 49 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.pack/ASSEMBLY_EXCEPTION; size: 44 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.pack/LICENSE; size: 33 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.scripting.nashorn.shell/ADDITIONAL_LICENSE_INFO; size: 49 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.scripting.nashorn.shell/ASSEMBLY_EXCEPTION; size: 44 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.scripting.nashorn.shell/LICENSE; size: 33 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.scripting.nashorn/ADDITIONAL_LICENSE_INFO; size: 49 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.scripting.nashorn/ASSEMBLY_EXCEPTION; size: 44 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.scripting.nashorn/LICENSE; size: 33 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.scripting.nashorn/double-conversion.md; size: 1641 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.scripting.nashorn/joni.md; size: 1108 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.sctp/ADDITIONAL_LICENSE_INFO; size: 49 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.sctp/ASSEMBLY_EXCEPTION; size: 44 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.sctp/LICENSE; size: 33 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.security.auth/ADDITIONAL_LICENSE_INFO; size: 49 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.security.auth/ASSEMBLY_EXCEPTION; size: 44 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.security.auth/LICENSE; size: 33 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.security.jgss/ADDITIONAL_LICENSE_INFO; size: 49 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.security.jgss/ASSEMBLY_EXCEPTION; size: 44 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.security.jgss/LICENSE; size: 33 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.unsupported.desktop/ADDITIONAL_LICENSE_INFO; size: 49 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.unsupported.desktop/ASSEMBLY_EXCEPTION; size: 44 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.unsupported.desktop/LICENSE; size: 33 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.unsupported/ADDITIONAL_LICENSE_INFO; size: 49 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.unsupported/ASSEMBLY_EXCEPTION; size: 44 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.unsupported/LICENSE; size: 33 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.xml.dom/ADDITIONAL_LICENSE_INFO; size: 49 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.xml.dom/ASSEMBLY_EXCEPTION; size: 44 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.xml.dom/LICENSE; size: 33 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.zipfs/ADDITIONAL_LICENSE_INFO; size: 49 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.zipfs/ASSEMBLY_EXCEPTION; size: 44 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/legal/jdk.zipfs/LICENSE; size: 33 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/lib/compressedrefs/j9ddr.dat; size: 768442 bytes; exists: false
+       File options set to: [fileTime: Mon Feb 08 09:22:37 UTC 2021, mode: 644, overwriteMode: Always ask except for update, shared: false, uninstallMode: If created, but not for update, delayIfNecessary: false]
+       Install file: /home/user/programs/tablet/jre/lib/compressedrefs/libj9dmp29.so; size: 318824 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/lib/compressedrefs/libj9gc29.so; size: 3658296 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/lib/compressedrefs/libj9gcchk29.so; size: 143968 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/lib/compressedrefs/libj9hookable29.so; size: 28000 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/lib/compressedrefs/libj9jit29.so; size: 14903592 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/lib/compressedrefs/libj9jnichk29.so; size: 220984 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/lib/compressedrefs/libj9jvmti29.so; size: 413992 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/lib/compressedrefs/libj9prt29.so; size: 618976 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/lib/compressedrefs/libj9thr29.so; size: 124312 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/lib/compressedrefs/libj9trc29.so; size: 233704 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/lib/compressedrefs/libj9vm29.so; size: 1795760 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/lib/compressedrefs/libj9vmchk29.so; size: 63640 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/lib/compressedrefs/libj9vrb29.so; size: 942528 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/lib/compressedrefs/libj9zlib29.so; size: 94200 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/lib/compressedrefs/libjclse29.so; size: 560648 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/lib/compressedrefs/libjvm.so; size: 293528 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/lib/compressedrefs/libmanagement_ext.so; size: 7864 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/lib/compressedrefs/libomrsig.so; size: 17256 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/lib/j9vm/libjsig.so; size: 12848 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/lib/j9vm/libjvm.so; size: 113528 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/lib/java.properties; size: 133055 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/lib/java_ca.properties; size: 180106 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/lib/java_cs.properties; size: 215599 bytes; exists: false
+       File options set to: [fileTime: Mon Feb 08 09:22:38 UTC 2021, mode: 644, overwriteMode: Always ask except for update, shared: false, uninstallMode: If created, but not for update, delayIfNecessary: false]
+       Install file: /home/user/programs/tablet/jre/lib/java_de.properties; size: 179496 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/lib/java_es.properties; size: 179940 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/lib/java_fr.properties; size: 186835 bytes; exists: false
+       File options set to: [fileTime: Mon Feb 08 09:22:37 UTC 2021, mode: 644, overwriteMode: Always ask except for update, shared: false, uninstallMode: If created, but not for update, delayIfNecessary: false]
+       Install file: /home/user/programs/tablet/jre/lib/java_hu.properties; size: 225721 bytes; exists: false
+       File options set to: [fileTime: Mon Feb 08 09:22:38 UTC 2021, mode: 644, overwriteMode: Always ask except for update, shared: false, uninstallMode: If created, but not for update, delayIfNecessary: false]
+       Install file: /home/user/programs/tablet/jre/lib/java_it.properties; size: 163055 bytes; exists: false
+       File options set to: [fileTime: Mon Feb 08 09:22:37 UTC 2021, mode: 644, overwriteMode: Always ask except for update, shared: false, uninstallMode: If created, but not for update, delayIfNecessary: false]
+       Install file: /home/user/programs/tablet/jre/lib/java_ja.properties; size: 349864 bytes; exists: false
+       File options set to: [fileTime: Mon Feb 08 09:22:38 UTC 2021, mode: 644, overwriteMode: Always ask except for update, shared: false, uninstallMode: If created, but not for update, delayIfNecessary: false]
+       Install file: /home/user/programs/tablet/jre/lib/java_ko.properties; size: 277920 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/lib/java_pl.properties; size: 206628 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/lib/java_pt_BR.properties; size: 175320 bytes; exists: false
+       File options set to: [fileTime: Mon Feb 08 09:22:37 UTC 2021, mode: 644, overwriteMode: Always ask except for update, shared: false, uninstallMode: If created, but not for update, delayIfNecessary: false]
+       Install file: /home/user/programs/tablet/jre/lib/java_ru.properties; size: 581848 bytes; exists: false
+       File options set to: [fileTime: Mon Feb 08 09:22:38 UTC 2021, mode: 644, overwriteMode: Always ask except for update, shared: false, uninstallMode: If created, but not for update, delayIfNecessary: false]
+       Install file: /home/user/programs/tablet/jre/lib/java_sk.properties; size: 197058 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/lib/java_sl.properties; size: 164512 bytes; exists: false
+       File options set to: [fileTime: Mon Feb 08 09:22:37 UTC 2021, mode: 644, overwriteMode: Always ask except for update, shared: false, uninstallMode: If created, but not for update, delayIfNecessary: false]
+       Install file: /home/user/programs/tablet/jre/lib/java_tr.properties; size: 218392 bytes; exists: false
+       File options set to: [fileTime: Mon Feb 08 09:22:38 UTC 2021, mode: 644, overwriteMode: Always ask except for update, shared: false, uninstallMode: If created, but not for update, delayIfNecessary: false]
+       Install file: /home/user/programs/tablet/jre/lib/java_zh.properties; size: 214720 bytes; exists: false
+       File options set to: [fileTime: Mon Feb 08 09:22:37 UTC 2021, mode: 644, overwriteMode: Always ask except for update, shared: false, uninstallMode: If created, but not for update, delayIfNecessary: false]
+       Install file: /home/user/programs/tablet/jre/lib/java_zh_CN.properties; size: 214678 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/lib/java_zh_TW.properties; size: 209359 bytes; exists: false
+       File options set to: [fileTime: Mon Feb 08 09:22:38 UTC 2021, mode: 644, overwriteMode: Always ask except for update, shared: false, uninstallMode: If created, but not for update, delayIfNecessary: false]
+       Install file: /home/user/programs/tablet/jre/lib/jexec; size: 13008 bytes; exists: false
+       File options set to: [fileTime: Mon Feb 08 09:22:37 UTC 2021, mode: 755, overwriteMode: Always ask except for update, shared: false, uninstallMode: If created, but not for update, delayIfNecessary: false]
+       Install file: /home/user/programs/tablet/jre/lib/jli/libjli.so; size: 78600 bytes; exists: false
+       File options set to: [fileTime: Mon Feb 08 09:22:37 UTC 2021, mode: 644, overwriteMode: Always ask except for update, shared: false, uninstallMode: If created, but not for update, delayIfNecessary: false]
+       Install file: /home/user/programs/tablet/jre/lib/jrt-fs.jar; size: 106676 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/lib/jspawnhelper; size: 18336 bytes; exists: false
+       File options set to: [fileTime: Mon Feb 08 09:22:38 UTC 2021, mode: 755, overwriteMode: Always ask except for update, shared: false, uninstallMode: If created, but not for update, delayIfNecessary: false]
+       Install file: /home/user/programs/tablet/jre/lib/jvm.cfg; size: 29 bytes; exists: false
+       File options set to: [fileTime: Mon Feb 08 09:22:37 UTC 2021, mode: 644, overwriteMode: Always ask except for update, shared: false, uninstallMode: If created, but not for update, delayIfNecessary: false]
+       Install file: /home/user/programs/tablet/jre/lib/libattach.so; size: 13296 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/lib/libawt.so; size: 750000 bytes; exists: false
+       File options set to: [fileTime: Mon Feb 08 09:22:38 UTC 2021, mode: 644, overwriteMode: Always ask except for update, shared: false, uninstallMode: If created, but not for update, delayIfNecessary: false]
+       Install file: /home/user/programs/tablet/jre/lib/libawt_headless.so; size: 43712 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/lib/libawt_xawt.so; size: 482456 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/lib/libdt_socket.so; size: 28144 bytes; exists: false
+       File options set to: [fileTime: Mon Feb 08 09:22:37 UTC 2021, mode: 644, overwriteMode: Always ask except for update, shared: false, uninstallMode: If created, but not for update, delayIfNecessary: false]
+       Install file: /home/user/programs/tablet/jre/lib/libextnet.so; size: 12936 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/lib/libfontmanager.so; size: 67672 bytes; exists: false
+       File options set to: [fileTime: Mon Feb 08 09:22:38 UTC 2021, mode: 644, overwriteMode: Always ask except for update, shared: false, uninstallMode: If created, but not for update, delayIfNecessary: false]
+       Install file: /home/user/programs/tablet/jre/lib/libharfbuzz.so; size: 1445896 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/lib/libinstrument.so; size: 51008 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/lib/libj2gss.so; size: 47376 bytes; exists: false
+       File options set to: [fileTime: Mon Feb 08 09:22:37 UTC 2021, mode: 644, overwriteMode: Always ask except for update, shared: false, uninstallMode: If created, but not for update, delayIfNecessary: false]
+       Install file: /home/user/programs/tablet/jre/lib/libj2pcsc.so; size: 17952 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/lib/libj2pkcs11.so; size: 88488 bytes; exists: false
+       File options set to: [fileTime: Mon Feb 08 09:22:38 UTC 2021, mode: 644, overwriteMode: Always ask except for update, shared: false, uninstallMode: If created, but not for update, delayIfNecessary: false]
+       Install file: /home/user/programs/tablet/jre/lib/libjaas.so; size: 8024 bytes; exists: false
+       File options set to: [fileTime: Mon Feb 08 09:22:37 UTC 2021, mode: 644, overwriteMode: Always ask except for update, shared: false, uninstallMode: If created, but not for update, delayIfNecessary: false]
+       Install file: /home/user/programs/tablet/jre/lib/libjava.so; size: 172360 bytes; exists: false
+       File options set to: [fileTime: Mon Feb 08 09:22:38 UTC 2021, mode: 644, overwriteMode: Always ask except for update, shared: false, uninstallMode: If created, but not for update, delayIfNecessary: false]
+       Install file: /home/user/programs/tablet/jre/lib/libjavajpeg.so; size: 261136 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/lib/libjawt.so; size: 7952 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/lib/libjdwp.so; size: 281120 bytes; exists: false
+       File options set to: [fileTime: Mon Feb 08 09:22:37 UTC 2021, mode: 644, overwriteMode: Always ask except for update, shared: false, uninstallMode: If created, but not for update, delayIfNecessary: false]
+       Install file: /home/user/programs/tablet/jre/lib/libjimage.so; size: 144904 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/lib/libjncrypto.so; size: 33440 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/lib/libjsig.so; size: 12848 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/lib/libjsound.so; size: 82048 bytes; exists: false
+       File options set to: [fileTime: Mon Feb 08 09:22:38 UTC 2021, mode: 644, overwriteMode: Always ask except for update, shared: false, uninstallMode: If created, but not for update, delayIfNecessary: false]
+       Install file: /home/user/programs/tablet/jre/lib/liblcms.so; size: 575936 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/lib/libmanagement.so; size: 7616 bytes; exists: false
+       File options set to: [fileTime: Mon Feb 08 09:22:37 UTC 2021, mode: 644, overwriteMode: Always ask except for update, shared: false, uninstallMode: If created, but not for update, delayIfNecessary: false]
+       Install file: /home/user/programs/tablet/jre/lib/libmanagement_agent.so; size: 8008 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/lib/libmlib_image.so; size: 582688 bytes; exists: false
+       File options set to: [fileTime: Mon Feb 08 09:22:38 UTC 2021, mode: 644, overwriteMode: Always ask except for update, shared: false, uninstallMode: If created, but not for update, delayIfNecessary: false]
+       Install file: /home/user/programs/tablet/jre/lib/libnet.so; size: 110872 bytes; exists: false
+       File options set to: [fileTime: Mon Feb 08 09:22:37 UTC 2021, mode: 644, overwriteMode: Always ask except for update, shared: false, uninstallMode: If created, but not for update, delayIfNecessary: false]
+       Install file: /home/user/programs/tablet/jre/lib/libnio.so; size: 87208 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/lib/libprefs.so; size: 8176 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/lib/librmi.so; size: 7696 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/lib/libsctp.so; size: 28824 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/lib/libsplashscreen.so; size: 371440 bytes; exists: false
+       File options set to: [fileTime: Mon Feb 08 09:22:38 UTC 2021, mode: 644, overwriteMode: Always ask except for update, shared: false, uninstallMode: If created, but not for update, delayIfNecessary: false]
+       Install file: /home/user/programs/tablet/jre/lib/libsunec.so; size: 324696 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/lib/libunpack.so; size: 225328 bytes; exists: false
+       File options set to: [fileTime: Mon Feb 08 09:22:37 UTC 2021, mode: 644, overwriteMode: Always ask except for update, shared: false, uninstallMode: If created, but not for update, delayIfNecessary: false]
+       Install file: /home/user/programs/tablet/jre/lib/libverify.so; size: 64808 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/lib/libzip.so; size: 37336 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/lib/modules; size: 100807999 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/lib/options.default; size: 1342 bytes; exists: false
+       File options set to: [fileTime: Mon Feb 08 09:22:38 UTC 2021, mode: 644, overwriteMode: Always ask except for update, shared: false, uninstallMode: If created, but not for update, delayIfNecessary: false]
+       Install file: /home/user/programs/tablet/jre/lib/psfont.properties.ja; size: 3793 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/lib/psfontj2d.properties; size: 11390 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/lib/security/blacklisted.certs; size: 2488 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/lib/security/cacerts; size: 165823 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/lib/security/default.policy; size: 11373 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/lib/security/public_suffix_list.dat; size: 232578 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/lib/server/libjsig.so; size: 12848 bytes; exists: false
+       File options set to: [fileTime: Mon Feb 08 09:22:37 UTC 2021, mode: 644, overwriteMode: Always ask except for update, shared: false, uninstallMode: If created, but not for update, delayIfNecessary: false]
+       Install file: /home/user/programs/tablet/jre/lib/server/libjvm.so; size: 113528 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/lib/tzdb.dat; size: 107853 bytes; exists: false
+       Install file: /home/user/programs/tablet/jre/release; size: 789 bytes; exists: false
+       File options set to: [fileTime: Mon Feb 08 09:22:38 UTC 2021, mode: 644, overwriteMode: Always ask except for update, shared: false, uninstallMode: If created, but not for update, delayIfNecessary: false]
+       Install file: /home/user/programs/tablet/.install4j/tablet.png; size: 2334 bytes; exists: false
+       File options set to: [fileTime: Mon Feb 08 11:51:10 UTC 2021, mode: 644, overwriteMode: Always, shared: false, uninstallMode: Always, delayIfNecessary: false]
+       Install file: /home/user/programs/tablet/.install4j/uninstall.png; size: 6648 bytes; exists: false
+       Install file: /home/user/programs/tablet/.install4j/updater; size: 14070 bytes; exists: false
+       File options set to: [fileTime: Mon Feb 08 11:51:10 UTC 2021, mode: 755, overwriteMode: If newer otherwise ask, shared: false, uninstallMode: If created, delayIfNecessary: false]
+       Install file: /home/user/programs/tablet/.install4j/updater.png; size: 1187 bytes; exists: false
+       File options set to: [fileTime: Mon Feb 08 11:51:10 UTC 2021, mode: 644, overwriteMode: Always, shared: false, uninstallMode: Always, delayIfNecessary: false]
+       Install file: /home/user/programs/tablet/docs/flamingo.txt; size: 1670 bytes; exists: false
+       File options set to: [fileTime: Mon Feb 08 11:51:10 UTC 2021, mode: 644, overwriteMode: Always ask except for update, shared: false, uninstallMode: If created, delayIfNecessary: false]
+       Install file: /home/user/programs/tablet/docs/help.url; size: 123 bytes; exists: false
+       Install file: /home/user/programs/tablet/docs/rebase.txt; size: 873 bytes; exists: false
+       Install file: /home/user/programs/tablet/docs/samtools.txt; size: 1167 bytes; exists: false
+       Install file: /home/user/programs/tablet/docs/tablet.html; size: 1410 bytes; exists: false
+       Install file: /home/user/programs/tablet/docs/xerial-sqlite.txt; size: 11558 bytes; exists: false
+       Install file: /home/user/programs/tablet/lib/commons-compress-1.4.1.jar; size: 241367 bytes; exists: false
+       Install file: /home/user/programs/tablet/lib/flamingo.jar; size: 570193 bytes; exists: false
+       Install file: /home/user/programs/tablet/lib/htsjdk-2.11.0.jar; size: 1579359 bytes; exists: false
+       Install file: /home/user/programs/tablet/lib/samtools-linux64.jar; size: 398078 bytes; exists: false
+       Install file: /home/user/programs/tablet/lib/scri-commons.jar; size: 54561 bytes; exists: false
+       Install file: /home/user/programs/tablet/lib/sqlite-jdbc-3.8.6.jar; size: 3948533 bytes; exists: false
+       Install file: /home/user/programs/tablet/lib/tablet-resources.jar; size: 422018 bytes; exists: false
+       Install file: /home/user/programs/tablet/lib/tablet.jar; size: 636011 bytes; exists: false
+       Install file: /home/user/programs/tablet/tablet; size: 13323 bytes; exists: false
+       File options set to: [fileTime: Mon Feb 08 11:51:10 UTC 2021, mode: 755, overwriteMode: If newer otherwise ask, shared: false, uninstallMode: If created, delayIfNecessary: false]
+       Install file: /home/user/programs/tablet/uninstall; size: 14269 bytes; exists: false
+       File options set to: [fileTime: Mon Feb 08 11:51:10 UTC 2021, mode: 700, overwriteMode: If newer otherwise ask, shared: false, uninstallMode: If created, delayIfNecessary: false]
+       Install file: /home/user/programs/tablet/utils/maqtoace; size: 13523 bytes; exists: false
+       File options set to: [fileTime: Mon Feb 08 11:51:10 UTC 2021, mode: 755, overwriteMode: If newer otherwise ask, shared: false, uninstallMode: If created, delayIfNecessary: false]
+       Install file: /home/user/programs/tablet/.install4j/inst_jre.cfg; size: 65 bytes; exists: false
+       File options set to: [fileTime: Fri Nov 19 14:44:28 UTC 2021, mode: 644, overwriteMode: Always, shared: false, uninstallMode: If created, delayIfNecessary: false]
+       Install file: /home/user/programs/tablet/.install4j/pref_jre.cfg; size: 31 bytes; exists: false
+       File options set to: [fileTime: Fri Nov 19 14:44:28 UTC 2021, mode: 644, overwriteMode: Always, shared: false, uninstallMode: If created, delayIfNecessary: false]
+       Install file: /home/user/programs/tablet/.install4j/i4jruntime.jar; size: 2576167 bytes; exists: false
+       File options set to: [fileTime: Fri Nov 19 14:44:28 UTC 2021, mode: 644, overwriteMode: Always, shared: false, uninstallMode: Always, delayIfNecessary: false]
+       Install file: /home/user/programs/tablet/.install4j/MessagesDefault; size: 34423 bytes; exists: false
+       Install file: /home/user/programs/tablet/.install4j/i4jparams.conf; size: 123567 bytes; exists: false
+       Install file: /home/user/programs/tablet/.install4j/stats.properties; size: 359 bytes; exists: false
+       Install file: /home/user/programs/tablet/.install4j/i4jempty.ttf; size: 1004 bytes; exists: false
+       Install file: /home/user/programs/tablet/.install4j/user.jar; size: 28100 bytes; exists: false
+       Install file: /home/user/programs/tablet/.install4j/launcher1a239782.jar; size: 799 bytes; exists: false
+       Install file: /home/user/programs/tablet/.install4j/launcher0.jar; size: 719 bytes; exists: false
+       Install file: /home/user/programs/tablet/.install4j/launcher2bfa42ba.jar; size: 758 bytes; exists: false
+       Install file: /home/user/programs/tablet/.install4j/launcher996212d3.jar; size: 771 bytes; exists: false
+       Install file: /home/user/programs/tablet/.install4j/launcher4fd1c277.jar; size: 761 bytes; exists: false
+       Install file: /home/user/programs/tablet/.install4j/i4j_extf_1_18tgpaa.html; size: 1410 bytes; exists: false
+       Install file: /home/user/programs/tablet/.install4j/i4j_extf_3_18tgpaa_vd2dea.png; size: 1187 bytes; exists: false
+       Install file: /home/user/programs/tablet/.install4j/libi4jinst2.dylib; size: 67472 bytes; exists: false
+       Install file: /home/user/programs/tablet/.install4j/i4j_extf_0_18tgpaa.utf8; size: 34423 bytes; exists: false
+       Install file: /home/user/programs/tablet/.install4j/i4j_extf_4_18tgpaa_18gg8kx.png; size: 9202 bytes; exists: false
+       Install file: /home/user/programs/tablet/.install4j/i4j_extf_5_18tgpaa_o9yl28.png; size: 5791 bytes; exists: false
+       Install file: /home/user/programs/tablet/.install4j/libi4jinst.dylib; size: 214672 bytes; exists: false
+       Install file: /home/user/programs/tablet/.install4j/i4j_extf_4_18tgpaa_18gg8kx@2x.png; size: 15419 bytes; exists: false
+       Install file: /home/user/programs/tablet/.install4j/i4j_extf_2_18tgpaa_x7nby6.png; size: 756 bytes; exists: false
+       Execute action successful after 1712 ms
+[INFO] com.install4j.runtime.beans.actions.desktop.CreateProgramGroupAction [ID 9]: Execute action
+       Property categories: Application
+       Property linkDirectory: /home/user/bin
+       Property programGroupEntryConfigs: [ProgramGroupFileConfig{target=docs/help.url, arguments='', runAsAdministrator=false}]
+       Property programGroupName: 
+       Property uninstallerMenuName: Tablet Uninstaller
+       Property addDefaultLauncherLinks: true
+       Property addUninstaller: true
+       Property allUsers: true
+       Property failForSymlinksNotCreated: false
+       Property rollbackSupported: true
+       Property unixMenuEntries: true
+       Property unixSymlinks: true
+       Variable changed: sys.programGroupName=Tablet[class java.lang.String]
+       Install file: /home/user/programs/tablet/.install4j/install4j_6mcgay-tablet.desktop; size: 234 bytes; exists: false
+       File options set to: [fileTime: Fri Nov 19 14:44:28 UTC 2021, mode: 755, overwriteMode: Always, shared: false, uninstallMode: Always, delayIfNecessary: false]
+[ERROR] com.install4j.runtime.installer.helper.launching.LaunchHelper: Cannot run program "xdg-desktop-menu" (in directory "/home/user/programs/tablet/.install4j"): error=2, No such file or directory
+[ERROR] com.install4j.runtime.beans.actions.desktop.CreateProgramGroupAction [ID 9]: xdg-desktop-menu returned null
+[INFO] com.install4j.runtime.beans.actions.desktop.CreateProgramGroupAction [ID 9]: Execute action successful after 14 ms
+[INFO] com.install4j.runtime.beans.actions.desktop.RegisterAddRemoveAction [ID 10]: Execute action
+       Property icon: null
+       Property iconSource: Installer icon
+       Property itemName: Tablet 1.21.02.08
+       Property persistentProperties: {}
+       Property rollbackSupported: true
+       Execute action successful after 1 ms
+[INFO] com.install4j.runtime.beans.actions.misc.AddVmOptionsAction [ID 524]: Execute action
+       Property launcherId: 20
+       Property macosVmOptionsType: Contained in the application bundle
+       Property vmOptions: [-Xmx4096m, -XX:+UseCompressedOops]
+       Property rollbackSupported: true
+       Execute action successful after 0 ms
+[INFO] com.install4j.runtime.beans.actions.desktop.CreateFileAssociationAction [ID 855]: Execute action
+       Property description: ACE Assembly File
+       Property extension: ace
+       Property launcherId: 20
+       Property macIconFile: null
+       Property macRole: Viewer
+       Property persistentProperties: {}
+       Property unixIconFile: null
+       Property unixMimeType: 
+       Property winAdditionalParameters: null
+       Property windowsIconFile: null
+       Property mac: true
+       Property restartFinder: false
+       Property rollbackSupported: true
+       Property selected: true
+       Property unix: false
+       Property windows: false
+       Nothing to do
+       Execute action successful after 1 ms
+[INFO] com.install4j.runtime.beans.actions.desktop.CreateFileAssociationAction [ID 857]: Execute action
+       Property description: AFG Assembly File
+       Property extension: afg
+       Property launcherId: 20
+       Property macIconFile: null
+       Property macRole: Viewer
+       Property persistentProperties: {}
+       Property unixIconFile: null
+       Property unixMimeType: 
+       Property winAdditionalParameters: null
+       Property windowsIconFile: null
+       Property mac: true
+       Property restartFinder: false
+       Property rollbackSupported: true
+       Property selected: true
+       Property unix: false
+       Property windows: false
+       Nothing to do
+       Execute action successful after 1 ms
+[INFO] com.install4j.runtime.beans.actions.desktop.CreateFileAssociationAction [ID 858]: Execute action
+       Property description: SAM Assembly File
+       Property extension: sam
+       Property launcherId: 20
+       Property macIconFile: null
+       Property macRole: Viewer
+       Property persistentProperties: {}
+       Property unixIconFile: null
+       Property unixMimeType: 
+       Property winAdditionalParameters: null
+       Property windowsIconFile: null
+       Property mac: true
+       Property restartFinder: false
+       Property rollbackSupported: true
+       Property selected: true
+       Property unix: false
+       Property windows: false
+       Nothing to do
+       Execute action successful after 1 ms
+[INFO] com.install4j.runtime.beans.actions.desktop.CreateFileAssociationAction [ID 859]: Execute action
+       Property description: BAM Assembly File
+       Property extension: bam
+       Property launcherId: 20
+       Property macIconFile: null
+       Property macRole: Viewer
+       Property persistentProperties: {}
+       Property unixIconFile: null
+       Property unixMimeType: 
+       Property winAdditionalParameters: null
+       Property windowsIconFile: null
+       Property mac: true
+       Property restartFinder: false
+       Property rollbackSupported: true
+       Property selected: true
+       Property unix: false
+       Property windows: false
+       Nothing to do
+       Execute action successful after 0 ms
+[INFO] com.install4j.runtime.beans.actions.desktop.CreateFileAssociationAction [ID 959]: Execute action
+       Property description: Tablet Project File
+       Property extension: tablet
+       Property launcherId: 20
+       Property macIconFile: null
+       Property macRole: Viewer
+       Property persistentProperties: {}
+       Property unixIconFile: null
+       Property unixMimeType: 
+       Property winAdditionalParameters: null
+       Property windowsIconFile: null
+       Property mac: true
+       Property restartFinder: false
+       Property rollbackSupported: true
+       Property selected: true
+       Property unix: false
+       Property windows: true
+       Nothing to do
+       Execute action successful after 1 ms
+[INFO] com.install4j.runtime.beans.screens.InstallationScreen [ID 7]: Rollback barrier reached
+       command: move 1 screens, executing actions, checking condition
+[INFO] com.install4j.runtime.beans.screens.FinishedScreen [ID 11]: Show screen
+       Variable changed: executeLauncherAction=true[class java.lang.Boolean]
+[INFO] com.install4j.runtime.beans.actions.finish.ExecuteLauncherAction [ID 188]: Execute action
+       Property arguments: null
+       Property launcherId: 20
+       Property rollbackSupported: false
+       Execute action successful after 504 ms
+[INFO] com.install4j.runtime.beans.screens.FinishedScreen [ID 11]: command: finish
+       cleaning up
+       Finished

@@ -1,0 +1,8 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=Tablet
+Exec="/home/user/programs/tablet/tablet" %U
+Icon=/home/user/programs/tablet/.install4j/tablet.png
+Categories=Application;
+StartupWMClass=install4j-tablet-gui-Tablet

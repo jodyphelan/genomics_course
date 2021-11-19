@@ -1,0 +1,7 @@
+# install4j response file for Tablet 1.21.02.08
+executeLauncherAction$Boolean=true
+sys.adminRights$Boolean=false
+sys.installationDir=/home/user/programs/tablet
+sys.languageId=en
+sys.programGroupDisabled$Boolean=false
+sys.symlinkDir=/home/user/bin
