@@ -1,4 +1,6 @@
 apt update
+apt upgrade -y
+apt autoremove
 apt install -y default-jre xclip
 useradd -m -s /bin/bash user
 echo user:pw | chpasswd
