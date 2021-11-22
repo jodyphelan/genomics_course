@@ -50,14 +50,14 @@
       <hr>
       <h4>Introduction</h4>
 	  <p>Improvements in DNA sequencing technology have led to new opportunities for studying organisms at
-		  the genomic and transcriptomic levels . Applications include studies of genomic variation within
-		  species and gene identification . In this module we will concentrate on data generated using the
+		  the genomic and transcriptomic levels. Applications include studies of genomic variation within
+		  species and gene identification. In this module we will concentrate on data generated using the
 		  Illumina Genome Analyzer II technology, although the techniques you will learn are applicable to
-		  other technologies (e . g . 454 GS FLX and ABI SOLiD ) . A single machine can produce around 20
-		  Gigabases of sequence data in a week . This is the equivalent to over 6 human genomes . The data
-		  from the Illumina machine comes as relatively short stretches of 35 - 250 base pairs ( bp ) of
-		  DNA - around 300 million of them . These individual sequences are called <strong>reads</strong> . The older
-		  capillary sequencing technology generates longer reads of ~ 500 bp, but the approach is much slower
+		  other technologies (e. g. 454 GS FLX and ABI SOLiD). A single machine can produce around 20
+		  Gigabases of sequence data in a week. This is the equivalent to over 6 human genomes. The data
+		  from the Illumina machine comes as relatively short stretches of 35 - 250 base pairs (bp) of
+		  DNA - around 300 million of them. These individual sequences are called <strong>reads</strong>. The older
+		  capillary sequencing technology generates longer reads of ~500 bp, but the approach is much slower
 		  and more expensive.
 	  </p>
 	  <p>One of the greatest challenges of sequencing a genome is determining how to arrange
@@ -68,11 +68,11 @@
 		   bacterial genomes can comprise of at least 50 pieces (called “contigs”), whilst for Eukaryotes more
 		   than 1000 pieces is common. Therefore new sequencing technologies are applied predominantly where a
 		   reference genome already exists. A reference genome is a well assembled genome from the same or a
-		   similar organism that is ungoing sequencing. Sequencing a genome with new technology when there is
-		   an existing reference is called re-sequencing.
+		   similar organism that is undergoing sequencing. Sequencing a genome with new technology when there is
+		   an existing reference is called resequencing.
 	   </p>
-	   <p>In this practical, we will focus on mapping reads to a reference genome, and visualising the resulting
-		   alignments using Tablet.
+	   <p>In this practical, we will focus on mapping reads to a reference genome and visualising the resulting
+		   alignments using <a href="https://ics.hutton.ac.uk/tablet/">Tablet</a>.
 	   </p>
 	   <h4>Sequencing/Mapping workflow</h4>
 	   <p>The diagram below describes the workflows for genomic resequencing and RNA sequencing. We will cover the
@@ -84,17 +84,17 @@
 		   Single Nucleotide Polymorphisms (SNPs), insertions and deletions (indels) and Copy Number Variants
 		   (CNVs) between two similar organisms.
 	   </p>
-	   <p>The first example we use here is a reference genome for Plasmodium falciparum (3D7 clone, size 23Mb,
+	   <p>The first example we use here is a reference genome for <i>Plasmodium falciparum</i> (3D7 clone, size 23Mb,
 		   81% AT content) (Gardener et al., 2002). This parasite is the causative agent of malaria. Malaria is
 		   widespread in tropical and subtropical regions, including parts of the Americas, Asia, and Africa.
 		   Each year, there are approximately 350–500 million cases of malaria, killing between one and three
 		   million people, the majority of whom are young children in sub-Saharan Africa. Recently we sequenced
 		   two laboratory strains, IT and DD2, using 76 bp paired end read technology. The second example is using
-		   the reference genome for Mycobacterium tuberculosis (H37Rv, size 4.4Mb, GC content 65.6%) (Cole et al,
+		   the reference genome for <i>Mycobacterium tuberculosis</i> (H37Rv, size 4.4Mb, GC content 65.6%) (Cole et al,
 		   1998). This bacterium causes tuberculosis disease.
 	   </p>
-	   <p>Rather than attempt to assemble these very short reads into a whole new genome, we will map these reads
-		   against the existing genome assembly of<i>P. falcipraum</i> 3D7 or<i>M. tuberculosis</i> H37Rv. Furthermore, we will
+	   <p>Rather than attempting to assemble these very short reads into a whole new genome, we will map them
+		   against the existing genome assembly of <i>P. falcipraum</i> (3D7) or <i>M. tuberculosis</i> (H37Rv). Furthermore, we will
 		   identify differences between the genomes of the three clones, find mutations and CNVs associated to drug
 		   resistance, whilst determining how the reads fit together.
 	   </p>
@@ -102,14 +102,14 @@
 		   <div class="row">
 			   <div class="col-sm">
 				   <p>Here is the general workflow of mapping:</p>
-				   <p>The paired end reads (F – forward; R - reverse) are mapped against the reference. Different tools
-					   can be used for that. The results can be transformed with samtools to an ordered and indexed bam
+				   <p>The paired end reads (F=forward; R=reverse) are mapped against the reference. Different tools
+					   can be used for that. The results can be transformed with <a href="https://github.com/samtools/samtools">samtools</a> to an ordered and indexed bam
 					   file. Those bam files can be read into programs like Artemis to visualize the alignments of the
 					   short sequences. From the bam file it is possible to call variants. The output format is BCF or
 					   VCF. VCF can be loaded easily into excel like tools.
 				   </p>
 				   <p>Quality control of the reads is always important, to correct for any GC content biases, possible
-					   contamination and read quality.
+					   contamination, and read quality.
 				   </p>
 			   </div>
 			   <div class="col-sm">
@@ -119,7 +119,7 @@
 	   </div>
 	   <hr>
        <div class="alert alert-primary" role="alert">
-        Before doing anything we need to first activate the <code>conda</code> environment for this practical by typing the following:
+        Before doing anything, we need to first activate the <code>conda</code> environment for this practical by typing the following:
         <kbd>conda activate mapping</kbd>. This environment contains most of the software we need for this practical. 
         This command needs to be run each time we open up a new terminal or switch from a different environment.
 
@@ -174,11 +174,11 @@ gaaccctaaaccctaaaccctaaaccctaaaccctaaaccctaaaccctaaaccctgaac</div></samp>
 		<h4>Quality Control</h4>
 
 		<p>Prior to the analysis of these sequences, it is highly advisable to perform quality control checks and
-			filtering in order to minimise artefacts in reads including base calling errors, poor quality reads or
+			filtering in order to minimise artefacts like base calling errors, poor quality reads or
 			primer contamination. The difference in passing filtered data to downstream programs can be night-and-day
-			for processes like de novo assembly or SNP calling.
+			for processes like <i>de novo</i> assembly or SNP calling.
 		</p>
-		<p>FastQC is a tool written in Java to perform quality control checks on raw sequence data. It computes
+		<p><a href="https://www.bioinformatics.babraham.ac.uk/projects/fastqc/">FastQC</a> is a tool written in Java to perform quality control checks on raw sequence data. It computes
 			several statistics and shows the results on summary graphs and tables. We will analyse several datasets
 			in order to check whether the samples look good or, on the contrary, they require further filtering.
 		</p>
@@ -189,15 +189,15 @@ gaaccctaaaccctaaaccctaaaccctaaaccctaaaccctaaaccctaaaccctgaac</div></samp>
 		<p>FastQC supports FASTQ files (all quality encoding variants), GZip compressed FastQ and alignment files
 			(SAM and BAM formats)
 		</p>
-		<p>Newly opened files will be immediately processed. Because of the size of FASTQ files it can take a couple
-			of minutes to open them
+		<p>Newly opened files will be immediately processed. Because of the size of FASTQ files it can sometimes take a couple
+			of minutes to open them.
 		</p>
 
 		<p>
 
 	    <div class="accordion" id="accordionExample">
 	      <div class="card">
-	        <div class = "card-header"><strong>FastqQC metrics</strong></div>
+	        <div class = "card-header"><strong>FastQC metrics</strong></div>
 	        <div class="card-body">
 			  <div class="row">
 				  <div class="col-sm">
@@ -242,7 +242,7 @@ gaaccctaaaccctaaaccctaaaccctaaaccctaaaccctaaaccctaaaccctgaac</div></samp>
 						  <div class="col-sm">
 							  <p>This view shows the quality values (y-axis) along the read at each nucleotide position (x-axis). The greater this
 								  value, the lower the probability that the corresponding base call is incorrect. At each position a Box-Whisker
-								  plot is drawn where the central read line is the median; the yellow box represents the inter-quartile range (25-75%);
+								  plot is drawn where the central red line is the median; the yellow box represents the inter-quartile range (25-75%);
 								  the upper and lower whiskers the 10% and 90% points; and the blue line correspond to the mean quality. This analysis
 								  computes the mean quality of each read and then displays for all observed values the number of reads having such quality.
 								  It is expected that a small subset will have universally poor quality. FastQC outputs a warning if the most frequently
@@ -287,7 +287,7 @@ gaaccctaaaccctaaaccctaaaccctaaaccctaaaccctaaaccctaaaccctgaac</div></samp>
 				  <div class="row">
 					  <div class="col-sm">
 						  <p>This module outputs the percentage of N base calls at each position. N is usually called when the sequencer is not confident enough to
-							  call a conventional base (A, T, C or G). Small proportion of Ns may appear especially towards the last positions.
+							  call a base (A, T, C or G). Small proportion of Ns may appear especially towards the last positions.
 						  </p>
 					  </div>
 					  <div class="col-sm">
@@ -398,7 +398,7 @@ gaaccctaaaccctaaaccctaaaccctaaaccctaaaccctaaaccctaaaccctgaac</div></samp>
               ends. Therefore, it is crucial to trim such bases before any further analysis. Trimmomatic
               (Lohse et al., 2012) is a fast command line tool that can be used to trim and crop Illumina data as
               well as to remove adapters (see Table below). We will be using the paired-end mode which will process
-              both forward and reverse reads simultaneously maintaining the correspondence of read pairs intact.
+              both forward and reverse reads simultaneously, keeping the correspondence of read pairs intact.
 
       </div>
 
@@ -410,13 +410,13 @@ gaaccctaaaccctaaaccctaaaccctaaaccctaaaccctaaaccctaaaccctgaac</div></samp>
   </tr>
   <tr>
     <td>ILLUMINACLIP</td>
-    <td>Cut adapter and other illumina specific sequences from the read</td>
+    <td>Cut adapter and other Illumina-specific sequences from the read</td>
   </tr>
 </thead>
 <tbody>
   <tr>
     <td>SLIDINGWINDOW</td>
-    <td>Performs a sliding window trimming approach. It starts scanning at the 5" end and clips the read once the average quality within the window falls below a threshold</td>
+    <td>Performs a sliding window trimming approach. It starts scanning at the 5' end and clips the read once the average quality within the window falls below a threshold</td>
   </tr>
   <tr>
     <td>MAXINFO</td>
@@ -465,31 +465,31 @@ trimmomatic PE sample1_1.fastq.gz sample1_2.fastq.gz -baseout sample1 LEADING:3 
 
 <h4>Alignment of short reads</h4>
 <div class="alert alert-primary" role="alert">
-    A major step in most sequence analysis pipelines involves the alignment of reads against the reference genome, a
+    A major step in most sequence analysis pipelines involves the alignment of reads against a reference genome, a
     requisite stage for downstream analyses. Traditional alignment software have become obsolete when dealing with
     the large amounts of short reads (millions) produced by NGS platforms and, during the last few years, software
     particularly designed to map short queries onto a long reference sequence have been produced.
 </div>
-<p>Current popular alignment tools are summarised in Li & Homer (2010). As shown in column 5 in the Table below, most
+<p>Currently popular alignment tools are summarised in Li & Homer (2010). As shown in column 5 in the Table below, most
     of them allow gaps in alignments. Effective gapped aligners avoid calling false SNPs predicted due to the presence
     of insertions and deletions (indels). Furthermore, software including paired-end information are capable of mapping
     repeat reads with uniquely mapped mates; they also correct alignment errors that are inconsistent with the
     constraints imposed by mate pairs in terms of distance and orientation. Base quality in reads has also been
-    exploited by programs like MAQ improving alignment accuracy.
+    exploited by programs like <a href="http://maq.sourceforge.net/">MAQ</a> improving alignment accuracy.
 </p>
-<p>All aforementioned programs output both aligned and unaligned reads in Sequence Alignment/Map (SAM) format
+<p>All aforementioned programs output both aligned and unaligned reads in <a href="https://samtools.github.io/hts-specs/SAMv1.pdf">Sequence Alignment/Map (SAM)</a> format
     (H. Li et al. 2009), a standardised format widely supported by downstream bioinformatic tools (e.g. variant
     callers, alignment viewers). The development and improvement of efficient short-read alignment algorithms has
     made the fast processing of data produced by current sequencing platforms feasible which, initially, entailed
-    a bottleneck in the analysis of such high-coverage sequence dataset.
+    a bottleneck in the analysis of such high-coverage sequence datasets.
 </p>
 <h4>Sequence alignment Exercise 1</h4>
 <div class="alert alert-primary" role="alert">
-    In this exercise we will be running the Burrows-Wheeler Aligner (BWA), an efficient program that aligns
+    In this exercise we will be running the <a href="http://bio-bwa.sourceforge.net/">Burrows-Wheeler Aligner (BWA)</a>, an efficient program that aligns
     relatively short nucleotide sequences (i.e. short reads) against a long reference sequence. It implements
     two algorithms, bwa-short and BWA-SW. The former works for query sequences shorter than ~200bp with low
     error rate (&lt;3%) (e.g. reads produced by Illumina technology). It performs gapped global alignment, supports
-    paired- end reads, and is one the fastest short read alignment algorithms currently available. BWA- SW is
+    paired-end reads, and is one the fastest short read alignment algorithms currently available. BWA-SW is
      designed for longer sequences (e.g. 454 reads) with more errors.
 </div>
 
@@ -520,7 +520,7 @@ Command: index         index sequences in the FASTA format
          bwtupdate     update .bwt to the new format
          bwt2sa        generate SA from BWT and Occ</samp>
      </div>
-     <p>In order to map our paired-end reads we will use ‘index’ and ‘mem’ commands. The ‘index’ command takes the reference genome (the database) in FASTA format as input and indexes it, which typically will take a few hours. This command only needs to be executed once for a particular reference genome</p>
+     <p>In order to map our paired-end reads, we will use ‘index’ and ‘mem’ commands. The ‘index’ command takes the reference genome (i.e. the database) in FASTA format as input and indexes it, which typically will take a few hours. This command only needs to be executed once for a particular reference genome.</p>
      <p>To see all options for the ‘index’ command type:</p>
      <div class="alert alert-info" role="alert">
          <samp>Usage:   bwa index [options] <in.fasta>
@@ -534,10 +534,10 @@ Warning: `-a bwtsw' does not work for short genomes, while `-a is' and
          `-a div' do not work not for long genomes.
          </samp>
      </div>
-    <p>Most options will be set automatically according to the data we are running it on so we do not have to worry about setting them.</p>
+    <p>Most options will be set automatically according to the data we are running it on. Thus, we do not have to worry about setting them.</p>
     <p>Type the following line:<p>
     <pre><code>bwa index ~/data/tb/tb.fasta</pre></code>
-    <p>Several aligning algorithms are implemented in BWA. We will be using the BWA-MEM, which is the latest and generally recommended for high-quality queries as it is faster and more accurate. To see which parameters can be tuned for the ‘mem’ command type: <kbd>bwa mem</kbd></p>
+    <p>Several alignment algorithms are implemented in BWA. We will be using the BWA-MEM, which is the latest and generally recommended for high-quality queries as it is faster and more accurate. To see which parameters can be tuned for the ‘mem’ command type: <kbd>bwa mem</kbd></p>
     <p>We will be using the trimmed files output (from applying trimmomatic) as input for BWA:</p>
     <pre><code>cd ~/data/tb/
 bwa mem -c 100 -R "@RG\tID:sample1\tSM:sample1\tPL:Illumina" -M -T 50 ~/data/tb/tb.fasta sample1_1P sample1_2P | samtools view -b - | samtools sort -o sample1.bam -
@@ -562,19 +562,19 @@ samtools index sample1.bam
 0 + 0 with mate mapped to a different chr (mapQ>=5)</samp>
     </div>
     <p>Where each line specifies:
-    <ol><li>Total number of reads;</li>
+    <ol><li>Total number of reads</li>
     <li>Duplicates</li>
-    <li>Number of mapped reads;</li>
+    <li>Number of mapped reads</li>
     <li>Paired reads in sequencing</li>
-    <li>Number of forward reads;</li>
+    <li>Number of forward reads</li>
     <li>Number of reverse reads</li>
-    <li>Number of properly mapped reads (same chromosome, opposite orientation, and within few deviations from the expected insert size);</li>
-    <li>Number of reads mapped along with their mates (7 is a subset of 8).</li>
-    <li>Singletons: number of reads mapped alone, i.e. mate not mapped (8+9=3).</li>
-    <li>Reads whose mates are mapped to a different chromosome.</li>
-    <li>Reads whose mates are mapped to a different chromosome with mapping quality greater than 5; note, (11) is a subset of (10).</li>
+    <li>Number of properly mapped reads (same chromosome, opposite orientation, and within few deviations from the expected insert size)</li>
+    <li>Number of reads mapped along with their mates (7 is a subset of 8)</li>
+    <li>Singletons: number of reads mapped alone, i.e. mate not mapped (8+9=3)</li>
+    <li>Reads whose mates are mapped to a different chromosome</li>
+    <li>Reads whose mates are mapped to a different chromosome with mapping quality greater than 5; note that (11) is a subset of (10)</li>
     </ol></p>
-    <p>Finally lets also remove some temporary files we no longer need. Trimming has produced some files which are 
+    <p>Finally, let's also remove some temporary files we no longer need. Trimming has produced some files which are 
         unzipped and take up a lot of space. Let's remove these using:
         <pre><code>rm sample1_1P sample1_1U sample1_2P sample1_2U</code></pre>
     </p>

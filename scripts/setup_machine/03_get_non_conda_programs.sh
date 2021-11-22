@@ -9,6 +9,7 @@ pip install ~/git/genomics_course/non_conda_programs/albacore/*whl
 
 # create symlinks to executables in ~/bin
 mkdir ~/bin
+echo "export PATH=\$PATH:~/bin" >> ~/.bashrc
 # aliview
 ln -s ~/git/genomics_course/non_conda_programs/aliview/aliview ~/bin/
 # tempest
