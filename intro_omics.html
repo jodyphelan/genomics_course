@@ -246,7 +246,8 @@ CGCCGCCGCCTTGGCGATCGCAGAAGCACCCGCCCGCGCTTACAACCCCCTGTTCATCTGGGGCGAGTCC</samp>
         </ol>
         We could do each step separately, however this would waste resources as only one command will be running at
         any time. Instead we can create our own conveyor belt which in Linux is called <b>piping</b>. We can do this by using
-        the pipe character (<kbd>|</kbd>) to chain our commands together. Here is some simplified pseudocode:
+        the pipe character (<kbd>|</kbd>) to chain our commands together. Here is some simplified pseudocode (<b>you 
+        don't have to run this on the terminal, it is just to show the concept of pipes!</b>):
     </p>
     <pre><code>mapping_command | sam->bam_command | sorting_command</code></pre>
     <p>
