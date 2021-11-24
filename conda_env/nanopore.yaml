@@ -420,8 +420,6 @@ dependencies:
   - pip:
     - cached-property==1.5.2
     - h5py==3.1.0
-    - ont-albacore==2.3.4
-    - ont-fast5-api==4.0.0
     - plotly==4.1.0
     - progressbar33==2.4
     - pycoqc==2.5.2
