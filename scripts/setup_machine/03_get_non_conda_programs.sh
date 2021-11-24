@@ -18,3 +18,5 @@ ln -s ~/git/genomics_course/non_conda_programs/tempest/bin/tempest ~/bin/
 ln -s ~/git/genomics_course/non_conda_programs/tablet/tablet ~/bin/
 # artemis
 ln -s ~/git/genomics_course/non_conda_programs/artemis/{art,act} ~/bin/
+# tracer
+ln -s ~/git/genomics_course/non_conda_programs/tracer/bin/tracer ~/bin/
