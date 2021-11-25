@@ -246,14 +246,16 @@ python -m HTSeq.scripts.count -f bam -r pos -s reverse -t gene ./Mapping_Mtb/Mtb
 python -m HTSeq.scripts.count -f bam -r pos -s reverse -t gene ./Mapping_Mtb/Mtb_L4.bam Mtb.gtf > ./Mapping_Mtb/Mtb_L4_htseq_count.txt
 </pre></code>
           <p>The parameters we have used in the HTSeq-count command are:</p>
-          <ul class="list-group">
-            <li class="list-group-item">-f: format of the input data</li>
-            <li class="list-group-item">-r: how is sorted the data</li>
-            <li class="list-group-item">-s: whether the data is from a strand-specific assay. The reverse option is
-              used for pair-end reads from HiSeq in order to mantain the strain-specificity (the reads have to map
-              to the gene in the corresponding strand to be counted)</li>
-            <li class="list-group-item">-t: feature type, in this case exon</li>
-          </ul>
+          <p>
+            <ul class="list-group">
+              <li class="list-group-item">-f: format of the input data</li>
+              <li class="list-group-item">-r: how is sorted the data</li>
+              <li class="list-group-item">-s: whether the data is from a strand-specific assay. The reverse option is
+                used for pair-end reads from HiSeq in order to mantain the strain-specificity (the reads have to map
+                to the gene in the corresponding strand to be counted)</li>
+              <li class="list-group-item">-t: feature type, in this case exon</li>
+            </ul>
+          </p>
           <p>If you have any doubt about the parameters of the program, you can visit https://htseq.readthedocs.io/en/release_0.11.1/count.html</p>
 
           <div class="alert alert-warning">What would -a parameter do?</div>
