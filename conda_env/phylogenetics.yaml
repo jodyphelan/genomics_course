@@ -54,6 +54,7 @@ dependencies:
   - setuptools=58.0.4=py39hf3d152e_2
   - sqlite=3.36.0=h9cd32fc_2
   - tk=8.6.11=h27826a3_1
+  - tracer=1.7.2=hdfd78af_0
   - tzdata=2021c=he74cb21_0
   - wheel=0.37.0=pyhd8ed1ab_1
   - xorg-fixesproto=5.0=h7f98852_1002
