@@ -89,15 +89,15 @@
             We will use <b>AliView</b> to manually inspect the FASTA file:
         </p>
         <ol>
-            <li>Activate the correct environment with <kbd>conda activate phylogenetics.</kbd></li>
+            <li>Activate the correct environment with <kbd>conda activate phylogenetics</kbd>.</li>
             <li>Open <b>AliView</b> by running the commmand <kbd>aliview</kbd>.</li>
-            <li>Import the sequence file: <kbd>File</kbd> > <kbd>Open File</kbd>, navigate to
+            <li>Import the sequence file: <b>File</b> > <b>Open File</b>, navigate to
                 <b><i>~/data/phylogenetics</i></b> and select the file <b>H1N1.flu.2009.fas</b>. </li>
         </ol>
         <div class="alert alert-primary" role="alert">
             <u>Important</u>. To infer the phylogenetic relationship of a set of sequences, these need to be ‘aligned’.
             That is, nucleotide positions need to be arranged in columns to ensure that we compare homologous
-            positions one to another. In evolutionary biology, homology means similarity due to descent from a
+            positions to one another. In evolutionary biology, homology means similarity due to descent from a
             common ancestor. Two genes are homologous if they descend from an ancestral gene. Likewise, two
             nucleotides in different sequences are homologous if they correspond to the same nucleotide position
             in the ancestral gene. Note that two objects can be ‘similar’ without being ‘identical’. The sequences
@@ -121,7 +121,7 @@
             in the format dYYYY-MM-DD.
         </p>
         <p>
-            In the matrix, we can spot ‘rare’ nucleotide substitutions present in one or more sequence (scroll
+            In the matrix, we can spot ‘rare’ nucleotide substitutions present in one or more sequences (scroll
             along the sequence alignment to spot some). These single nucleotide polymorphisms (SNPs) allow us to
             identify viruses that are genetically related (they share a common SNP) and infer epidemiological linkage
             between them. If viruses sampled from different individuals have the same SNPs, we can assume that they
@@ -185,7 +185,7 @@
             order.
         </p>
         <div class="alert alert-primary" role="alert">
-            <u>Note</u>. many of the values shown are low (the scale is 0 [no support] to 100 [full support]). Typically
+            <u>Note</u>. Many of the values shown are low (the scale is 0 [no support] to 100 [full support]). Typically
             values over 70% (in this case a bootstrap value of 70) are taken as showing strong support. Low values
             here may suggest that you need to change the substitution model or run the analysis with more bootstrap
             runs. For the purposes of time for this exercise, we will continue with the trees produced here.
@@ -203,21 +203,66 @@
             the number of mutations accumulated since divergence. The root corresponds to the common ancestor of all
             the taxa.
         </div>
-        <p>
-            Since the sequences represent viruses sampled from different individuals, a clade in the tree corresponds
-            to a transmission chain. The number of sequences in a clade reflects the number of infections sampled
-            from that transmission chain. The root of the tree corresponds to the origin of the epidemic.
-        </p>
-        <div class="alert alert-warning" role="alert">
-            <p>Q1. How many times was H1N1/2009 introduced in England during the outbreak?</p>
-
-            Q2. What is/are the most likely geographical origin of the English strain(s)?
-            (Take the sampling dates into account in your reasoning)
-        </div>
         <figure>
             <img src="img/phylo_1_2.jpg" class="img-fluid" alt="Responsive image">
             <figcaption class="figure-caption"><b>Figure 2.</b> Components of a phylogenetic tree</figcaption>
         </figure>
+        <p>
+            Since the sequences represent viruses sampled from different individuals, a clade in the tree corresponds
+            to a transmission chain. The number of sequences in a clade reflects the number of infections sampled
+            from that transmission chain. The root of the tree corresponds to the origin of the epidemic.
+            <div class="alert alert-warning" role="alert">
+                <p>After looking at your tree with <code>figtree</code>, can you answer these questions:</p>
+                <p>Q1. How many times was H1N1/2009 introduced in England during the outbreak?</p>
+
+                Q2. What is/are the most likely geographical origins of the English strain(s)?
+                (Take the sampling dates into account in your reasoning)
+            </div>
+            <div class="card-header" data-toggle="collapse" data-target="#bqc1">
+                Click to expand answer
+            </div>
+            <div id="bqc1" class="collapse" data-parent="#accordionExample">
+                <div class="card-body ">
+                    <div class="row">
+                        <div class="col-sm">
+                            <p>
+                                Q1. The viruses sampled in England form 3 distinct clades, suggesting 3 introduction
+                                events
+                                (coloured in red in the figure below). The first one involves 18 cases (top of the
+                                tree),
+                                the
+                                second 2 cases (A/England/247/2009 and A/England/251/2009) and the third one 3 cases
+                                (A/England/247/2009, A/England/312/2009 and A/England/415/2009).
+                            </p>
+                            <figure>
+                                <img src="img/phylo_1_Q1.png" class="img-fluid" alt="Responsive image">
+                            </figure>
+                            <p>
+                                Q2. Cluster 1 is closest to a Canadian clade made of 4 cases. The two clades share a
+                                recent
+                                common ancestor located at node 1. All Canadian isolates were sampled in
+                                April 2009, while the viruses in the English Cluster 1 were sampled in May or June the
+                                same year. We can
+                                therefore assume that the strain migrated from the Americas to Europe (as we know it
+                                did…).
+                                We can also infer precedence of the Canadian outbreak by the fact that the Canadian
+                                sequences are genetically more similar to the common ancestor (node 1) than the English
+                                ones, as indicated by shorter branch lengths.
+                                Cluster 2 is closest to a Canadian isolate (A/Toronto/3141/2009). Their common ancestor
+                                is
+                                located at node 2. The Toronto isolate predates the English ones, suggesting an
+                                introduction
+                                from Canada.
+                                Cluster 3 is closest to a US isolate (A/New York/3532/2009). Their common ancestor is
+                                located at node 3. Again, we can conclude from the time of sampling and branch lengths
+                                that
+                                Clade 3 was imported from the US.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </p>
         <h4>Dating the introduction(s) of H1N1/09 in England</h4>
         <p>
             We will now estimate the time frame of these migration events. This time frame can be inferred from
@@ -309,11 +354,47 @@
                 <li><b>R squared</b>: A measure of how close the data is to the regression line, i.e. what proportion
                     of the variation in genetic divergence is explained by a strict molecular clock hypothesis.</li>
             </ul>
+            <div class="alert alert-warning" role="alert">
+                Q3. Can we assume that the rate of evolution of the viruses in the phylogeny is constant over time
+                (i.e. that the molecular clock is strict)?
+            </div>
+            <div class="card-header" data-toggle="collapse" data-target="#bqc2">
+                Click to expand answer
+            </div>
+            <div id="bqc2" class="collapse" data-parent="#accordionExample">
+                <div class="card-body ">
+                    <div class="row">
+                        <div class="col-sm">
+                            <p>
+                                The root-to-tip linear regression plot shows positive correlation between time and
+                                divergence (correlation coefficient = 0.71; see figure below). This suggests that the
+                                phylogeny
+                                has
+                                sufficient temporal signal to conduct a molecular clock analysis on this dataset.
+                            </p>
+                            <p>
+                                However, there is a certain degree of scatter from the regression line, and only 51% of
+                                the
+                                variation
+                                in genetic divergence is explained by a strict molecular clock hypothesis (R squared =
+                                0.51).
+                                We will therefore assume significant variation from a strict molecular clock in this
+                                dataset, and opt for a relaxed molecular clock (i.e. the rate of evolution varies over
+                                time
+                                and across lineages). This is despite a relatively short sampling interval (about 3
+                                months)
+                                and moderate genetic diversity in the sampled population.
+                            </p>
+                            <figure>
+                                <img src="img/phylo_1_Q3.png" class="img-fluid" alt="Responsive image">
+                            </figure>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </p>
-        <div class="alert alert-warning" role="alert">
-            Q3. Can we assume that the rate of evolution of the viruses in the phylogeny is constant over time
-            (i.e. that the molecular clock is strict)?
-        </div>
+
+
         <h4>Dating migration events</h4>
         <p>
             Now that the properties of the molecular clock in our dataset have been established, we will estimate the
@@ -376,6 +457,36 @@
             <u>Tip</u>: If mental arithmetic is not your thing, you can use the 2009 calendar provided as Appendix to
             back-calculate the date of the nodes.
         </div>
+        <div class="card-header" data-toggle="collapse" data-target="#bqc3">
+            Click to expand answer
+        </div>
+        <div id="bqc3" class="collapse" data-parent="#accordionExample">
+            <div class="card-body ">
+                <div class="row">
+                    <div class="col-sm">
+                        <p>
+                            The most recent viral sequence (A/Lima/WRAIR1687P/2009) was sampled on 27/06/2009.
+                            The ancestral node of Cluster 1 (see figure in answer to Q1) has an age of 63 days (rounded
+                            down) prior to the most
+                            recent sample. The estimated date of the first introduction of H1N1/09 in England is thus
+                            25/04/2009.
+                        </p>
+                        <p>
+                            The ancestral node of Cluster 2 has an age of 57 days (rounded down) prior to the most
+                            recent sample. The estimated date of the second introduction of H1N1/09 in England is thus
+                            01/05/2009.
+                        </p>
+                        <p>
+                            The ancestral node of Cluster 3 has an age of 40 days (rounded down) prior to the most
+                            recent sample. The estimated date of the third introduction of H1N1/09 in England is thus
+                            18/05/2009.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p></p>
+
         <h4>Identifying the geographical origin(s) of the H1N1/09 strains imported in England</h4>
         <p>
             We will finally reconstruct the migration pathways of these H1N1/09 strains.
@@ -418,6 +529,42 @@
                 location? </p>
             Q6: Where were the English strains of H1N1/09 imported from? How confident are we? How does your
             answer compare to that of Q4?
+        </div>
+
+        <div class="card-header" data-toggle="collapse" data-target="#bqc4">
+            Click to expand answer
+        </div>
+        <div id="bqc4" class="collapse" data-parent="#accordionExample">
+            <div class="card-body ">
+                <div class="row">
+                    <div class="col-sm">
+                        <p>
+                            Q5. The most likely location state at the root of the tree are the US (posterior
+                            probability: 0.84)
+                        </p>
+                        <p>
+                            Q6. The location at the node from which Cluster 1 is branching off (node 1 in the
+                            figure shown with the answer to Q1) are the US (posterior probability: 0.55).
+                        </p>
+                        <p>
+                            The location at the node from which Cluster 2 is branching off (node 2 in the figure shown
+                            with the answer to Q1) is
+                            Canada (posterior probability: 0.48).
+                        </p>
+                        <p>
+                            The location state at the node from which Cluster 3 is branching off (node 3 in the figure
+                            shown with the answer to Q1) are the
+                            US (posterior probability: 0.87).
+                        </p>
+                        <p>
+                            The geographical origin of the founder viruses is consistent for Cluster 2 and 3. However,
+                            for Cluster 1, the tree topology suggests relatedness with a Canadian cluster while the
+                            phylogeographic reconstruction places the founder virus of that cluster in the US. The most
+                            likely explanation is that the English and Canadian viruses were both imported from the US.
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
         <hr>
         <p>
