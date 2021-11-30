@@ -236,6 +236,27 @@ quast -r ../tb.fasta -o quast contigs.fasta </pre></code>
               Compare the size of the reference with the size of the assembly. Are they
               different?
             </div>  
+            <div class="card-header" data-toggle="collapse" data-target="#bqc1">
+              Click to expand answer
+            </div>
+            <div id="bqc1" class="collapse" data-parent="#accordionExample">
+              <div class="card-body ">
+                <div class="row">
+                  <div class="col-sm">
+                    <p>
+                      Quast report includes information on statistics N50, Genome fraction and Maximum contig size that
+                      were mentioned before as well as additional metrics worth exploring. Average contig size can be 
+                      additionally calculated by dividing values from fields <code>Total length (>= 0 bp)</code> and 
+                      <code># contigs (>= 0 bp) </code> or directly from FASTA file with external tools for example <code>seqmagick.</code>
+                      It is advised to look at a variety of metrics and supporting analyses to determine quality of assembly. 
+
+                      The total size of reference genome (1000020 bp) and resulting genome assembly (1005736 bp) are comperable. 
+
+                    </p>
+                  </div>
+                </div>      
+              </div>
+            </div>
           </p> 
   
 
@@ -335,11 +356,70 @@ samtools index sample1_asm.bam</pre></code>
                 </div>
                 <p><b>Task</b></p>
                 <p>In ACT inspect the region between 76,000 and 89,000</p>
-                <div class="alert alert-warning">How does the coverage vary across the pseudo molecule?</div>
-                <div class="alert alert-warning">How does this compare to the coverage across the matching
-                  regions mapped against the reference?</div>
-                <div class="alert alert-warning">Is there any kind of structural variant involved?</div>
-                <h4>Exercise 4: Structural Variant Validation</h4>
+
+                <p>
+                  <div class="alert alert-warning">How does the coverage vary across the pseudo molecule?                    
+                  </div>
+                  <div class="card-header" data-toggle="collapse" data-target="#bqc2">
+                    Click to expand answer
+                  </div>
+                  <div id="bqc2" class="collapse" data-parent="#accordionExample">
+                    <div class="card-body ">
+                      <div class="row">
+                        <div class="col-sm">
+                          <p>
+                            Coverage across the pseudo molecule is sufficient across most regions. There are few visible fragmentations
+                            for which coverage is not existent that should be expected from the nature of the assembly.  
+                          </p>
+                        </div>
+                      </div>            
+                    </div>
+                  </div>
+                </p>
+
+                <p>
+                  <div class="alert alert-warning">How does this compare to the coverage across the matching
+                    regions mapped against the reference?
+                  </div>
+                  <div class="card-header" data-toggle="collapse" data-target="#bqc3">
+                    Click to expand answer
+                  </div>
+                  <div id="bqc3" class="collapse" data-parent="#accordionExample">
+                    <div class="card-body ">
+                      <div class="row">
+                        <div class="col-sm">
+                          <p>
+                            Overall coverage trends in comparison to original mapping assembly are similar.
+                            In the region of interest, we can notice pseudo molecule having uniform coverage whilst
+                            in mapping assembly the lack of supporting reads spanning between 795000-83000.
+                          </p>
+                        </div>
+                      </div>            
+                    </div>
+                  </div>
+                </p>
+
+                <p>
+                  <div class="alert alert-warning">Is there any kind of structural variant involved?
+                  </div>
+                  <div class="card-header" data-toggle="collapse" data-target="#bqc4">
+                    Click to expand answer
+                  </div>
+                  <div id="bqc4" class="collapse" data-parent="#accordionExample">
+                    <div class="card-body ">
+                      <div class="row">
+                        <div class="col-sm">
+                          <p>
+                            A few regions based on the coverage distribution might indicate the existence of structural
+                            variants that should be investigated further. 
+                          </p>
+                        </div>
+                      </div>          
+                    </div>
+                  </div>
+                </p>
+
+                <h4>Exercise 4: Structural Variant Validation</h4>                
                 <p>Structural variant (SV) software aims to detect signatures left by changes in chromosome
                   material and chromosome rearrangements. However, reads mapping to repetitive or highly
                   polymorphic regions may mimic the same signatures (false positives).</p>
@@ -386,8 +466,34 @@ samtools view -b sample1.bam Chromosome:79000-84000  | samtools fastq - > region
                   <div class="col-sm-3 text-center"></div>
                 </div>
                 <p><b>Task</b></p>
-                <div class="alert alert-warning">Is it a deletion? Or was it a false positive? Using the output from delly in the variant detection
-                  practical have a look at other SVs as well.</div>
+                <p>
+                  <div class="alert alert-warning">Is it a deletion? Or was it a false positive? Using the output from delly in the variant detection
+                    practical have a look at other SVs as well.
+                  </div>
+                  <div class="card-header" data-toggle="collapse" data-target="#bqc5">
+                    Click to expand answer
+                  </div>
+                  <div id="bqc5" class="collapse" data-parent="#accordionExample">
+                    <div class="card-body ">
+                      <div class="row">
+                        <div class="col-sm">
+                          <p>
+                            BLAST Graphic Summary of the resulting query contains a few rectangles (size correlates with alignment length) that 
+                            represent regions of the sequence that maps to the reference. Rectangles joined by a thin line show that the contig 
+                            sequence was split during alignment. It is indicating that the reads assembled into this single contig needed to be
+                            separated by a gap when aligning to the reference – therefore we can conclude a deletion compared to the reference. 
+                            In order to validate in-depth deletion additional information could be extracted from long-read sequencing to prove
+                            or disprove the hypothesis.
+                            </p>
+                            <p>
+                            Shorter rectangles are matches coming from other smaller assembled contigs that may potentially reveal alternative 
+                            areas of similarity or small repetitive sequences.   
+                          </p>
+                        </div>
+                      </div>          
+                    </div>
+                  </div>
+                </p>
                 <h4>Advanced Topics</h4>
                 <p><b>Annotation Transfer</b></p>
                 <p>Once the contigs ordered are against the reference, it is useful to determine the position
