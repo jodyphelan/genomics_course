@@ -1,349 +1,551 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="bootstrap.min.css" type="text/css">
-    <link rel="stylesheet" href="course.css" type="text/css">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
 
-    <style>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="bootstrap.min.css" type="text/css">
+  <link rel="stylesheet" href="course.css" type="text/css">
 
-
-    .jumbotron-head{
-        background:linear-gradient(rgba(0, 0, 250, 0.15), rgba(125, 250, 250, 0.55)),url(img/Head_GWAS.jpg);
-        background-repeat: no-repeat;
-        background-attachment: fixed;
-        background-position: top right;
-        color:black !important;
+  <style>
+    .jumbotron-head {
+      background: linear-gradient(rgba(0, 0, 250, 0.15), rgba(125, 250, 250, 0.55)), url(img/Head_GWAS.jpg);
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-position: top right;
+      color: black !important;
     }
-	</style>
+  </style>
 
 
-    <title>GWAS - Pathogen 'Omics</title>
-  </head>
-  <body>
-      <div class="jumbotron vertical-center jumbotron-fluid jumbotron-head">
-        <div class="container">
-          <h1 class="display-4">GWAS</h1>
-          <p class="lead">Genome Wide Association studies: from genomics to epidemiology</p>
-        </div> <!-- Container -->
-      </div>
-      <div class="container">
-      <h4>GWAS lecture</h4><br>
-      <object data="presentations/GWAS_lecture.pdf#page=1" type="application/pdf" width="100%" height=700px>
-        <p><b>Example fallback content</b>: This browser does not support PDFs. Please download the PDF to view it:
+  <title>GWAS - Pathogen 'Omics</title>
+</head>
+
+<body>
+  <div class="jumbotron vertical-center jumbotron-fluid jumbotron-head">
+    <div class="container">
+      <h1 class="display-4">GWAS</h1>
+      <p class="lead">Genome Wide Association studies: from genomics to epidemiology</p>
+    </div> <!-- Container -->
+  </div>
+  <div class="container">
+    <h4>GWAS lecture</h4><br>
+    <object data="presentations/GWAS_lecture.pdf#page=1" type="application/pdf" width="100%" height=700px>
+      <p><b>Example fallback content</b>: This browser does not support PDFs. Please download the PDF to view it:
         <a href="presentations/GWAS_lecture.pdf">Download PDF</a>.</p>
-      </object>
-      <hr>
-      <h4>Genome Wide Aassociation Studies (GWAS) Practical</h4><br>
-      <p>
-        <b>The objective of this tutorial is to get you familiar with the basic file format used for GWAS and common
+    </object>
+    <hr>
+    <h4>Genome Wide Aassociation Studies (GWAS) Practical</h4><br>
+    <p>
+      <b>The objective of this tutorial is to get you familiar with the basic file format used for GWAS and common
         tools used for analysis and take you through data Quality control (Crucial in any study!).</b>
-      </p>
-      <p><strong>Our dataset is based on a GWAS study for Meningococcal disease in a European population (https://www.nature.com/articles/ng.640).</strong></p>
-      <strong>Data:</strong>
-      <ul >
-        <li >Genome wide SNP data</li>
-        <li >Scripts to facilitate analysis</li>
-      </ul>
-      <b>Software you will need for analysis</b>
-      <ul >
-        <li >Computer workstation with Unix/Linux operating system </li>
-        <li >PLINK software for genome-wide association analysis: http://pngu.mgh.harvard.edu/_purcell/plink/download.shtml </li>
-        <li >Statistical software for data analysis and graphing such as: R: http://cran.r-project.org/</li>
-        <li >SMARTPCA.pl software for running principal components analysis (not used in this tutorial to save time):
-          http://genepath.med.harvard.edu/~reich/Software.htm </li>
-        <li>BCFtools</li>
-      </ul>
-      The software has been provided in a <code>conda</code> environment. Activate it with:
-      <pre>conda activate gwas</pre>
-      
-      <p><b>A.	 Create BED files for analysis:</b></p>
+    </p>
+    <p><strong>Our dataset is based on a GWAS study for Meningococcal disease in a European population
+        (https://www.nature.com/articles/ng.640).</strong></p>
+    <strong>Data:</strong>
+    <ul>
+      <li>Genome wide SNP data</li>
+      <li>Scripts to facilitate analysis</li>
+    </ul>
+    <b>Software you will need for analysis</b>
+    <ul>
+      <li>Computer workstation with Unix/Linux operating system </li>
+      <li>PLINK software for genome-wide association analysis: http://pngu.mgh.harvard.edu/_purcell/plink/download.shtml
+      </li>
+      <li>Statistical software for data analysis and graphing such as: R: http://cran.r-project.org/</li>
+      <li>SMARTPCA.pl software for running principal components analysis (not used in this tutorial to save time):
+        http://genepath.med.harvard.edu/~reich/Software.htm </li>
+      <li>BCFtools</li>
+    </ul>
+    The software has been provided in a <code>conda</code> environment. Activate it with:
+    <pre>conda activate gwas</pre>
+
+    <p><b>A. Create BED files for analysis:</b></p>
 
 
-      <p>1.	Convert your plink genotype files to binary format - smaller file easier for manipulation of data </p>
-      <p>
-        <font color="red">We have already provided you with plink formatted files we won't have to do this step.</font>
-      </p>
-      <div class="alert alert-primary" role="alert">
-        plink allows for the conversion from many different formats to plink format. For example if you had a VCF file you could type:<br><kbd>plink --vcf MD.vcf.gz --make-bed --out MD</kbd>
-      </div>
-
-      <p>Your data set:</p>
-      <p>Plink binary formatted dataset consisting of 3004 individuals, 409 cases, 2595 controls, 601089 variants</p>
-      <div class="alert alert-primary" role="alert">
-        MD.bed – binary-coded information on individuals and variants<br>
-        MD.bim – variant information: “Chromosome”, “Marker name”, “Genetic Distance” (or '0' as dummy variable), “Base-pair coordinate”, “Allele 1”, “Allele 2”. Each SNP must have two alleles.<br>
-        MD.fam – Individual Information. The first 6 columns are mandatory and in the order: “Family ID”, “Individual ID”, “Paternal ID”, “Maternal ID”, “Sex”, “Phenotype”.<br>
-      </div>
-
-      <div class="alert alert-warning" role="alert">
-        <p>Double-check the basic stats of your dataset (number of variants, individuals, controls, cases) by examining MD.bim and MD.fam with bash utilities like <kbd>awk</kbd> or <kbd>wc</kbd>. </p>
-        <p>What other information is available?</p>
-      </div>
-
-      <p><b>B.	Sample QC</b></p>
-      <p><u>1.	Identification of Individuals with discordant sex information</u><br>
-         Ideally, if X-chromosome data are available, we would calculate the mean homozygosity
-         rate across X chromosome markers for each individual in the study and identify discordance
-         with our reported Sex phenotype.<br>
-         <font color="red">As our data only contains autosomes we will skip this step.</font>
-       </p>
-       <p>
-         <u>2.	Identification of individuals with elevated missing data rates or outlying heterozygosity rate </u>
-       </p>
-       <p>
-         2.1.	At the shell prompt type:
-       </p>
-       <pre><code>plink --bfile MD --missing --out MD</code></pre>
-       <p>
-         This creates the files MD.imiss (sample-based missing report) and MD.lmiss (variant-based missing report).
-         The fourth column in the imiss file (N_MISS) gives the number of missing SNPs and the sixth column (F_MISS)
-         gives the proportion of missing SNPs per individual.
-       </p>
-       <p>2.2.	At the shell prompt type:</p>
-       <pre><code>plink --bfile MD --het --out MD</code></pre>
-       <p>This creates the file MD.het where the third column gives the observed number of homozygous genotypes [O(Hom)]
-         and the fifth column gives the number of non-missing genotypes [N(NM)], per individual. </p>
-        <p>
-          2.3.	Calculate the observed heterozygosity rate per individual using the formula (N(NM) - O(Hom))/N(NM) and
-            create a graph where the proportion
-             of missing SNPs per individual is plotted on the x-axis and the observed heterozygosity rate per individual is plotted on the y-axis. Type:
-        </p>
-        <pre><code>R CMD BATCH imiss-vs-het.Rscript</code></pre>
-        <p>
-          This creates the graph MD.imiss-vs-het.pdf (see below).
-        </p>
-        <img src="img/gwas_1.jpg" class="img-fluid" alt="Responsive image" width=50%>
-        <div class="alert alert-primary" role="alert">
-          Examine the plot to decide reasonable thresholds at which to exclude individuals based on elevated missing or extreme heterozygosity.
-          <ul><li>Here we will exclude all individuals with a genotype failure rate ≥ 0.0185 (vertical dashed line) and/or heterozygosity rate ± 3 standard deviations from the mean (horizontal dashed lines). </li></ul>
-        </div>
-        <p>2.4.	Add the family ID and individual ID of all the failing this QC using:</p>
-        <pre><code>R CMD BATCH imiss_het_fail.Rscript</code></pre>
-        <p>
-            This produces a file named fail_imisshet-qc.txt
-        </p>
-        <div class="alert alert-warning" role="alert">
-          How many samples failed this QC stage?
-        </div>
-        <p>
-          <u>3.	Identification of duplicated or related individuals </u>
-        </p>
-        <p>
-          3.1.	To identify duplicate & related individuals, create an Identity-by-State (IBS) matrix &ndash; calculated for each pair of individuals based on the shared proportion of alleles.
-        </p>
-        <p>
-          3.1.1.	To reduce the computational complexity, first prune the dataset so that no pair of SNPs (within a given window e.g 200kb) has linkage disequilibrium (r² > 0.2). Type
-        </p>
-        <pre><code>plink --bfile MD --indep-pairwise 200 5 0.5 --out MD</code></pre>
-        <p>
-          This creates files with the extension *.prune.in *.prune.out & *.log
-        </p>
-        <p>
-          3.1.2.	 Then, to extract pruned SNPs and generate pair-wise IBS, type:
-        </p>
-        <pre><code>plink --bfile MD --extract MD.prune.in --genome --out MD </code></pre>
-        <p>
-          This might take a few minutes and creates files with the extension *.genome & *.log
-        </p>
-        <div class="alert alert-primary" role="alert">
-          You can also create a BED file with the pruned SNPs: <kbd>plink --bfile MD --extract MD.prune.in --make-bed --out MD.pruned</kbd>
-
-        </div>
-        <div class="alert alert-warning" role="alert">
-          How many SNPs are in your pruned list? HINT: Have a look at your log file (using the <kbd>less</kbd> command) or type <kbd>wc -l MD.prune.in</kbd>
-        </div>
-        <p>
-          3.1.3.	To identify all pairs of individuals with an Idenity-by-descent (IBD) > 0.185. Type:
-        </p>
-        <pre><code>perl run-IBD-QC.pl MD</code></pre>
-        <div class="alert alert-primary" role="alert">
-          The code also looks at the individual call rates stored in MD.imiss and outputs the ID of the individual with the lower call rate to <b>fail_IBD-QC.txt</b> for each pair of related individuals.
-        </div>
-        <p>
-          To visualise the IBD rates, type:
-        </p>
-        <pre><code>R CMD BATCH  plot-IBD.Rscript</code></pre>
-        <p>
-          this generates MD.IBD-hist.pdf
-        </p>
-        <img src="img/gwas_2.jpg" class="img-fluid" alt="Responsive image" width="50%">
-        <div class="alert alert-primary" role="alert">
-          <u>Note</u>: The expectation is that IBD = 1 for duplicates or monozygotic twins, IBD = 0.5 for 1st-degree relatives, IBD = 0.25 for 2nd-degree relatives and IBD = 0.125 for 3rd-degree relatives. Due to variation around these values it is typical to exclude one individual from each pair with an IBD > 0.185, which is halfway between the expected IBD for 3rd- and 2nd-degree relatives.
-        </div>
-        <div class="alert alert-warning" role="alert">
-          How many individuals fail to meet the IBD threshold? Hint: use the <kbd>less</kbd> command to view the file or <kbd>wc -l filename</kbd> to count the number of lines
-        </div>
-        <p>
-          <u>4.	Identification of individuals of divergent ancestry </u>
-        </p>
-        <div class="alert alert-primary" role="alert">
-          In the interest of time, this step has been mostly done for you.
-          <p>4.1.	Principal components analysis (PCA) is performed with pruned bed file datasets generated from step 3.1.2 using the <kbd>./RUN_PCA.sh</kbd> command. This generates the following output files: MD.pruned.pca.par, MD.pruned.pca.log, MD.pruned.pca.evec, MD.pruned.pca, MD.pruned.eval. The evec extension file is what you will need to view your PCs</p>
-        </div>
-        <p>
-          4.2.	Create a scatter diagram of the first two principal components, including all individuals in the file MD.pruned.pca.evec (the first and second PCs are columns 2 and 3 respectively). Type:
-        </p>
-        <pre><code>R CMD BATCH plot-pca-results.Rscript</code></pre>
-        <p>
-          This outputs <b>pca_plot.pdf</b>
-        </p>
-        <img src="img/gwas_3.jpg" class="img-fluid" alt="Responsive image" width="50%">
-        <div class="alert alert-primary" role="alert">
-          Data in column 4 is used to colour the points according to phenotype (i.e. case vs control). Here, we chose to exclude all individuals with a 2nd principal component score &gt;0.07.
-        </div>
-        <p>Next we can run
-        <pre><code>R CMD BATCH write_pca_fail.R</code></pre>
-            to write the FID and IID of the filtered individuals to a file called fail_PCA.txt. </p>
-
-        <div class="alert alert-warning" role="alert">
-          How many individuals failed the PCA threshold?
-        </div>
-        <p>
-          4.3.	Remove all individuals failing QC
-        </p>
-        <p>
-          4.3.1. To concatenate all the files listing individuals failing the previous QC steps into single file, at the unix prompt type:
-      </p>
-        <pre><code>cat fail*txt | sort -k1 | uniq > fail_qc_inds.txt</code></pre>
-        <p>
-          The file <b>fail_qc_inds.txt</b> should now contain a list of unique individuals failing the previous QC steps.
-        </p>
-        <p>
-          4.3.2.	To remove these from the dataset type:
-        </p>
-        <pre><code>plink --bfile MD --remove fail_qc_inds.txt --make-bed --out clean.MD</code></pre>
-        <div class="alert alert-warning" role="alert">
-          <p>
-            How many individuals in total will be excluded from further analysis?
-          </p>
-          <p>
-            How many individuals in total do you have for further analysis? HINT: check your log file
-          </p>
-        </div>
-        <p>
-          <b>C. Marker QC</b>
-        </p>
-        <p>
-          <u>5.	Identify all markers with an excessive missing data rate </u>
-        </p>
-        <p>
-          5.1.	To calculate the missing genotype rate for each marker type:
-        </p>
-        <pre><code>plink --bfile clean.MD --missing --out clean.MD</code></pre>
-        <p>
-          The results of this analysis can be found in <b>clean.MD.lmiss</b>.
-        </p>
-        <p>
-          5.2.	Plot a histogram of the missing genotype rate to identify a threshold for extreme genotype failure rate. This can be done using the data in column five of the clean.MD.lmiss file. Type:
-        </p>
-        <pre><code>R CMD BATCH lmiss-hist.Rscript</code></pre>
-        <p>
-          This generates <b>clean.MD.lmiss.pdf</b>
-        </p>
-        <img src="img/gwas_4.jpg" class="img-fluid" alt="Responsive image" width="50%">
-        <p>
-          We chose to a call-rate threshold of 5% (these SNPs will be removed later in the protocol).
-        </p>
-        <p>
-          <b>6.	Test markers for different genotype call rates between cases and contols </b>
-        </p>
-        <p>
-          <u>6.1.	To test all markers for differences in call rate between cases and controls, at the Unix prompt type: </u>
-        </p>
-        <pre><code>plink --bfile clean.MD --test-missing --allow-no-sex --out clean.MD</code></pre>
-        <p>
-          The output of this test can be found in clean.MD.missing.
-        </p>
-        <p>
-          To create a file called ‘fail-diffmiss-qc.txt’, which contains all SNPs with a significantly different (P&lt;0.00001) missing rate between cases and controls, type
-        </p>
-        <pre><code>perl run-diffmiss-qc.pl clean.MD</code></pre>
-        <div class="alert alert-warning" role="alert">
-          How many variants have failed QC?
-        </div>
-        <p>
-          <b>7.	Remove all markers failing QC </b>
-        </p>
-        <p>
-          <u>7.1.	To remove poor SNPs from further analysis and create a new clean (QC’D) MD data file, at the Unix prompt type:</u>
-        </p>
-        <pre><code>plink --bfile clean.MD --exclude fail-diffmiss-qc.txt --maf 0.01 --geno 0.05 --hwe 0.00001 --make-bed --out clean.final.MD</code></pre>
-        <p>
-           In addition to markers failing previous QC steps, those with a MAF &lt; 0.01, missing rate &gt; 0.05 and a HWE P-value &lt; 0.00001 (in controls) are also removed.
-        </p>
-        <div class="alert alert-warning" role="alert">
-          How many variants and individuals pass filters and QC for your GWAS?
-        </div>
-        <p>
-          <b>8.	Perform a GWAS on your QC’d dataset</b>
-        </p>
-        <p>
-          <u>8.1.	To run a basic case/control association test, at the unix prompt type:</u>
-        </p>
-        <pre><code>plink --bfile clean.final.MD --assoc --ci 0.95 --adjust --allow-no-sex --out final.MD.assoc</code></pre>
-        <p>
-          Your association output file will contain 12 columns:
-        </p>
-        <div class="alert alert-info" role="alert">
-          <samp>CHR     Chromosome
-SNP     SNP ID
-BP      Physical position (base-pair)
-A1      Minor allele name (based on whole sample)
-F_A     Frequency of this allele in cases
-F_U     Frequency of this allele in controls
-A2      Major allele name
-CHISQ   Basic allelic test chi-square (1df)
-P       Asymptotic p-value for this test
-OR      Estimated odds ratio (for A1, i.e. A2 is reference)
-L95     Lower bound of 95% confidence interval for odds ratio
-U95     Upper bound of 95% confidence interval for odds ratio
-</samp>
-        </div>
-        <p>
-          <u>8.2.	To visualise your data:</u>
-        </p>
-        <p>
-          8.2.1. Generate a Quantile-Quantile (QQ) plot of your p-values to look at the distribution of P-values and assess whether genomic inflation is present (lambda&gt;1) (this can also be found in your assoc. log file).
-        </p>
-        <p>
-          8.2.2.	Generate a manhattan plot to visualise where your association signals lie across the chromosomes. Type:
-        </p>
-        <pre><code>R CMD BATCH GWAS_plots.R</code></pre>
-        <p>
-          This generates both plots: <b>final.MD.assoc_qq.png</b> and <b>final.MD.assoc_mhplot.png</b>
-        </p>
-        <img src="img/gwas_5.jpg" class="img-fluid" alt="Responsive image" width="50%">
-        <div class="alert alert-warning" role="alert">
-          What do the plots tell you?
-        </div>
-        <p>
-          8.2.2.1.	Let’s zoom into a region of interest: the tower of SNPs on CHR1 (coloured in yellow). This the Complement Factor H (CFH) region known to be associated with Meningococcal disease.
-The previous Rscript in 8.2.2 above also generated the <b>chr1_CFH_region.txt</b> file.
-        </p>
-        <ul>
-          <li>Open the locuszoom webpage: <a href="http://locuszoom.org/genform.php?type=yourdata" target="_blank"> http://locuszoom.org/genform.php?type=yourdata </a></li>
-          <li>Upload the text file and select PLINK data format.</li>
-          <li>Enter the most associated snp (“rs1065489”) with a flanking size of 500KB</li>
-          <li>In the Genome Build/LD Population field select the appropriate hg19 european ref panel.</li>
-          <li>Then press "Plot Data" to generate your plot.</li>
-        </ul>
-
-        <hr>
-
-
+    <p>1. Convert your plink genotype files to binary format - smaller file easier for manipulation of data </p>
+    <p>
+      <font color="red">We have already provided you with plink formatted files we won't have to do this step.</font>
+    </p>
+    <div class="alert alert-primary" role="alert">
+      <code>plink</code> allows for the conversion from many different formats to its own format. For example if you had
+      a VCF file you
+      could type:<br><kbd>plink --vcf MD.vcf.gz --make-bed --out MD</kbd>
     </div>
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="jquery-3.3.1.slim.min.js" crossorigin="anonymous"></script>
-    <script src="popper.min.js"  crossorigin="anonymous"></script>
-    <script src="bootstrap.min.js"  crossorigin="anonymous"></script>
-    <script src="d3.v3.min.js"></script>
-    <script src="stack.v1.min.js"></script>
-  </body>
+    <p>Your data set:</p>
+    <p>A <code>plink</code>-binary-formatted dataset consisting of 3004 individuals, 409 cases, 2595 controls, 601089
+      variants. The three files starting with <code>MD.</code> hold all the information <code>plink</code> needs:</p>
+    <div class="alert alert-primary" role="alert">
+      <code>MD.bed</code> – binary-encoded information on individuals and variants<br>
+      <code>MD.bim</code> – variant information: “Chromosome”, “Marker name”, “Genetic Distance” (or '0' as dummy
+      variable),
+      “Base-pair coordinate”, “Allele 1”, “Allele 2”. Each SNP must have only two alleles.<br>
+      <code>MD.fam</code> – information on the individuals: The first 6 columns are mandatory and in the order: “Family
+      ID”, “Individual ID”,
+      “Paternal ID”, “Maternal ID”, “Sex”, “Phenotype”.<br>
+    </div>
+
+    <div class="alert alert-warning" role="alert">
+      <p>Double-check the basic stats of your dataset (number of variants, individuals, controls, cases) by examining
+        MD.bim and MD.fam with bash utilities like <kbd>awk</kbd> or <kbd>wc</kbd>. </p>
+    </div>
+    <div class="card-header" data-toggle="collapse" data-target="#bqc1">
+      Click to expand hint
+    </div>
+    <div id="bqc1" class="collapse" data-parent="#accordionExample">
+      <div class="card-body ">
+        <div class="row">
+          <div class="col-sm">
+            <p>
+              <code>MD.fam</code> holds one line per individual and <code>MD.bim</code> has one line per variant. We can
+              therefore use the word-counting utility <kbd>wc</kbd> to get those numbers with
+              <pre>wc -l MD.{bim,fam}</pre>
+              Alternatively, you can count the number of lines with <code>awk</code> like so
+              <pre>
+awk 'END{print NR}' MD.bim
+awk 'END{print NR}' MD.fam</pre>
+              In order to get the number of controls and cases ('1' and '2' in the 6th column in the <code>.fam</code>
+              file,
+              respectively), we can again use <code>awk</code>, which is very versatile:
+              <pre>awk 'BEGIN{contr=0;cases=0;FS=" "}
+  {if($6==1){contr++} if($6==2){cases++}}
+  END{print "control", contr; print "cases", cases}' MD.fam</pre>
+              However, <code>awk</code>'s syntax can be quite intimidating to beginners. Instead, we can get the
+              numbers of
+              cases and controls by chaining together a few other programs like so:
+              <pre>cut -f 6 -d ' ' MD.fam | sort | uniq -c</pre>
+              This gets the 6th column of the <code>MD.fam</code> file and
+              counts the
+              occurrences of the unique values.
+              <div class="alert alert-primary" role="alert">
+                <code>uniq</code> expects sorted input. Try the command again without <code>sort</code> and see how the
+                output changes.
+              </div>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <p><b>B. Sample QC</b></p>
+    <p><u>1. Identification of Individuals with discordant sex information</u><br>
+      Ideally, if X-chromosome data are available, we would calculate the mean homozygosity
+      rate across X chromosome markers for each individual in the study and identify discordance
+      with our reported sex phenotype.<br>
+      <font color="red">As our data only contains autosomes we will skip this step.</font>
+    </p>
+    <p>
+      <u>2. Identification of individuals with elevated missing data rates or outlying heterozygosity rate </u>
+    </p>
+    <p>
+      2.1. At the shell prompt type:
+    </p>
+    <pre><code>plink --bfile MD --missing --out MD</code></pre>
+    <p>
+      This creates the files <code>MD.imiss</code> (sample-based missing report) and <code>MD.lmiss</code>
+      (variant-based missing report).
+      The fourth column in the <code>.imiss</code> file (N_MISS) gives the number of missing SNPs and the sixth column
+      (F_MISS)
+      gives the proportion of missing SNPs per individual.
+    </p>
+    <p>2.2. At the shell prompt type:</p>
+    <pre><code>plink --bfile MD --het --out MD</code></pre>
+    <p>This creates the file <code>MD.het</code> where the third column gives the observed number of homozygous
+      genotypes [O(Hom)]
+      and the fifth column gives the number of non-missing genotypes [N(NM)], per individual.</p>
+    <p>
+      2.3. Calculate the observed heterozygosity rate per individual using the formula (N(NM) - O(Hom))/N(NM) and
+      create a graph where the proportion
+      of missing SNPs per individual is plotted on the x-axis and the observed heterozygosity rate per individual is
+      plotted on the y-axis. We have provided an <code>R</code> script for this task. Run it by typing:
+    </p>
+    <pre><code>R CMD BATCH imiss-vs-het.Rscript</code></pre>
+    <p>
+      This creates the graph <code>MD.imiss-vs-het.pdf</code> (see below).
+      <div class="alert alert-primary">You can open the file by navigating your file browser in the correct directory
+        and double clicking on it or by typing <kbd>xdg-open MD.imiss-vs-het.pdf</kbd>. This command will use the
+        default program to open any file. If you would like to open the current directory in the file browser, you can
+        type <kbd>xdg-open .</kbd>.</div>
+    </p>
+    <img src="img/gwas_1.jpg" class="img-fluid" alt="Responsive image" width=50%>
+    <div class="alert alert-primary" role="alert">
+      Examine the plot to decide reasonable thresholds at which to exclude individuals based on elevated missingness or
+      extreme heterozygosity. Here we will exclude all individuals with a
+      <ul>
+        <li>genotype failure rate ≥ 0.0185 (vertical dashed line) and/or</li>
+        <li>a heterozygosity rate ± 3 standard deviations from the mean (horizontal dashed lines).</li>
+      </ul>
+    </div>
+    <p>2.4. Extract the family ID and individual ID of all samples failing this QC using another <code>R</code> script:
+    </p>
+    <pre><code>R CMD BATCH imiss_het_fail.Rscript</code></pre>
+    <p>
+      This produces a file named <code>fail_imiss_het_qc.txt</code>.
+    </p>
+    <div class="alert alert-warning" role="alert">
+      How many samples failed this QC stage?
+    </div>
+    <div class="card-header" data-toggle="collapse" data-target="#bqc2">
+      Click to expand answer
+    </div>
+    <div id="bqc2" class="collapse" data-parent="#accordionExample">
+      <div class="card-body ">
+        <div class="row">
+          <div class="col-sm">
+            <kbd>wc -l fail_imiss_het_qc.txt</kbd> tells us that the file has 99 lines. Therefore, 99 samples
+            failed this test.
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <p>
+      <u>3. Identification of duplicated or related individuals </u>
+    </p>
+    <p>
+      3.1. To identify duplicates & related individuals, create an identity-by-state (IBS) matrix &ndash; calculated for
+      each pair of individuals based on the shared proportion of alleles.
+    </p>
+    <p>
+      3.1.1. To reduce the computational complexity, first prune the dataset so that no pair of SNPs (within a given
+      window e.g 200kb) has linkage disequilibrium (r² > 0.2). Type
+    </p>
+    <pre><code>plink --bfile MD --indep-pairwise 200 5 0.5 --out MD</code></pre>
+    <p>
+      This creates files with the extensions <code>.prune.in</code>, <code>.prune.out</code>, and <code>.log</code>.
+    </p>
+    <p>
+      3.1.2. Then, to extract the pruned SNPs and generate the pair-wise IBS matrix, type:
+    </p>
+    <pre><code>plink --bfile MD --extract MD.prune.in --genome --out MD </code></pre>
+    <p>
+      This might take a few minutes and then creates files with the extensions <code>.genome</code> & <code>.log</code>.
+    </p>
+    <div class="alert alert-primary" role="alert">
+      You can also create a BED file with the pruned SNPs: <kbd>plink --bfile MD --extract MD.prune.in --make-bed --out
+        MD.pruned</kbd>
+
+    </div>
+    <div class="alert alert-warning" role="alert">
+      How many SNPs are in your pruned list?
+    </div>
+    <div class="card-header" data-toggle="collapse" data-target="#bqc3">
+      Click to expand answer
+    </div>
+    <div id="bqc3" class="collapse" data-parent="#accordionExample">
+      <div class="card-body ">
+        <div class="row">
+          <div class="col-sm">
+            You can have a look at your log file (using the <kbd>less</kbd> command) or
+            type <kbd>wc -l MD.prune.in</kbd>, which should tell you that there are 260,787 SNPs in the pruned list.
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <p>
+      3.1.3. We have provided a <code>Perl</code> script in order to identify all pairs of individuals with an
+      Idenity-by-descent (IBD) > 0.185. Invoke it with
+    </p>
+    <pre><code>perl run-IBD-QC.pl MD</code></pre>
+    <div class="alert alert-primary" role="alert">
+      The code also looks at the individual call rates stored in MD.imiss and outputs the ID of the individual with the
+      lower call rate to <b>fail_IBD-QC.txt</b> for each pair of related individuals.
+    </div>
+    <p>
+      To visualise the IBD rates, type:
+    </p>
+    <pre><code>R CMD BATCH  plot-IBD.Rscript</code></pre>
+    <p>
+      this generates <code>MD.IBD-hist.pdf</code>:
+    </p>
+    <img src="img/gwas_2.jpg" class="img-fluid" alt="Responsive image" width="50%">
+    <div class="alert alert-primary" role="alert">
+      <u>Note</u>: The expectation is that IBD = 1 for duplicates or monozygotic twins, IBD = 0.5 for 1st-degree
+      relatives, IBD = 0.25 for 2nd-degree relatives and IBD = 0.125 for 3rd-degree relatives. Due to variation around
+      these values it is typical to exclude one individual from each pair with an IBD > 0.185, which is halfway between
+      the expected IBD for 3rd- and 2nd-degree relatives.
+    </div>
+    <div class="alert alert-warning" role="alert">
+      How many individuals fail to meet the IBD threshold? Hint: use the <kbd>less</kbd> command to view the file or
+      <kbd>wc -l filename</kbd> to count the number of lines
+    </div>
+    <div class="card-header" data-toggle="collapse" data-target="#bqc4">
+      Click to expand answer
+    </div>
+    <div id="bqc4" class="collapse" data-parent="#accordionExample">
+      <div class="card-body ">
+        <div class="row">
+          <div class="col-sm">
+            8 samples failed the threshold.
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <p>
+      <u>4. Identification of individuals of divergent ancestry </u>
+    </p>
+    <div class="alert alert-primary" role="alert">
+      In the interest of time, this step has been mostly done for you.
+      <p>4.1. Principal components analysis (PCA) was performed with pruned bed file datasets generated from step 3.1.2
+        using the <kbd>./RUN_PCA.sh</kbd> command. This generated the following output files (stored in
+        <code>PCA_files</code>): <code>MD.pruned.pca.par</code>,
+        <code>MD.pruned.pca.log</code>, <code>MD.pruned.pca.evec</code>, <code>MD.pruned.pca</code>,
+        <code>MD.pruned.eval</code>. The file with the <code>.evec</code> extension file is what you will
+        need to view your PCs.</p>
+    </div>
+    <p>
+      4.2. Create a scatter diagram of the first two principal components, including all individuals in
+      <code>PCA_files/MD.pruned.pca.evec</code> (the first and second PCs are columns 2 and 3 respectively), using yet
+      another <code>R</code> script. Type:
+    </p>
+    <pre><code>R CMD BATCH plot-pca-results.Rscript</code></pre>
+    <p>
+      This creates <code>pca_plot.pdf</code>:
+    </p>
+    <img src="img/gwas_3.jpg" class="img-fluid" alt="Responsive image" width="50%">
+    <div class="alert alert-primary" role="alert">
+      Data in column 4 is used to colour the points according to phenotype (i.e. case vs control). Here, we chose to
+      exclude all individuals with a 2nd principal component score &gt;0.07.
+    </div>
+    <p>Next we can run
+      <pre><code>R CMD BATCH write_pca_fail.R</code></pre>
+      to write the FID and IID of the filtered individuals to a file called <code>fail_pca.txt</code>. </p>
+    <div class="alert alert-warning" role="alert">
+      How many individuals failed the PCA threshold?
+    </div>
+    <div class="card-header" data-toggle="collapse" data-target="#bqc5">
+      Click to expand answer
+    </div>
+    <div id="bqc5" class="collapse" data-parent="#accordionExample">
+      <div class="card-body ">
+        <div class="row">
+          <div class="col-sm">
+            <kbd>wc -l fail_pca.txt</kbd> tells us that 14 individuals were excluded in this step.
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <p>
+      4.3. Remove all individuals failing QC
+    </p>
+    <p>
+      4.3.1. We can use the <kbd>cat</kbd> command to concatenate all the files listing individuals failing the previous
+      QC steps into single file:
+    </p>
+    <pre><code>cat fail*txt | sort -k1 | uniq > fail_qc_inds.txt</code></pre>
+    <p>
+      The file <code>fail_qc_inds.txt</code> should now contain a list of unique individuals failing the previous QC
+      steps.
+    </p>
+    <p>
+      4.3.2. To remove these from the dataset type:
+    </p>
+    <pre><code>plink --bfile MD --remove fail_qc_inds.txt --make-bed --out clean.MD</code></pre>
+    <div class="alert alert-warning" role="alert">
+      <p>
+        How many individuals in total will be excluded from further analysis?
+      </p>
+      <p>
+        How many individuals in total do you have for further analysis?
+      </p>
+    </div>
+    <div class="card-header" data-toggle="collapse" data-target="#bqc6">
+      Click to expand answer
+    </div>
+    <div id="bqc6" class="collapse" data-parent="#accordionExample">
+      <div class="card-body ">
+        <div class="row">
+          <div class="col-sm">
+            We could again use <kbd>wc</kbd> in order to count the number of lines in <code>clean.MD.fam</code>.
+            Alternatively, you can use <kbd>less clean.MD.log</kbd> to have a look at the log-file of the previous step
+            and extract the information from there. This should tell us that we have 2888 samples left which means that
+            116 were removed.
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <p>
+      <b>C. Marker QC</b>
+    </p>
+    <p>
+      <u>5. Identify all markers with an excessive missing data rate </u>
+    </p>
+    <p>
+      5.1. To calculate the missing genotype rate for each marker type:
+    </p>
+    <pre><code>plink --bfile clean.MD --missing --out clean.MD</code></pre>
+    <p>
+      The results of this analysis can be found in <code>clean.MD.lmiss</code>.
+    </p>
+    <p>
+      5.2. Plot a histogram of the missing genotype rate to identify a threshold for extreme genotype failure rate. This
+      can be done using the data in column five of the clean.MD.lmiss file. Use an <code>R</code> script provided for
+      this task by typing:
+    </p>
+    <pre><code>R CMD BATCH lmiss-hist.Rscript</code></pre>
+    <p>
+      This generates <code>clean.MD.lmiss.pdf</code>
+    </p>
+    <img src="img/gwas_4.jpg" class="img-fluid" alt="Responsive image" width="50%">
+    <p>
+      We chose to a call-rate threshold of 5% (these SNPs will be removed later in the protocol).
+    </p>
+    <p>
+      <b>6. Test markers for different genotype call rates between cases and contols </b>
+    </p>
+    <p>
+      <u>6.1. To test all markers for differences in call rate between cases and controls, at the Unix prompt type: </u>
+    </p>
+    <pre><code>plink --bfile clean.MD --test-missing --allow-no-sex --out clean.MD</code></pre>
+    <p>
+      The output of this test can be found in <code>clean.MD.missing</code>.
+    </p>
+    <p>
+      To create a file called <code>fail-diffmiss-qc.txt</code>, which contains all SNPs with a significantly different
+      (P&lt;0.00001) missing rate between cases and controls, type
+    </p>
+    <pre><code>perl run-diffmiss-qc.pl clean.MD</code></pre>
+    <div class="alert alert-warning" role="alert">
+      How many variants have failed QC?
+    </div>
+    <div class="card-header" data-toggle="collapse" data-target="#bqc7">
+      Click to expand answer
+    </div>
+    <div id="bqc7" class="collapse" data-parent="#accordionExample">
+      <div class="card-body ">
+        <div class="row">
+          <div class="col-sm">
+            <kbd>wc -l fail-diffmiss-qc.txt</kbd> shows us that 400 variants were selected to be removed.
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <p>
+      <b>7. Remove all markers failing QC </b>
+    </p>
+    <p>
+      <u>7.1. To remove poor SNPs from further analysis and create a new clean (QC'D) MD data file, at the Unix prompt
+        type:</u>
+    </p>
+    <pre><code>plink --bfile clean.MD --exclude fail-diffmiss-qc.txt --maf 0.01 --geno 0.05 --hwe 0.00001 --make-bed --out clean.final.MD</code></pre>
+    <p>
+      In addition to markers failing previous QC steps, those with a MAF &lt; 0.01, missing rate &gt; 0.05 and a HWE
+      P-value &lt; 0.00001 (in controls) are also removed.
+    </p>
+    <div class="alert alert-warning" role="alert">
+      How many variants and individuals pass filters and QC for your GWAS?
+    </div>
+    <div class="card-header" data-toggle="collapse" data-target="#bqc8">
+      Click to expand answer
+    </div>
+    <div id="bqc8" class="collapse" data-parent="#accordionExample">
+      <div class="card-body ">
+        <div class="row">
+          <div class="col-sm">
+            Have a look at <code>clean.final.MD.log</code>. Towards the end of the file you will find the following
+            line:
+            <div class="alert alert-info" role="alert">
+              <samp>597518 variants and 2888 people pass filters and QC.</samp>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <p>
+      <b>8. Perform a GWAS on your QC'ed dataset</b>
+    </p>
+    <p>
+      <u>8.1. To run a basic case/control association test, at the unix prompt type:</u>
+    </p>
+    <pre><code>plink --bfile clean.final.MD --assoc --ci 0.95 --adjust --allow-no-sex --out final.MD.assoc</code></pre>
+    <p>
+      Your association output file will contain 12 columns:
+    </p>
+    <div class="alert alert-info" role="alert">
+      <samp>CHR Chromosome
+        SNP SNP ID
+        BP Physical position (base-pair)
+        A1 Minor allele name (based on whole sample)
+        F_A Frequency of this allele in cases
+        F_U Frequency of this allele in controls
+        A2 Major allele name
+        CHISQ Basic allelic test chi-square (1df)
+        P Asymptotic p-value for this test
+        OR Estimated odds ratio (for A1, i.e. A2 is reference)
+        L95 Lower bound of 95% confidence interval for odds ratio
+        U95 Upper bound of 95% confidence interval for odds ratio
+      </samp>
+    </div>
+    <p>
+      <u>8.2. To visualise your data:</u>
+    </p>
+    <p>We will use another <code>R</code> script to generate two more plots:</p>
+    <p>
+      8.2.1. A Quantile-Quantile (QQ) plot of your p-values to look at the distribution of P-values and assess
+      whether genomic inflation is present (lambda&gt;1) (this can also be found in your <code>.assoc.log</code> file).
+    </p>
+    <p>
+      8.2.2. A Manhattan plot to visualise where your association signals lie across the chromosomes. Type:
+    </p>
+    <pre><code>R CMD BATCH GWAS_plots.R</code></pre>
+    <p>
+      This generates both plots: <code>final.MD.assoc_qq.png</code> and <code>final.MD.assoc_mhplot.png</code>
+    </p>
+    <img src="img/gwas_5.jpg" class="img-fluid" alt="Responsive image" width="50%">
+    <div class="alert alert-warning" role="alert">
+      What do the plots tell you?
+    </div>
+    <div class="card-header" data-toggle="collapse" data-target="#bqc9">
+      Click to expand answer
+    </div>
+    <div id="bqc9" class="collapse" data-parent="#accordionExample">
+      <div class="card-body ">
+        <div class="row">
+          <div class="col-sm">
+            There appears to be some genomic inflation (as was also indicated by the estimated <a href="https://en.wikipedia.org/wiki/Genomic_control">inflation factor</a> of 1.08
+            in the log-file). However, overall the p-values are well behaved, but there are no variants that make it past the significance threshold of 5&times;10<sup>-8</sup>. This might be
+            due limited power given our relatively small sample size (approx. 3000 individuals with 500 cases). Some towers, however, come relatively close. One of those will be discussed in more detail below.
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <p>
+      8.2.2.1. Let's zoom into a region of interest: the tower of SNPs on CHR1 (coloured in yellow). This the Complement
+      Factor H (CFH) region known to be associated with Meningococcal disease.
+      The previous Rscript in 8.2.2 above also generated the <code>chr1_CFH_region.txt</code> file.
+    </p>
+    <ul>
+      <li>Open the locuszoom webpage: <a href="http://locuszoom.org/genform.php?type=yourdata" target="_blank">
+          http://locuszoom.org/genform.php?type=yourdata </a></li>
+      <li>Upload the text file and select PLINK data format.</li>
+      <li>Enter the most associated snp (“rs1065489”) with a flanking size of 500KB</li>
+      <li>In the Genome Build/LD Population field select the appropriate hg19 european ref panel.</li>
+      <li>Then press "Plot Data" to generate your plot.</li>
+    </ul>
+
+    <hr>
+
+
+  </div>
+
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="jquery-3.3.1.slim.min.js" crossorigin="anonymous"></script>
+  <script src="popper.min.js" crossorigin="anonymous"></script>
+  <script src="bootstrap.min.js" crossorigin="anonymous"></script>
+  <script src="d3.v3.min.js"></script>
+  <script src="stack.v1.min.js"></script>
+</body>
+
 </html>
