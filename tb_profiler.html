@@ -32,45 +32,45 @@
       </div>
 
       <div class="container">
-        <p>We will now look at using tb-profiler to predict drug resistance patterns. 
-            The pipeline searches for small variants and big deletions associated with 
-            drug resistance. It will also report the lineage. By default it uses 
-            trimmomatic to trim the reads, BWA (or minimap2 for nanopore) to align to 
-            the reference genome and freebayes to call variants. </p>
+        <p>We will now look at using <a href="https://github.com/jodyphelan/TBProfiler/">TBProfiler</a> to predict drug resistance patterns. 
+            The pipeline searches for small variants and large deletions associated with 
+            drug resistance. It will also report the lineage. By default, it uses 
+            <kbd>trimmomatic</kbd> to trim the reads, <kbd>BWA</kbd> (or <kbd>minimap2</kbd> for nanopore) to align to 
+            the reference genome and <kbd>freebayes</kbd> to call variants. </p>
 
        
 
-        <p>Conda is a package manager that you can use to install bioinformatics software.
-            We have installed a fast variant of this called <kbd>mamba</kbd>. You can install 
-            almost all bioinfromatics software with mamba and will be your best 
+        <p><kbd>conda</kbd> is a package manager that you can use to install bioinformatics software.
+            We have installed a faster version of <kbd>conda</kbd>, which is called <kbd>mamba</kbd>. You can install 
+            almost all bioinfromatics software with <kbd>mamba</kbd> and it will be your best 
             friend as you continue on in your journey as a bioinformatician. Run the following command 
-            to create a conda "environment" with the latest version of <kbd>tb-profiler</kbd> installed.
+            to create a <kbd>conda</kbd> "environment" with the latest version of <kbd>tb-profiler</kbd> installed.
             We also want to use <kbd>IGV</kbd> and a tool called <kbd>curl</kbd> later, 
             so we need to add that to the install command.
          </p>
 
-        <pre><code>mamba create -n tb-profiler tb-profiler=4.2.0 igv curl</pre></code>  
-        <p>Before you can use <kbd>tb-profiler</kbd> you should <i>activate</i> the environment
-            the following command. Each time you open up a new terminal window, you'll have to 
-        run this.</p>
+        <pre><code>mamba create -n tb-profiler -c bioconda tb-profiler=4.2.0 igv curl</pre></code>  
+        <p>Before you can use <kbd>tb-profiler</kbd>, you should <i>activate</i> the environment using
+            the following command (remembter that you'll have to 
+        run this every time you open up a new terminal window): </p>
         
         
         <pre><code>conda activate tb-profiler</pre></code>
             
-        <p>You can now run the pipeline and get the help page by running the following command: </p>
-        <pre><code>tb-profiler -h</pre></code>
+        <p>You can now run the pipeline and get the help message by running the following command: </p>
+        <pre><code>tb-profiler</pre></code>
 
         <p>You should be able to see that there are many options which you can use. 
-            The main function that you should use to profile new data is the 
+            The main function for analysing new data is the 
             <kbd>profile</kbd> command. Try getting the help options by running 
             <kbd>tb-profiler profile -h</kbd>. Can you identify the required inputs?
             The pipeline was designed to be very flexible in terms of the inputs it can take. 
-            You can give it fastq, bam, cram, vcf or assembled fasta files and it will produce 
+            You can give it FASTQ, BAM, CRAM, VCF, or assembled FASTA files and it will produce 
             the same output file.
             
         </p>
-        <p>Let's try running it on <b>sample1</b> using the bam file as input. First change to
-        the tb directory and then run the pipeline using the following commands:</p>
+        <p>Let's try running it on <b>sample1</b> with the BAM file as input. First, change into
+        the <kbd>tb</kbd> directory and then run the pipeline using the following commands:</p>
         <pre><code>cd ~/data/tb/
 tb-profiler profile --bam sample1.bam --prefix sample1 --txt</pre></code>
         <p>
@@ -84,23 +84,23 @@ tb-profiler profile --bam sample1.bam --prefix sample1 --txt</pre></code>
             in the sample along with the relevant resistance mutations.
             The third section gives a summary of the drug-resistance variants found in the sample
             together with information such as the frequency at which they occur in the raw data.
-            The fourth section gives a summary of the mutations in candidate genes
-             that are not associated with resistance resistance.
+            The fourth section gives a summary of candidate mutations found in genes
+             generally associated with resistance (i.e. mutations that have not been linked to resistance themselves but that occurred in resistance-associated genes).
         </p>
         <div class="alert alert-warning">
             Have a look at the report. What lineage is this sample? Do we see any drug resistance?
             Does the report flag any quality control issues?
         </div>
         <p> 
-            Now try running tb-profiler on <b>sample2</b> using the bam file as input. After
-            it finishes running look at the report. Do you see any differences?
+            Now try running <kbd>tb-profiler</kbd> on <b>sample2</b> using the bam file as input. After
+            it finishes, look at the report. Do you see any differences?
         </p>
         <p>
-            Often you want to combine the results from many run into a single report. This helps 
-            with comparing resistance and lineage from different isolates. A single report can be
+            Often you want to combine the results from many runs into a single report. This helps 
+            with comparing resistance and lineage data from different isolates. A single report can be
             generated with the <kbd>collate</kbd> function. Run the follwing command and it will
             generate a text file containing key metrics from both samples. You can open this in 
-            LibreOffice Calc (a free alternative to excel). Just make sure you <b>only</b> have "tab" 
+            LibreOffice Calc (a free alternative to excel). Just make sure you have <b>only</b> "tab" 
             checked as the seperator (see image below).
         </p>
         <img src="img/tb-profiler-1.png" alt="" width="50%">
@@ -111,18 +111,18 @@ libreoffice --calc tbprofiler.txt</pre></code>
          <h2>Bedaquiline resistance: a case study</h2>
         </div>
         <p>
-            Now that you know how to run tb-profiler we will look into using to compare the results
-            with phenotypic tests. For this, we have selected 5 samples that were publishes in 
-            <a href="https://elifesciences.org/articles/75046"> this study</a> by Fowler et al. 
+            Now that you know how to run <kbd>tb-profiler</kbd>, we will look into using it to compare the results
+            with phenotypic tests. For this, we have selected five samples that were publishes in 
+            <a href="https://elifesciences.org/articles/75046"> this study</a> by Fowler <i>et al</i>. 
             We will be looking at resistance to bedaquiline and the variants that cause resistance.
-            Bedquiline is one of the new drugs that has been intruduced in the last decade. Sadly, 
+            Bedaquiline is one of the new drugs that have been intruduced in the last decade. Sadly, 
             resistance has already been observed, and it is imperative that this is limited to maintain
-            global effectiveness of the drug. Two main two genes that are implicated in resistance to 
-            bedaquiline is the target atpE and a transcriptional regulator mmpR5 which represses 
-            expression of an efflux pump that can pump bedaquiline out of the cell. Mutations in atpE
-            prevent binding of the drug, while mutations in mmpR5 cause loss of function and as a result
-            increased expression of the efflux pump (and resistnce!). The phenotypic results are shown
-            below. First let's download the relevant data and change to the new directory.
+            global effectiveness of the drug. Two genes implicated in resistance against
+            bedaquiline are the drug target <i>atpE</i> and a transcriptional regulator (<i>mmpR5</i>) which represses 
+            expression of an efflux pump that can pump bedaquiline out of the cell. Mutations in <i>atpE</i>
+            prevent binding of the drug, while mutations in <i>mmpR5</i> cause loss of function and as a result
+            increased expression of the efflux pump (and resistance!). The phenotypic results are shown
+            below. First let's download the relevant data and change into the new directory.
         </p>
         <pre><code>update_course.sh
 cd ~/data/tb/bedaquiline</code></pre>
@@ -159,15 +159,15 @@ cd ~/data/tb/bedaquiline</code></pre>
         </table>
 
         <p>
-            As you can see they are all resistant using phenotypic methods. Let's see if WGS agrees
-            with this. Run tb-profiler for all samples using the VCF files. Remember that VCF format 
+            As you can see they are all resistant according to phenotypic methods. Let's see if WGS agrees
+            with this. Run <kbd>tb-profiler</kbd> for all samples using the VCF files. Remember that VCF format 
             contains variants detected in the genome. We have created these VCF files for you so that 
             the analysis won't take too long. Here is the command for the first sample. You can adapt
             it for the rest.  
         </p>
         <pre><code>tb-profiler profile --vcf ERR4829977.vcf.gz --prefix ERR4829977 --txt</pre></code>
         <p>
-            After you have generated the result files. Run the collate function and open using 
+            After you have generated the result files, run the <kbd>collate</kbd> function and open using 
             LibreOffice Calc.
         </p>
         <pre><code>tb-profiler collate
@@ -179,14 +179,14 @@ libreoffice --calc tbprofiler.txt</code></pre>
         </div>
 
         <p>
-            It seems like there are two samples which don't look like they are sensitive by WGS.
+            It seems like there are two samples which are sensitive to bedaquiline according to WGS.
             Have a look at the individual text format result files for these samples and go 
             to the "Other variants" section. Resistance can often occur due to novel variants
             that haven't been observed before. 
         </p>
         <div class="alert alert-warning">
             Can you identify any variants that could explain the discrepant results?
-            Hint: look for variants in the atpE and mmpR5 genes.
+            Hint: look for variants in the <i><i>atpE</i></i> and <i>mmpR5</i> genes.
         </div>
 
         <hr>
@@ -196,8 +196,8 @@ libreoffice --calc tbprofiler.txt</code></pre>
         <p>
             Let's first have a look at ERR8975807. It looks like the there are no known resistant 
             mutations, however the "Other variants" section reveals that there are two variants
-            in the mmpR5 gene. Remember that loss of function in this gene can cause resistance. 
-            These mutations are both small indels that cause a frameshift, and as a result - loss 
+            in the <i>mmpR5</i> gene. Remember that loss of function in this gene can cause resistance. 
+            One of these mutations is a small indel that causes a frameshift, and as a result &ndash; loss 
             of function. Interestingly you might notice that the mutations are not fixed in the 
             sample, with both occuring at close to 0.5 fraction of the reads. This indicates that
             there are two sub-populations in the host with different resistance mutations. Have 
@@ -205,30 +205,30 @@ libreoffice --calc tbprofiler.txt</code></pre>
         </p>
         <p>
             Second, lets look at ERR4796447. This sample also does not present any known variants.
-            However, the "Other variants" section reveals that there is a variant in the atpE gene 
-            which codes for the drug target. Because this is a SNP which less of a functional
-            impact than the variants mentioned above this will be more difficult to evaluate. 
+            However, the "Other variants" section reveals that there is a variant in the <i>atpE</i> gene 
+            which codes for the drug target. Because this is a SNP causing less of a functional
+            impact than the frameshift variant mentioned above, this will be more difficult to evaluate. 
             However, there are some tools which can help. When assesing the functional impact of 
-            SNPs on proteins, researchers often turn to in-silico methods. These predict the effect
+            SNPs on proteins, researchers often turn to <i>in silico</i> methods. These predict the effect
             on characteristics such as protein stability and ligand binding affinity using a protein
             model. One such tool already exists for bedaquiline resistance called 
             <a href="</a>">SUSPECT-BDQ</a>. It 
-            allows you to upload a mutation and will predict whether the will confer resistance.
+            allows you to upload a mutation and will predict whether it will confer resistance.
             Click the link and input the mutation you have found and have a look at the output. You'll have to convert the amino
             acids to one letter code (E.g. E61D).
         </p>
         <div class="alert alert-warning">
-            After studying the other mutations do you wish to manually reclassify your samples?
+            After studying the other mutations, do you wish to manually reclassify your samples?
         </div>
 
         <hr>
         <H4>Summary</H4>
         <p>
-            You have seen how tb-profiler automates a lot of the steps you have performed so far.
-            It performs mapping, variant calling, annotation and formats it into a human-readable 
-            report. This is just one tool of many that can be used to predict resistance and more 
-            generally, perform automated analysis. For other organisms such as Ecoli, you should 
-            use a tool which can analyse resistance genes and plasmids.
+            You have seen how <kbd>tb-profiler</kbd> automates a lot of the steps you have performed so far.
+            It does mapping, variant calling, annotation, and formats the results into a human-readable 
+            report. This is just one tool of many that can be used to predict resistance and, more 
+            generally, perform automated analyses. For other organisms, such as <i>E. coli</i>, you should 
+            use a tool which can also analyse resistance genes on plasmids.
         </p>
 
 
