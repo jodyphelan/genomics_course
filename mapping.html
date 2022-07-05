@@ -361,15 +361,31 @@ gaaccctaaaccctaaaccctaaaccctaaaccctaaaccctaaaccctaaaccctgaac</div></samp>
       <p>
           <div class="alert alert-warning" role="alert">
               <p>At this point you should be able to open sequence files with FastQC and interpret the quality plots
-                  described. First, open sample <strong>IT.Chr5_1.fastq</strong> in <strong>~/data/malaria/</strong>. Second, open <strong>sample1_1.fastq</strong>,
-                  <strong>sample2_1.fastq</strong> and <strong>sample3_1.fastq</strong> in <strong>~/data/tb/</strong>.
+                  described. First, open sample <strong>IT.Chr5_1.fastq.gz</strong> in <strong>~/data/malaria/</strong>. Second, open <strong>sample1_1.fastq.gz</strong>,
+                  <strong>sample2_1.fastq.gz</strong> and <strong>sample3_1.fastq.gz</strong> in <strong>~/data/tb/</strong>.
               </p>
               <p>Questions:</p>
               <ul>
                   <li>Can you spot any quality issue with the reads we should be worried about?</li>
                   <li>If so, what may be their source?</li>
               </ul>
+              <div class="card-header" data-toggle="collapse" data-target="#eacf6">
+                Click to expand answer
+              </div>
+              <div id="eacf6" class="collapse" data-parent="#accordionExample">
+                <div class="card-body ">
+                  <div class="row">
+                    <div class="col-sm">
+                      <p>
+                        All of the fastq files look ok except sample3_1.fastq.gz. If you look at the 'Per base sequence quality' graph,
+                        you will see that many bases fall into the low quality zone (Q&lt;20).
+                      </p>
+                    </div>
+                  </div>            
+                </div>
+              </div>
           </div>
+
       </p>
       <hr>
 
@@ -663,8 +679,23 @@ try this click on the <kbd>Copy read name to clipboard</kbd> or <kbd>Copy read d
 from a read, then open a plain text file and copy the results.
     </p>
     <div class="alert alert-warning">
-        Try to combine the <kbd>Jump to</kbd> with the <kbd>Copy read name…</kbd>
+        Try to combine the <kbd>Jump to</kbd>/<kbd>Reads's mate</kbd> with the <kbd>Copy read name…</kbd>
         options, does the name of the mate reads match?
+        
+        <div class="card-header" data-toggle="collapse" data-target="#asda">
+            Click to expand answer
+        </div>
+        <div id="asda" class="collapse" data-parent="#accordionExample">
+            <div class="card-body ">
+            <div class="row">
+                <div class="col-sm">
+                <p>
+                    Yes they do!
+                </p>
+                </div>
+            </div>            
+            </div>
+        </div>
     </div>
     <img src="img/Mapping_17.jpg" class="img-fluid" alt="Responsive image">
     <hr>
@@ -726,6 +757,23 @@ bwa index ~/data/malaria/Pf3D7_05.fasta
     <img src="img/Mapping_19.jpg" class="img-fluid" alt="Responsive image">
     <div class="alert alert-warning" role="alert">
         Scroll through the genome. Describe the coverage. Are there regions that are not covered?
+        <div class="card-header" data-toggle="collapse" data-target="#qwe">
+            Click to expand answer
+        </div>
+        <div id="qwe" class="collapse" data-parent="#accordionExample">
+            <div class="card-body ">
+            <div class="row">
+                <div class="col-sm">
+                <p>
+                    In general there is good coverage across the genome. This can be said by the fact
+                    that most of the positions have many reads overlapping them. There are a few positions
+                    with few or no reads aligning. This could be due to poor sequencing of those regions 
+                    or a deletion.
+                </p>
+                </div>
+            </div>            
+            </div>
+        </div>
     </div>
     <p>
         Use the <kbd>Go to</kbd> button in the menu and select <kbd>Navigator</kbd>, select the <kbd>Go to Feature With Gene Name</kbd> and type the name: <strong>PF3D7_0504700</strong> then zoom out once.
@@ -761,8 +809,23 @@ bwa index ~/data/malaria/Pf3D7_05.fasta
     </p>
     <img src="img/Mapping_22.jpg" class="img-fluid" alt="Responsive image" style="max-width: 75%">
     <div class="alert alert-warning" role="alert">
-        Filter reads for repetitive regions and proper read pairing. Do you notice any difference? Can you
-        think of how this will assis in further analysis?
+        Filter reads for repetitive regions and proper read pairing. Do you notice any difference? 
+        <div class="card-header" data-toggle="collapse" data-target="#sdfsdf">
+            Click to expand answer
+        </div>
+        <div id="sdfsdf" class="collapse" data-parent="#accordionExample">
+            <div class="card-body ">
+            <div class="row">
+                <div class="col-sm">
+                <p>
+                    Some reads will drop out of view, however the picture will broadly look very similar. Some
+                    regions will be more affected by the filtering if they contain low-complexity sequence or if
+                    they are very high in coverage. 
+                </p>
+                </div>
+            </div>            
+            </div>
+        </div>
     </div>
 
     <hr>
@@ -782,6 +845,21 @@ bwa index ~/data/malaria/Pf3D7_05.fasta
     <div class="alert alert-warning" role="alert">
         What can you say about the read coverage at this locus? (you may have to zoom out to get a good look).
         So far you looked at the IT strain. What about the mdr1 locus in the Dd2 strain of the malaria parasite?
+        <div class="card-header" data-toggle="collapse" data-target="#gdgf">
+            Click to expand answer
+        </div>
+        <div id="gdgf" class="collapse" data-parent="#accordionExample">
+            <div class="card-body ">
+            <div class="row">
+                <div class="col-sm">
+                <p>
+                    We can see elevated coverage on the region which contains this gene. This may represent a copy 
+                    number variation. Follow the instructions below to look at the DD2 strain.
+                </p>
+                </div>
+            </div>            
+            </div>
+        </div>
     </div>
 
     <p>
@@ -792,6 +870,21 @@ bwa index ~/data/malaria/Pf3D7_05.fasta
     <div class="alert alert-warning" role="alert">
         It looks like that those two clones have a copy number variation (assuming the reference was assembled correctly). Is the
         duplication the same in both clones?
+        <div class="card-header" data-toggle="collapse" data-target="#hrh">
+            Click to expand answer
+        </div>
+        <div id="hrh" class="collapse" data-parent="#accordionExample">
+            <div class="card-body ">
+            <div class="row">
+                <div class="col-sm">
+                <p>
+                    The region with elevated coverage is slightly different and so we can conclude that the duplication
+                    is different between the strains.
+                </p>
+                </div>
+            </div>            
+            </div>
+        </div>
     </div>
     <h4>Identifying Single Nucleotide Polymorphisms</h4>
     <p>
@@ -813,18 +906,46 @@ bwa index ~/data/malaria/Pf3D7_05.fasta
         have a thymine where the reference (3D7) has an adenine.
         What is the consequence of this SNP? Can we tell what effect it will have for the clones? Is this the mutation
         N86Y (or also simply referred to as Y86) that may modulate the degree of resistance to chloroquine? (See e.g. Mula et al. (2011) [PMID: 21810256])
+        <div class="card-header" data-toggle="collapse" data-target="#htrr">
+            Click to expand answer
+        </div>
+        <div id="htrr" class="collapse" data-parent="#accordionExample">
+            <div class="card-body ">
+            <div class="row">
+                <div class="col-sm">
+                <p>
+                    To answer the just posed, right-click on the gene annotation of the mdr1 gene and then choose View – Amino
+        Acids Of Selection: here you can see which amino acids are normally coded for around amino acid position
+        86. Note also that AAT codes for Asn (N) and TAT codes for Tyr (Y). This SNP modulates resistance to chloroquine.
+                </p>
+                </div>
+            </div>            
+            </div>
+        </div>
     </div>
     <img src="img/Mapping_25.jpg" class="img-fluid" alt="Responsive image">
     <p>
-        To answer the just posed, right-click on the gene annotation of the mdr1 gene and then choose View – Amino
-        Acids Of Selection: here you can see which amino acids are normally coded for around amino acid position
-        86. Note also that AAT codes for Asn (N) and TAT codes for Tyr (Y).
+        
 
     </p>
     <div class="alert alert-warning" role="alert">
-        Now consider the neighbouring position 958146. What could this be? Is it from IT or Dd2? To answer this
-        question, close the window and display the reads of only one or the other parasite strain in each window,
-        as demonstrated below.
+        Now consider the neighbouring position 958146. What could this be? Is it from IT or Dd2? 
+        <div class="card-header" data-toggle="collapse" data-target="#ertherg">
+            Click to expand answer
+        </div>
+        <div id="ertherg" class="collapse" data-parent="#accordionExample">
+            <div class="card-body ">
+            <div class="row">
+                <div class="col-sm">
+                <p>
+                    To answer this
+        question, clone the window and display the reads of only one or the other parasite strain in each window,
+        as demonstrated below. It looks like the SNP onle appears in reads from IT
+                </p>
+                </div>
+            </div>            
+            </div>
+        </div>
     </div>
     <img src="img/Mapping_26.gif" class="img-fluid" alt="Responsive image">
 
@@ -871,7 +992,7 @@ bwa index ~/data/malaria/Pf3D7_05.fasta
         </p>
     </div>
     <hr>
-    <h4>Extra Exercise: Identifying essential genes in a TraDIS analysis    </h4>
+    <!-- <h4>Extra Exercise: Identifying essential genes in a TraDIS analysis    </h4>
     <div class="alert alert-primary" role="alert">
         Mapping can be an initial step of a more complex bioinformatic pipeline, or can be a goal in itself if
         sequencing is being used to assess targeted regions of the genome or in conjunction with other molecular
@@ -913,13 +1034,7 @@ bwa index ~/data/malaria/Pf3D7_05.fasta
     
     
     <pre><code>zcat TraDIS_reads_chr1.fastq.gz | wc -l</code></pre>
-    <div class="alert alert-warning" role="alert">
-        <p>Can you determine what the transposon sequence is? hint: view the reads with </p> 
-    </div>
-    <pre><code>zcat TraDIS_reads_chr1.fastq.gz | less</code></pre>
-    <p>
-        Remember to hit <kbd>q</kbd> to exit less! 
-    </p>
+    
     <p>We are now going to run a Perl script to remove the transposon sequence from the reads and create a new fastq file (TraDIS_reads_chr1.filt.fq.gz) </p>
     <pre><code>perl remove_transposon_and_filter_FASTQ.pl ~/data/tradis/TraDIS_reads_chr1.fastq.gz 0  | gzip -c > TraDIS_reads_chr1.filt.fq.gz </code></pre>
 
@@ -1028,11 +1143,24 @@ samtools index TraDIS_reads_chr1.bam
             <td><input type="text" ></td>
           </tr>
         </table>
-
+        <div class="card-header" data-toggle="collapse" data-target="#rege">
+            Click to expand answer
+        </div>
+        <div id="rege" class="collapse" data-parent="#accordionExample">
+            <div class="card-body ">
+            <div class="row">
+                <div class="col-sm">
+                <p>
+                    Genes BPSL0590, BPSL1661 and BPSL1712 have no reads aligning to them. This means
+                    that they never have the transposon inserted and are likely essential genes.
+                </div>
+            </div>            
+            </div>
+        </div>
     </div>
-    <hr>
+    <hr> -->
     <div class="alert alert-primary" role="alert">
-        That concludes the Mapping practical. You should now be able to:
+        This concludes the Mapping practical. You should now be able to:
         <ol>
             <li>Assess the quality of raw sequence data</li>
             <li>Perform read trimming to remove low quality bases</li>

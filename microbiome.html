@@ -213,6 +213,28 @@
         drastic as the difference in actual read counts. Can you think of a reason why that might be? Hint: What does
         the file extension <code>.gz</code> mean?
       </div>
+
+      <div class="card-header" data-toggle="collapse" data-target="#bqc1">
+        Click to expand answer
+      </div>
+      <div id="bqc1" class="collapse" data-parent="#accordionExample">
+        <div class="card-body ">
+          <div class="row">
+            <div class="col-sm">
+              <p>
+                <code>.gz</code> means that the file has been compressed with <code>gzip</code>. Compression algorithms
+                leverage redundancy in a file in order to reduce its size (e.g. define common words in the header and
+                say "word XY occurs here" in the body of the file). This means that the more redundancy there is in a
+                file the more it can be compressed. Since there cannot be as much redundancy in small files, their
+                compression ratio won't be as good. Therefore, the difference in size between the compressed files is
+                not as pronounced as in the number of reads.
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
       For this dataset, the primers have already been trimmed from the reads and the FastQC output showed us that
       there are no adapters that would need removal. Also, quality-based trimming is <a
         href="https://github.com/benjjneb/dada2/issues/236#issuecomment-406606167">discouraged</a> when using <a
@@ -407,6 +429,20 @@ BB_12   /home/user/data/metagenomics/fastq/BB_12_1.fastq.gz     /home/user/data/
         What does the plot tell us about our samples and the impact of BV on inter-sample diversity. Look up the term
         "Anna Karenina Principle" and what it means in terms of the microbiome. Can we say that it applies to our data?
       </div>
+      <div class="card-header" data-toggle="collapse" data-target="#bqc2">
+        Click to expand answer
+      </div>
+      <div id="bqc2" class="collapse" data-parent="#accordionExample">
+        <div class="card-body ">
+          <div class="row">
+            <div class="col-sm">
+              <p>
+                Non-BV samples appear to cluster a lot more tightly than the BV samples. This would indicate that most healthy vaginal microbiomes look very similar, whereas bacterial overgrowth might be governed by different species in different people. This is in line with the postulates of the Anna Karenina Principle. 
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
     </p>
 
     <h5>Taxonomic classification</h5>
@@ -484,7 +520,22 @@ done</pre>
         <br>
         observed_features: Simply the number of unique taxa found in the sample.
       </div>
-    </p>
+    <div class="card-header" data-toggle="collapse" data-target="#bqc3">
+      Click to expand answer
+    </div>
+    <div id="bqc3" class="collapse" data-parent="#accordionExample">
+      <div class="card-body ">
+        <div class="row">
+          <div class="col-sm">
+            <p>
+             Faith's PD and the number of observed features don't take abundance into account. Sometimes this does not make a large difference, but for our data it clearly does. 
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </p>
+
 
     <h5>Testing beta diversity</h5>
     <p>As opposed to alpha diversity, which quantifies the diversity of a sample (or a group of samples) overall, beta
@@ -504,7 +555,9 @@ done</pre>
         href="https://view.qiime2.org/">https://view.qiime2.org/</a>. What do you find? Are all of them in
       agreement this time?
       <br><br>
-      This concludes today's practical. If you are interested in differentially abundant taxa between the BV and non-BV samples, have a look at <code>qiime</code>'s' <a href="https://docs.qiime2.org/2021.8/plugins/available/composition/ancom/?highlight=ancom">ANCOM function</a>.
+      This concludes today's practical. If you are interested in differentially abundant taxa between the BV and non-BV
+      samples, have a look at <code>qiime</code>'s' <a
+        href="https://docs.qiime2.org/2021.8/plugins/available/composition/ancom/?highlight=ancom">ANCOM function</a>.
     </p>
 
 

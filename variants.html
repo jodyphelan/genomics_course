@@ -497,7 +497,24 @@ tabix -p vcf sample2.filt.vcf.gz</pre></code>
               </div>
             </div>
           <div class="alert alert-warning">Based on your observations, what can you conclude about Rifampicin resistance
-            for the two samples being displayed?</div>
+            for the two samples being displayed?
+          
+            <div class="card-header" data-toggle="collapse" data-target="#rege">
+                Click to expand answer
+            </div>
+            <div id="rege" class="collapse" data-parent="#accordionExample">
+                <div class="card-body ">
+                <div class="row">
+                    <div class="col-sm">
+                    <p>
+                        Sample 2 has a SNP at position 761155. It changes the nucleotide from a C to a T. By looking at the table you can see that 
+                        this leads to the mutation S450L which is the most prominant resistance mutation for rifampicin.
+                    </div>
+                </div>            
+                </div>
+            </div>
+
+          </div>
           <h4>Large structural variant (SV) detection and calling</h4>
           <p>While small indels can be detected by finding gaps within mapped reads, larger structural variation requires
             alternative approaches. When working with short reads and high depth of coverage,
@@ -634,7 +651,22 @@ tabix -p vcf sample2.delly.vcf.gz</code></pre>
                   </div>
                 </div>
                 <div class="alert alert-warning">Which characteristic signatures of deletions (gap of coverage, long-spanning read pairs and split-reads)
-                can be identified? (Read the notes below to help answer this question)</div>
+                can be identified? (Read the notes below to help answer this question)
+              
+                <div class="card-header" data-toggle="collapse" data-target="#wrv">
+                    Click to expand answer
+                </div>
+                <div id="wrv" class="collapse" data-parent="#accordionExample">
+                    <div class="card-body ">
+                    <div class="row">
+                        <div class="col-sm">
+                        <p>
+                            We can see a gap in the coverage and many reads which end abruptly at the same positions (split reads).
+                        </div>
+                    </div>            
+                    </div>
+                </div>
+              </div>
                 <i><b>Notes</b></i>:
                 <ul class="list-group">
                   <li class="list-group-item">A gap of coverage means no or few alignments cover a region
@@ -652,8 +684,6 @@ tabix -p vcf sample2.delly.vcf.gz</code></pre>
                      soft-clipped reads</li>
                   </ul>
                 <br>
-                <p>Browse regions where likely false positive deletions have been found, namely Delly hits with very
-                  few supporting reads (column 5).</p>
                   <div class="alert alert-warning">Are deletion alignment signatures identified in those cases?</div>
                   <p><b>References</b></p>
                   <p>Carter, N. (2007). Methods and strategies for analyzing copy number variation using DNA microarrays. Nature genetics, 39, 1–11. doi:10.1038/ng2028.Methods</p>
