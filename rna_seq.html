@@ -83,21 +83,19 @@
       <h4>Transcriptomics Practical</h4>
       <h4>Introduction</h4>
       <p>An application of next-generation sequencing is <b>RNA sequencing</b> (Mortazavi et al., 2008;
-        Wang et al., 2009). In particular we will discuss transcriptome (messenger RNA) sequencing.
+        Wang et al., 2009). In particular, we will discuss transcriptome (messenger RNA) sequencing.
         Transcriptome sequencing is a very useful addition to genome sequencing projects as it helps to
         identify genes and thus aids in genome annotation. In this sense, it is similar to earlier transcriptome
         sequencing using capillary methods (EST sequencing), but provides much higher coverage of the transcriptome.</p>
-      <p>Reads from RNA sequencing can be treated in much the same way as those from DNA sequencing. The exception
-        is in eukaryotes when there is splicing, where a single gene can code for multiple proteins through
-        transcription of determined exons.</p>
+      <p>Reads from RNA sequencing can be treated in much the same way as those from DNA sequencing. In eukaryotes, however, the effects of splicing (i.e. reads mapping to the edges of exons on both sides of an intron or alternative splicing) needs to be taken into account. </p>
       <p>Due to the vast number of reads produced by next generation sequencing technology, the transcriptome
         is also sequenced very deeply. Each gene is sequenced in proportion to its abundance and the large number
         of reads means that even low abundance genes are sequenced to some extent. This means that expression
         levels of genes can be compared. One can visualise the "pile up" of reads in a particular region by looking
         at coverage plots. The higher the signals in the plot, the more expressed a transcript is. It is important
-        to note that the sequences originate from transcriptome samples (mRNA) and therefore only contains information
+        to note that the sequences originate from transcriptome samples (mRNA) and therefore only contain information
         about the exons and untranslated regions (UTRs).</p>
-      <p>Imagine the following transcript is present in the sample:</p>
+      <p>Imagine the following transcript being present in the sample:</p>
         <div class="text-center"><img src="img/rnaseq_1.png" class="img-fluid"></div>
       <p>Reads belonging to the transcript are produced by the sequencing process. When the reads come out as raw
         data, there is no information about where they belong in the reference genome. Furthermore, all reads from
@@ -108,53 +106,51 @@
         This allows us to identify coding regions, here, the 3 exons (in yellow) that comprise the transcript above.</p>
       <p>In this module we will use a similar approach used to map DNA sequencing data to map RNA sequencing data from
         <i>Mycobacterium tuberculosis</i>.</p>
-      <p>Understanding an organism's genome goes beyond cataloging the genes that are present in the genome. Insight into the
-        biological stages in which each gene is expressed (potentially used) helps us to identify how organisms develop and respond to a particular external stimuli.
-        The first layer of such complex patterns involves the understanding of how the genome is being used is the transcriptome.
+      <p>Understanding an organism's genome goes beyond cataloging the genes that are present in that genome. Insight into the
+        biological stages in which each gene is expressed (potentially used) helps us to identify how organisms develop and respond to particular external stimuli.
+        The first layer of such complex patterns involves the understanding of how the genome is being used: the transcriptome.
          This is also the most accessible type of information because, like the genome, the transcriptome is made of nucleic acids
          and can be sequenced relatively easily. Arguably the proteome is of greater relevance to understand cellular biology,
-         but it is chemically heterogenous making it much more difficult to assay.</p>
+         but its chemical heterogeneity makes it much more difficult to assay.</p>
       <p>Over the past two decades, microarray technology has been applied extensively for addressing the question of which
         genes are expressed and when, enabling the performance of <b>differential expression analysis</b>. Despite its
         success, this technology is limited in that it requires prior knowledge of the gene sequences for an organism
         and has a limited dynamic range in detecting the level of expression, e.g. how many copies of a transcript are
-        made. RNA sequencing technology using, for instance Illumina HiSeq machines, can sequence all the genes that
+        made. RNA sequencing technology using, for instance, Illumina HiSeq machines can sequence all the genes that
         are transcribed, and the results have a more linear relationship to the real number of transcripts generated.</p>
       <p>The aim of <b>differential expression analysis</b> is to determine which genes are more or less expressed in different
         situations. We could ask, for instance, whether a bacterium uses its genome differentially when exposed to stress,
         such as heat or challenged by a drug. Alternatively, we could ask which genes make human livers different from
         kidneys.</p>
       <p>In this exercises, we will try to gain some understanding of differences between <i>M. tuberculosis</i> lineages.
-        The genome of <i>M. tuberculosis</i> was published in 1998 (Cole et al., 1998). It has 4.4 Mb and a high GC
+        The genome of <i>M. tuberculosis</i> was published in 1998 (Cole et al., 1998). It has 4.4 Mb and a relatively high GC
         content (~65%), comprising 4,111 genes. Although the variability of the <i>M. tuberculosis</i> genome has been
-        considered limited, it has been demonstrated a higher diversity than it was previously thought. Currently, <i>
-        M. tuberculosis</i> is classified in 7 different lineages with a different geographical distribution, and
-        also virulence or spreading capacity has been seen to vary between lineages. Strains from different lineages have
-        shown differences in virulence or in acquisition of drug resistance (Parwati et al., 2010), and these differences might
-        be caused by variable expression of determined genes.</p>
+        considered limited, it has demonstrated a higher diversity than was previously thought. Currently, <i>
+        M. tuberculosis</i> is classified in 9 different lineages with different geographical distributions. Strains from different lineages have
+        shown differences in virulence, capacity, and in the acquisition of drug resistance (Parwati et al., 2010). These differences might
+        be caused by variable expression of certain genes.</p>
         <p>Therefore, the aim of this session is to become familiar with the
         steps carried out in transcriptomics studies, from mapping RNA-seq reads to the performance of differential expression
         analysis.</p>
 
           <h4>Exercise 1: Mapping RNA-seq with BWA</h4>
-          <p>First, we will map RNA sequence reads from a <i>M. tuberculosis</i> lineage 1 strain to the reference
-          genome, in this case, the H37Rv <i>M. tuberculosis</i> strain.</p>
+          <p>First, we will map RNA sequence reads from an <i>M. tuberculosis</i> lineage 1 strain to the reference
+          genome (which has been created from the H37Rv strain).</p>
           <p>You can find the <i>M. tuberculosis</i> H37Rv reference genome (called <i>H37Rv.fa</i>) as well as the two files
-            of RNA-seq reads from a lineage 1 strain (<i>Mtb_L1_1.fastq</i> and <i>Mtb_L1_2.fastq</i>) in the transcriptomics
+            of RNA-seq reads from the lineage 1 strain (<i>Mtb_L1_1.fastq</i> and <i>Mtb_L1_2.fastq</i>) in the transcriptomics
             directory.</p>
           <p><b>Running BWA</b></p>
-          <p>To work with the command line of Linux, you will need to open a terminal, activate this practical's <code>conda</code> environment, and go to the data and
-            transcriptomics directory:</p>
+          <p>To work with the command line of Linux, you will need to open a terminal, activate this practical's <code>conda</code> environment, and go to the transcriptomics directory:</p>
           <pre><code>conda activate rnaseq && cd ~/data/transcriptomics</pre></code>
           <p>And list the files there:</p>
           <pre><code>ls</pre></code>
-          <p>You will find there the 4 fastq files, 2 of them from the lineage 1 sample, and the reference genome fasta file; these
+          <p>You will find the 4 fastq files, 2 of them from the lineage 1 sample, and the reference genome fasta file; these
             are the input data for this practical.</p>
-          <p>For the mapping, first an index of the reference genome must be constructed with bwa index. On the command
+          <p>For the mapping step, first an index of the reference genome must be constructed with <kbd>bwa index</kbd>. On the command
             line, you should type:</p>
           <pre><code>bwa index H37Rv.fa</pre></code>
           <p>This will generate 5 files which are needed for BWA. We will then align the RNA-seq reads to the
-            reference genome with bwa mem. We will therefore use the reference genome (in fasta format) and the two
+            reference genome with <kbd>bwa mem</kbd>. We will therefore use the reference genome (in fasta format) and the two
             fastq files that contain the RNA-seq reads, saving the output to a SAM file. To start you should type:</p>
           <pre><code>bwa mem H37Rv.fa Mtb_L1_1.fastq.gz Mtb_L1_2.fastq.gz > ./Mapping_Mtb/Mtb_L1.sam</pre></code>
           <p>The output will be located in the <i>Mapping_Mtb</i> folder, which is in the transcriptomics directory.</p>
@@ -165,13 +161,11 @@
           directory <i>Mapping_Mtb</i>. We are going to view the mapped reads in Artemis using the Artemis BAM view. However,
           the mapping result is not currently in BAM format. To make a BAM file from the BWA output we need to run
           a short series of programs.</p>
-          <p>To convert the BWA output SAM file to BAM format we are going to use samtools. First, we go to the directory
-          where the output file from the BWA is and we will transform the sam file to bam (as we are already in the Transcriptomics
-          directory we just need to type):</p>
+          <p>To convert the SAM file created by BWA to BAM format we are going to use <kbd>samtools</kbd>. First, we go to the directory
+          where the output file from the BWA command is stored and transform the SAM file to BAM:</p>
           <pre><code>cd ~/data/transcriptomics/Mapping_Mtb
 samtools view -b Mtb_L1.sam > Mtb_L1.bam</pre></code>
-          <p>Once we have the BAM file, we need to sort it and index it. To do it, we will use samtools sort and
-          samtools index commands:</p>
+          <p>Once we have the BAM file, we need to sort it and index it with the following commands:</p>
           <pre><code>samtools sort -o Mtb_L1.sorted.bam Mtb_L1.bam
 samtools index Mtb_L1.sorted.bam</pre></code>
           <div class="alert alert-warning">What does the parameters -b in samtools view and -o in samtools sort mean?
