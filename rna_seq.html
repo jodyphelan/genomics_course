@@ -8,6 +8,7 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="course.css" type="text/css">
 
     <style>
 
@@ -24,7 +25,7 @@
 
     a:link,
     a:visited {
-      color: black;
+      color: red;
       text-decoration: none;
     }
 
@@ -183,8 +184,8 @@ mv Mtb_L1.sorted.bam.bai Mtb_L1.bam.bai</pre></code>
           <p>Now we will examine the reads mapping in Artemis using the BAM view feature.</p>
           <p><b>Viewing the mapped reads in Artemis</b></p>
           <p>Open Artemis (type <i>art</i> in the terminal) and select: 'File', 'Open Project Manager', select '+' to add a new project you can call "Mtb"
-            and load <i>H37Rv.fa</i>, which contains the reference genome. We need also to add the genome features, so we can see the gene models. For
-            doing so, we will load the <i>Mtb.gtf</i> file (is in the <i>transcriptomics</i> directory) as the annotation track. Select 'annotation'
+            and load <i>H37Rv.fa</i>, which contains the reference genome. We also need to add the genome features so that we can see the gene models.
+            For doing so, we will load the <i>Mtb.gtf</i> file (is in the <i>transcriptomics</i> directory) as the annotation track. Select 'annotation'
             and then press 'new property'.</p>
           <div class="text-center"><img src="img/rnaseq_3.png" class="img-fluid"></div>
           <p>Now select 'open' and the artemis window should appear. From the Artemis 'File' menu, select 'Read BAM/VCF', and then select the
@@ -205,7 +206,7 @@ mv Mtb_L1.sorted.bam.bai Mtb_L1.bam.bai</pre></code>
             time, which enables to compare coverage from different samples. Hence, next we want to include more lineages,
             in this case we will add another sample belonging to the lineage 4 of <i>Mtb</i>.</p>
             <div class="alert alert-info">
-              <p>To do it, we will need first to follow the previous steps in order to get the sorted and index bam
+              <p>To do this, we will need first to follow the previous steps in order to get the sorted and index bam
             files. Therefore, map it with BWA as before, the fastq files are in the directory <i>transcriptomics</i>
             and are called <i>Mtb_L4_1.fastq</i> and <i>Mtb_L4_2.fastq</i>.</p>
             </div>
@@ -234,7 +235,7 @@ mv Mtb_L1.sorted.bam.bai Mtb_L1.bam.bai</pre></code>
             models in different RNA-seq experiments given a file with aligned sequencing reads (the bam file obtained
             through BWA) and a list of genomic features (the <i>Mtb.gtf</i> file with the gene annotation).</p>
           <p>We will run HTSeq-count with the RNA-seq data from the L1 and L4 strains we were using in the previous
-            exercises. To do it, we will go to the directory where we have the data and use the following command:</p>
+            exercises. to do this, we will go to the directory where we have the data and use the following command:</p>
           <pre><code>cd ~/data/transcriptomics
 python -m HTSeq.scripts.count -f bam -r pos -s reverse -t gene ./Mapping_Mtb/Mtb_L1.bam Mtb.gtf > ./Mapping_Mtb/Mtb_L1_htseq_count.txt
 python -m HTSeq.scripts.count -f bam -r pos -s reverse -t gene ./Mapping_Mtb/Mtb_L4.bam Mtb.gtf > ./Mapping_Mtb/Mtb_L4_htseq_count.txt
@@ -252,7 +253,7 @@ python -m HTSeq.scripts.count -f bam -r pos -s reverse -t gene ./Mapping_Mtb/Mtb
           </p>
           <p>If you have any doubt about the parameters of the program, you can visit https://htseq.readthedocs.io/en/release_0.11.1/count.html</p>
 
-          <div class="alert alert-warning">What would -a parameter do?</div>
+          <div class="alert alert-warning">What would the <kbd>-a</kbd> parameter do?</div>
           <p>We can now take a look at the results from the HTSeq-count typing the following in the command line:</p>
           <pre><code>cd ~/data/transcriptomics/Mapping_Mtb
 less Mtb_L1_htseq_count.txt</pre></code>
@@ -295,7 +296,7 @@ Rv2183c 1197
           <p>A differential expression analysis is used to compare gene expression levels, given by the number
             of reads per gene (obtained by HTSeq-count) between samples (for example, between 2 lineages of <i>Mtb</i>). In order
             to accurately ascertain which genes are differentially expressed, and the amount of expression, it is necessary
-            to use replicated data. As with all biological experiments doing it once may simply not be enough. There is no
+            to use replicated data. As with all biological experiments, doing it once may simply not be enough. There is no
             simple way to decide how many replicates to do, it is usually a compromise of statistical power and cost.
             By determining how much variability there is in the sample preparation and sequencing reactions we can better
             assess whether genes are really expressed and more accurately determine any differences. The key to this is performing
@@ -321,7 +322,7 @@ Mtb_2_L1_htseq_count.txt  Mtb_4_L4_htseq_count.txt  Mtb_6_L4_htseq_count.txt
 library(gplots)</pre></code>
           <p>These 6 files are the results of the HTSeq-count of the two samples previously analysed plus 4 more <i>Mtb</i>
             samples we will use to perform the analysis.</p>
-          <p>To prepare the data we are going to use the following scripts.</p>
+          <p>To prepare the data we are going to use the following commands.</p>
           <p>First we are going to set the directory where we have the files:</p>
           <pre><code>directory <- "/home/user/data/transcriptomics/Mapping_Mtb/HTSeqCounts/" </pre></code>
           <p>And now we can select the files and save them in the variable ‘sampleFiles’ by selecting all the files
@@ -338,7 +339,7 @@ dds <- DESeqDataSetFromHTSeqCount(sampleTable = sampleTable,
                                       design = ~ condition)</pre></code>
           <p>Before doing the analysis, we are going to filter the dataset keeping only the genes with at least 10 counts,
             so that we make sure that every gene considered for the analysis was transcribed.</p>
-          <p>To do it, type the following:</p>
+          <p>to do this, type the following:</p>
           <pre><code>keep <- rowSums(counts(dds)) >= 10
 dds <- dds[keep,]</pre></code>
           <p>And we are going to set up the condition for the analysis in two levels which are 'lineage 1'
@@ -370,7 +371,7 @@ Rv2589   1665.930     0.25845265 0.3629410  0.7121064    0.4763989    0.9964280
 Rv2590   5873.482     0.42707857 0.6169747  0.6922141    0.4888029    0.9964280
 </samp></div>
           <p>The first column represents the name of each gene analysed, which are represented in rows.</p>
-          <div class="alert alert-warning">How many genes did we analysed?</div>
+          <div class="alert alert-warning">How many genes did we analyse?</div>
           <p>Let's take a look at the summary of the results we just obtained:</p>
           <pre><code>summary(res)</pre></code>
           <div class="alert alert-info" style="white-space:pre-wrap;"><samp>out of 441 with nonzero total read count
@@ -384,13 +385,13 @@ low counts [2]   : 0, 0%
 [2] see 'independentFiltering' argument of ?results
 </samp></div>
           <p>When asking whether a gene is differentially expressed we use statistical tests to assign a p-value. If
-            a gene has a p-value of 0.05 we know that there is only a 5% chance that it is not really differentially
+            a gene has a p-value of 0.05, we know that there is only a 5% chance that our observations are due to random chance and it is not really differentially
             expressed. However, if we are asking this question for every gene in the genome, then we would expect to
-            see due to multiple comparison, p-values less than 0.05 for many genes even though they are not really
-            differentially expressed. Due to this statistical problem we must correct the p-values so that we are not
+            see, due to multiple comparison, p-values less than 0.05 for many genes even though they are not really
+            differentially expressed. Therefore, we must correct the p-values so that we are not
             tricked into accepting a large number of erroneous results. Adjusted p-values are p-values which have been
             corrected for what is known as <b>multiple hypothesis testing</b>.
-            <p>The summary shows us the number of genes with an adjusted p-value < 0.1 that are under or over expressed in
+            <p>The summary shows us the number of genes with an adjusted p-value < 0.1 that are under- or overexpressed in
             one of the groups (log2FoldChange above or below 0, here represented as LFC). The adjusted p-value in the
             DESeq analysis is equivalent to the FDR or 'False Discovery Rate'. This value represents the proportion of
             discoveries that we can expect to be false.</p>
@@ -400,12 +401,12 @@ low counts [2]   : 0, 0%
           <p>Some of the p-values in our results might be NA values, which can be due to extreme outliers. To continue with the
             analysis we are going to remove these missing values.</p>
           <pre><code>res <- res[!is.na(res$padj),]</pre></code>
-          <p>Let's now order the results by p value, so we see the top genes with the highest statistial significance. Take a
+          <p>Let's now order the results by p value so that we see the top genes with the highest statistial significance. Take a
             look at the results again.</p>
           <pre><code>resOrdered <- res[order(res$pvalue),]
 resOrdered</pre></code>
           <p>To visualise the diffences in expression we are going to plot a heatmap using the 17 genes that are above the
-            cut off. To do it, we will first get the normalised counts in a variable called "counts_heatmap". We will copy
+            cut off. To achieve this, we will first get the normalised counts in a variable called "counts_heatmap". We will copy
             the names of the first 17 genes from our "resOrdered" table in a vector, and then extract the normalised
             counts from "counts_heatmap" for the 17 genes we want to plot.</p>
           <pre><code>counts_heatmap <- counts(dds, normalized = TRUE)
@@ -470,7 +471,7 @@ Rv2494                 261.54919               1206.52789
 Rv2506                1864.81177                392.72242
 Rv2573                 220.78828                 49.03022
 </samp></div>
-          <p>To plot the heatmap copy the following script:</p>
+          <p>To plot the heatmap copy the following commands:</p>
           <pre><code>colnames(counts_heatmap) <- c("L4_1","L1_2","L1_3","L4_4","L1_5","L4_6")
 heatmap.2(as.matrix(counts_heatmap), scale="row", col=greenred(75), Rowv=NA,
 dendrogram = "col", trace="none", density.info = "none")</pre></code>
@@ -487,16 +488,15 @@ dendrogram = "col", trace="none", density.info = "none")</pre></code>
 
           <h4>Further exploration</h4>
           <p><b>What do I do with a gene list?</b></p>
-          <p>As we have just seen, differential expression analysis results is a list of genes which show
-            differences between two conditions. It can be daunting trying to determine what the results mean.
+          <p>As we have just seen, differential expression analysis results is a list of genes exhibiting
+            different activities between two conditions. It can be daunting trying to determine what the results mean.
             On one hand you may find that due to there being no real differences or there being too
             much noise in your experiment, you have no significant differences. On the other hand, you may
-            find thousands of genes are differentially expressed. What can you say about that?</p>
-          <p>Other than looking for genes you expect to be different or unchanged, one of the first things
-            to do is look at Gene Ontology (GO) term enrichment. There are many different algorithms for this,
-            but you should annotate your genes with functional terms from GO using for instance Bast2GO
+            find thousands of differentially expressed genes. What can you say about that?</p>
+          <p>Other than looking for genes which you expect to be different or unchanged, one of the first things
+            to do is look at Gene Ontology (GO) term or gene set enrichment. There are many different algorithms for this. For example, you could annotate your genes with functional terms from GO using  Bast2GO
             (Conesa et al., 2005) and then use perhaps TopGO (Alexa et al., 2006) to determine whehter any
-            particular sorts of genes occur more than expected in your differentially expressed genes.</p>
+            particular sorts of genes occur more than expected in your differentially expressed genes. Another popular tool that has been tried and tested for a long time is <a href="http://www.gsea-msigdb.org/gsea/index.jsp">GSEA</a></p>
 
           <h4>References</h4>
           <p>Mortazavi A, Williams BA, McCue K, Schaeffer L, Wold B. (2008). Mapping and quantifying mammalian
