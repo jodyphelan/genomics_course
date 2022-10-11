@@ -48,14 +48,14 @@
 
 
 
-        <!-- LSHTM PATHOGEN GENOMICS COURSE TO BE REMOVED!!! -->
+        <!-- LSHTM PATHOGEN GENOMICS COURSE TO BE REMOVED!!!
         <div class="alert alert-warning">
           <b>
             Please run the following code to get the practical data:
           </b>
           <pre><code>bash <(curl -kSs https://tbdr.lshtm.ac.uk/static/get_nanopore_data.sh) </pre></code>
         </div>
-
+       -->
 
 
 
@@ -89,7 +89,7 @@
 
         <img src="img/picture_2.jpg" class="img-fluid" alt="Responsive image">
 
-        <p>A complete sequencing run on the MinION platform can generate upwards to of 1TB of raw data, and downstream analyses require a significant amount of compute power – multicore high performance processors and large amounts of RAM. This poses a significant logistical challenge for researchers who want to take advantage of the platform’s portability aspect. Over recent years, the integration of <a href="https://en.wikipedia.org/wiki/Graphics_processing_unit" target="_blank" style="color: #0881c2">GPUs</a> (graphics processing units) in to analysis workflows <p>
+        <p>A complete sequencing run on the MinION platform can generate upwards to of 1TB of raw data, and downstream analyses require a significant amount of compute power – multicore high performance processors and large amounts of RAM. This poses a significant logistical challenge for researchers who want to take advantage of the platform’s portability aspect. Over recent years, the integration of <a href="https://en.wikipedia.org/wiki/Graphics_processing_unit" target="_blank" style="color: #0881c2">GPUs</a> (graphics processing units) in to analysis workflows. <p>
 
         <img src="img/pipeline_diagram.png" class="img-fluid" alt="Responsive image">
 
@@ -101,22 +101,20 @@
         <br>
         <h4>Basecalling</h4>
 
-        <img src="img/Basecalling.JPG" class="img-fluid" alt="Responsive image" style="width: 30vw">
-
         <p>To convert the raw data output produced by the MinION sequencing run in to a usable form we need to perform a process called basecalling. This converts the raw electronic signal which is collected as the DNA passes through the pore, in to base reads – A, C, T or G. To do this we will use a program called Guppy – a software package designed by ONT which uses <a href="https://en.wikipedia.org/wiki/Recurrent_neural_network" target="_blank" style="color: #0881c2">recurrent neural nets (RNN)</a> to interpret the raw signal, which comes in a proprietary '.fast5' format file produced by the sequencer software and convert it in to the standard .fastq format, for use downstream in our pipeline. Users also have the choice of using the experimental <a href="https://github.com/nanoporetech/bonito" target="_blank" style="color: #0881c2">Bonito</a> basecaller which gives the option of training specialised models for specific basecalling applications. As mentioned above, GPUs are used to accelerate the basecalling process. Without a GPU performing basecalling becomes a very slow process, therfore it is advised that users procure a machine with a compatable Nvidia GPU <a href="https://esr-nz.github.io/gpu_basecalling_testing/gpu_benchmarking.html" target="_blank" style="color: #0881c2">(more information on this here)</a>. <p>
 
         <div class="row">
           <div class="col-sm">
              <img src="img/basecalling.gif" class="img-fluid" alt="Responsive image" style="width: 20vw">
           </div>
-          
+
           <div class="col-sm">
             <img src="img/gpu_diagram.png" class="img-fluid" alt="Responsive image" style="width: 20vw">
           </div>
-        </div> 
+        </div>
 
 
-        
+
 
         <p>Activate the relevant environment, navigate to the <i>~/data/nanopore_activity/basecalling</i> folder in the home directory, and we’ll start the first step.<p>
 
@@ -170,7 +168,7 @@
           After executing the command you should find a file called 'pycoqc_results.html'. Open them up in the file manager or in the terminal (with the below command) and inspect some of the plots and see what you can find out. As mentioned, the data here are only a small subset of reads, so some of the plots are incomplete. But this should give you a good idea of how this analysis should look.
         </div>
 
-        <pre><code>firefox ~/data/nanopore_activity/basecalling/fastq/pass/pycoqc_results.html</pre></code>
+        <pre><code>firefox ~/data/nanopore_activity/basecalling/raw_fast5_reads/pycoqc_results.html</pre></code>
 
         <p>Before continuing, quit firefox by clicking the X in the top right corner of the web-browser window.<p>
 
