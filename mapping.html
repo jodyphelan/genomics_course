@@ -560,7 +560,7 @@ Warning: `-a bwtsw' does not work for short genomes, while `-a is' and
     <p>Several alignment algorithms are implemented in BWA. We will be using the BWA-MEM, which is the latest and generally recommended for high-quality queries as it is faster and more accurate. To see which parameters can be tuned for the ‘mem’ command type: <kbd>bwa mem</kbd></p>
     <p>We will be using the trimmed files output (from applying trimmomatic) as input for BWA:</p>
     <pre><code>cd ~/data/tb/</code></pre>
-    <pre><code>bwa mem -c 100 -R "@RG\tID:sample1\tSM:sample1\tPL:Illumina" -M -T 50 ~/data/tb/tb.fasta sample1_1P sample1_2P | samtools view -b - | samtools sort -o sample1.bam -</code></pre>
+    <pre><code>bwa mem -c 100 -R "@RG\tID:sample1\tSM:sample1\tPL:Illumina" -M -T 50 ~/data/tb/tb.fasta sample1_1P.fastq sample1_2P.fastq | samtools view -b - | samtools sort -o sample1.bam -</code></pre>
     <pre><code>samtools index sample1.bam</code></pre>
     <p>The previous commands transformed SAM files into binary format, sorted the reads by occurrence against the reference, and then indexed the bam files. At this point, we can use the ‘flagstat’ samtools command to print summary statistics from indexed bam files:</p>
     <pre><code>samtools flagstat sample1.bam</code></pre>
@@ -595,7 +595,7 @@ Warning: `-a bwtsw' does not work for short genomes, while `-a is' and
     </ol></p>
     <p>Finally, let's also remove some temporary files we no longer need. Trimming has produced some files which are 
         unzipped and take up a lot of space. Let's remove these using:
-        <pre><code>rm sample1_1P sample1_1U sample1_2P sample1_2U</code></pre>
+        <pre><code>rm sample1_1P.fastq sample1_1U.fastq sample1_2P.fastq sample1_2U.fastq</code></pre>
     </p>
     <div class="alert alert-primary" role="alert">
             <strong>Execute all previous commands for sample2 now, i.e. from trimmomatic to samtools flagstat, to obtain sample2.bam file.</strong>
