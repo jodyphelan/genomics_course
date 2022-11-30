@@ -5,11 +5,11 @@ R
 library(MatrixEQTL)
 library(ggplot2)
 
-base.dir = "/home/user/data/eqtl/tables/"
+base.dir = "~/data/eqtl/tables/"
 snp_file_name = paste(base.dir, "snps_table.txt", sep="")
 expression_file_name = paste(base.dir, "expression_table.txt", sep="")
-output_file_name = "/home/user/data/eqtl/results_eqtl.txt"
-output_file_name.cis = "/home/user/data/eqtl/results_eqtl_cis.txt"
+output_file_name = "~/data/eqtl/results_eqtl.txt"
+output_file_name.cis = "~/data/eqtl/results_eqtl_cis.txt"
 expr = read.table(expression_file_name, sep="\t", header=T, row.names=1)
 snp = read.table(snp_file_name, sep="\t", header=T, row.names=1)
 head(expr)
@@ -63,10 +63,10 @@ me = Matrix_eQTL_main(
 res <- me$cis$eqtls
 head(res)
 
-snps_table <- read.table("/home/user/data/eqtl/snps_eqtl_table.txt", sep="\t", header=T)
+snps_table <- read.table("~/data/eqtl/snps_eqtl_table.txt", sep="\t", header=T)
 snps_table[snps_table$POS==2423785 | snps_table$POS==2424864,]
 
-rv2162 <- read.table("/home/user/data/eqtl/rv2162c.txt", sep="\t", header=T)
+rv2162 <- read.table("~/data/eqtl/rv2162c.txt", sep="\t", header=T)
 rv2162
 
 rv2162$lineage <- as.factor(rv2162$lineage)
