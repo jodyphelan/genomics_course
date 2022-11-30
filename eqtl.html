@@ -131,11 +131,11 @@ library(ggplot2)</pre></code>
             <p>Firstly, we are going to set up the directories where we have the tables we are going to use. These are going
               to be the same we just saw above but formatted for using with the R package. The folder where you can find
               them is called "tables", which is in the eqtl directory. Now you should type:</p>
-            <pre><code>base.dir = "/home/user/data/eqtl/tables/"
+            <pre><code>base.dir = "~/data/eqtl/tables/"
 snp_file_name = paste(base.dir, "snps_table.txt", sep="")
 expression_file_name = paste(base.dir, "expression_table.txt", sep="")
-output_file_name = "/home/user/data/eqtl/results_eqtl.txt"
-output_file_name.cis = "/home/user/data/eqtl/results_eqtl_cis.txt"
+output_file_name = "~/data/eqtl/results_eqtl.txt"
+output_file_name.cis = "~/data/eqtl/results_eqtl_cis.txt"
 </pre></code>
           <p>Now we can load the tables for the analysis. We will use the following script:</p>
           <pre><code>expr = read.table(expression_file_name, sep="\t", header=T, row.names=1)
@@ -280,7 +280,7 @@ Which is the p-value? And the corresponding adjusted p-value (or FDR)?</div>
             <p>We will now check one of the resulting genes in the analysis to corroborate if it is a real eQTL association.
               We are going to take the first gene, Rv2162c. This gene has been associated with 2 SNPs. Let's take a look at the 2 SNPs.
               To do it, we will load again the SNPs table and look at the rows corresponding to those 2 SNPs:</p>
-            <pre><code>snps_table <- read.table("/home/user/data/eqtl/snps_eqtl_table.txt", sep="\t", header=T)
+            <pre><code>snps_table <- read.table("~/data/eqtl/snps_eqtl_table.txt", sep="\t", header=T)
 snps_table[snps_table$POS==2423785 | snps_table$POS==2424864,]</pre></code>
             <div class="alert alert-info" style="white-space:pre-wrap;"><samp>      POS REF ALT L1_1 L4_2 L1_3 L1_4 L4_5 L4_6 L1_7 L1_8 L4_9 L1_10 L1_11
 4 2423785   C   T    1    0    1    1    0    0    1    1    0     1     1
@@ -316,7 +316,7 @@ snps_table[snps_table$POS==2423785 | snps_table$POS==2424864,]</pre></code>
               case the lineage 1 samples) the Rv2162c gene would be under- or over-expressed. Looking at the expression
               table we could see this difference in expression, but a more visual way to do it is through a boxplot.</p>
             <p>To plot it we need to load a table with the expression of the Rv2162c:</p>
-            <pre><code>rv2162 <- read.table("/home/user/data/eqtl/rv2162c.txt", sep="\t", header=T)
+            <pre><code>rv2162 <- read.table("~/data/eqtl/rv2162c.txt", sep="\t", header=T)
 rv2162</pre></code>
             <div class="alert alert-info" style="white-space:pre-wrap;"><samp>        expg    gene lineage
 L1_1  4.7906 Rv2162c       1
