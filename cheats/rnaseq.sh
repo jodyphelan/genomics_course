@@ -23,7 +23,7 @@ R
 ### All in R now
 library(DESeq2)
 library(gplots)
-directory <- "/home/user/data/transcriptomics/Mapping_Mtb/HTSeqCounts/" 
+directory <- "~/data/transcriptomics/Mapping_Mtb/HTSeqCounts/" 
 sampleFiles <- grep("Mtb", list.files(directory), value = TRUE)
 sampleCondition <- c("l4","l1","l1","l4","l1","l4")
 sampleTable <- data.frame(sampleName = sampleFiles,
