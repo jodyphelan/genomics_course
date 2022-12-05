@@ -33,6 +33,13 @@ ufw --force enable
 
 # finally prepare machine for the course
 apt install -y default-jre xclip
+sudo apt update
+sudo apt install wget lsb-release
+export PLATFORM=$(lsb_release -cs)
+wget -O- https://cdn.oxfordnanoportal.com/apt/ont-repo.pub | sudo apt-key add -
+echo "deb http://cdn.oxfordnanoportal.com/apt ${PLATFORM}-stable non-free" | sudo tee /etc/apt/sources.list.d/nanoporetech.sources.list
+sudo apt update
+sudo apt install ont-guppy-cpu
 sudo -i -u user bash << EOF
 wget https://raw.githubusercontent.com/jodyphelan/genomics_course/master/scripts/setup_machine/as_user.sh
 bash as_user.sh
