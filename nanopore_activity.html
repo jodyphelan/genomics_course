@@ -420,7 +420,7 @@
 
         <p>We need to use Samtools, a versatile package you will be familiar with, to extract the depth statistics from the .bam alignment file we generated in the previous section. This will generate a file called ‘depth_statistics’.</p>
 
-        <pre><code>samtools depth sorted.bam > depth_statistics</code></pre>
+        <pre><code>samtools depth ~/data/nanopore_activity/mapping/sorted.bam > depth_statistics</code></pre>
 
         <p>Next, we will use the R statistical package to generate a plot based on the data samtools generated. Simply type ‘R’ in to the terminal to initialise the R interface. </p>
 
@@ -451,7 +451,7 @@
           Now that we know the coverage and depth, we can move on to the variant calling. For this, we will use a package called ‘bcftools’. Bcftools will look through the alignment and ‘call’ the positions which do not agree with the reference, count them and compile them in to a database called a VCF. Enter the following code in to the terminal to begin the process:
         </div>
 
-        <pre><code>bcftools mpileup -q 8 -B -I -Ou -f reference.fasta sorted.bam | bcftools call -mv -Oz -o calls.vcf.gz</code></pre>
+        <pre><code>bcftools mpileup -q 8 -B -I -Ou -f reference.fasta ~/data/nanopore_activity/mapping/sorted.bam | bcftools call -mv -Oz -o calls.vcf.gz</code></pre>
 
         <div><img src="img/variant_calling.gif" class="img-fluid" alt="Responsive image"></div>
 
