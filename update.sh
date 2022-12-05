@@ -13,7 +13,8 @@
 
 #### Added as nanopore fix for 05/12/2022 course only. Future installs will not require this
 
-source /mnt/storageG1/dan/miniconda3/etc/profile.d/conda.sh
+source /home/user/miniconda3/etc/profile.d/conda.sh
+source /home/user/miniconda3/etc/profile.d/mamba.sh
 conda remove --name nanopore --all
 wget https://raw.githubusercontent.com/jodyphelan/genomics_course/master/conda_env/nanopore.yaml
 mamba env create -f nanopore.yaml
