@@ -27,7 +27,10 @@ echo "deb http://cdn.oxfordnanoportal.com/apt ${PLATFORM}-stable non-free" | sud
 sudo apt update
 sudo apt install ont-guppy-cpu
 conda activate nanopore
-mamba install -c bioconda minimap2 -y
-mamba install -c bioconda mafft -y
+#mamba install -c bioconda minimap2 -y
+#mamba install -c bioconda mafft -y
+#mamba install -c bioconda bcftools -y
+#mamba install -c bioconda samtools -y
+#mamba install -c bioconda figtree -y 
 cd /home/user/data/nanopore_activity/kraken/
 retaxdump
