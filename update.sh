@@ -5,7 +5,24 @@
 #wget https://tbdr.lshtm.ac.uk/static/files.tgz
 #tar -xvf files.tgz
 #rm files.tgz
-cd ~/Documents
-rm -rf ~/Documents/genomics_course/
-git clone https://github.com/jodyphelan/genomics_course.git
-cp ~/Documents/genomics_course/cheats/temp.krak ~/data/nanopore_activity/kraken/.temp.krak
+##cd ~/Documents
+##rm -rf ~/Documents/genomics_course/
+##git clone https://github.com/jodyphelan/genomics_course.git
+##cp ~/Documents/genomics_course/cheats/temp.krak ~/data/nanopore_activity/kraken/.temp.krak
+
+
+#### Added as nanopore fix for 05/12/2022 course only. Future installs will not require this
+
+~/miniconda3/condabin/conda init
+conda remove --name nanopore --all
+wget https://raw.githubusercontent.com/jodyphelan/genomics_course/master/conda_env/nanopore.yaml
+mamba env create -f nanopore.yaml
+rm nanopore.yaml
+sudo apt update
+sudo apt install wget lsb-release
+export PLATFORM=$(lsb_release -cs)
+wget -O- https://cdn.oxfordnanoportal.com/apt/ont-repo.pub | sudo apt-key add -
+echo "deb http://cdn.oxfordnanoportal.com/apt ${PLATFORM}-stable non-free" | sudo tee /etc/apt/sources.list.d/nanoporetech.sources.list
+sudo apt update
+sudo apt update
+sudo apt install ont-guppy-cpu
