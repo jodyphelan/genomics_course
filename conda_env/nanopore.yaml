@@ -427,7 +427,6 @@ dependencies:
     - gdown==4.5.4
     - h5py==3.1.0
     - idna==3.4
-    - ont-albacore==2.3.4
     - ont-fast5-api==4.1.0
     - plotly==4.1.0
     - progressbar33==2.4
