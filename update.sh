@@ -26,3 +26,5 @@ wget -O- https://cdn.oxfordnanoportal.com/apt/ont-repo.pub | sudo apt-key add -
 echo "deb http://cdn.oxfordnanoportal.com/apt ${PLATFORM}-stable non-free" | sudo tee /etc/apt/sources.list.d/nanoporetech.sources.list
 sudo apt update
 sudo apt install ont-guppy-cpu
+cd /home/user/data/nanopore_activity/kraken/
+retaxdump
