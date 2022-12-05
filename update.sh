@@ -15,9 +15,9 @@
 
 source /home/user/miniconda3/etc/profile.d/conda.sh
 source /home/user/miniconda3/etc/profile.d/mamba.sh
-conda remove --name nanopore --all
+conda remove --name nanopore --all -y
 wget https://raw.githubusercontent.com/jodyphelan/genomics_course/master/conda_env/nanopore.yaml
-mamba env create -f nanopore.yaml
+mamba env create -f nanopore.yaml -y
 rm nanopore.yaml
 sudo apt update
 sudo apt install wget lsb-release
