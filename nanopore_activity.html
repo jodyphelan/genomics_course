@@ -420,7 +420,7 @@
 
         <p>We need to use Samtools, a versatile package you will be familiar with, to extract the depth statistics from the .bam alignment file we generated in the previous section. This will generate a file called ‘depth_statistics’.</p>
 
-        <pre><code>samtools depth sorted.bam > depth_statistics</code></pre>
+        <pre><code>samtools depth ~/data/nanopore_activity/mapping/sorted.bam > depth_statistics</code></pre>
 
         <p>Next, we will use the R statistical package to generate a plot based on the data samtools generated. Simply type ‘R’ in to the terminal to initialise the R interface. </p>
 
@@ -451,7 +451,7 @@
           Now that we know the coverage and depth, we can move on to the variant calling. For this, we will use a package called ‘bcftools’. Bcftools will look through the alignment and ‘call’ the positions which do not agree with the reference, count them and compile them in to a database called a VCF. Enter the following code in to the terminal to begin the process:
         </div>
 
-        <pre><code>bcftools mpileup -q 8 -B -I -Ou -f reference.fasta sorted.bam | bcftools call -mv -Oz -o calls.vcf.gz</code></pre>
+        <pre><code>bcftools mpileup -q 8 -B -I -Ou -f reference.fasta ~/data/nanopore_activity/mapping/sorted.bam | bcftools call -mv -Oz -o calls.vcf.gz</code></pre>
 
         <div><img src="img/variant_calling.gif" class="img-fluid" alt="Responsive image"></div>
 
@@ -477,11 +477,20 @@
 </p>
         <pre><code>bcftools consensus -f reference.fasta calls.vcf.gz -o consensus_sequence.fasta</code></pre>
 
-
+        <div class="alert alert-danger" role="alert">
+          It is important to understand how the reference sequence can effect the consensus outcome. If unchecked, positions with zero coverage will default to reference. This will result in the experimental sequence becoming more like the reference than it actually is. We can use BEDtools mark positions with low coverage which BCFtools will use to mask the zero coverage positions with 'N's.
+        </div>
 
         <div class="alert alert-primary">
           You will now have a file called ‘consensus_sequence.fasta’. this contains the modified reference, a brand new sequences based on the sequence data we have been working with.
         </div>
+
+
+
+
+
+
+
 
         <br>
         <br>

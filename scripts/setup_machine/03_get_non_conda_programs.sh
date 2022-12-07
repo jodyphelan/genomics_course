@@ -4,8 +4,8 @@ conda activate microbiome
 pip install multiqc
 
 # albacore in nanopore env
-conda activate nanopore
-pip install ~/git/genomics_course/non_conda_programs/albacore/*whl
+#conda activate nanopore
+#pip install ~/git/genomics_course/non_conda_programs/albacore/*whl
 
 # create symlinks to executables in ~/bin
 mkdir ~/bin

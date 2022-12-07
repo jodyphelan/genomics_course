@@ -1,8 +1,8 @@
 name: nanopore
 channels:
   - biocore
-  - bioconda
   - conda-forge
+  - bioconda
   - defaults
 dependencies:
   - _libgcc_mutex=0.1=conda_forge
@@ -24,9 +24,9 @@ dependencies:
   - bwidget=1.9.14=ha770c72_0
   - bzip2=1.0.8=h7f98852_4
   - c-ares=1.17.2=h7f98852_0
-  - ca-certificates=2022.10.11=h06a4308_0
+  - ca-certificates=2021.10.8=ha878542_0
   - cairo=1.16.0=h6cf1ce9_1008
-  - certifi=2021.5.30=py36h06a4308_0
+  - certifi=2020.12.5=py36h06a4308_0
   - cffi=1.14.6=py36hd8eec40_1
   - curl=7.79.1=h2574ce0_1
   - cycler=0.11.0=pyhd8ed1ab_0
@@ -74,7 +74,6 @@ dependencies:
   - jupyter_client=7.0.6=pyhd8ed1ab_0
   - jupyter_core=4.8.1=py36h5fab9bb_0
   - jupyterlab_pygments=0.1.2=pyh9f0ad1d_0
-  - k8=0.2.5=hd03093a_2
   - kernel-headers_linux-64=2.6.32=he073ed8_14
   - kiwisolver=1.3.1=py36h2531618_0
   - kmer-jellyfish=1.1.12=h7d875b9_1
@@ -129,7 +128,6 @@ dependencies:
   - markupsafe=2.0.1=py36h8f6f2f9_0
   - matplotlib=3.3.4=py36h06a4308_0
   - matplotlib-base=3.3.4=py36hd391965_0
-  - minimap2=2.24=h7132678_1
   - mistune=0.8.4=py36h8f6f2f9_1004
   - mysql-common=8.0.27=ha770c72_1
   - mysql-libs=8.0.27=hfa10184_1
@@ -145,7 +143,7 @@ dependencies:
   - olefile=0.46=pyh9f0ad1d_1
   - openjdk=10.0.2=h14c3975_1015
   - openpyxl=3.0.9=pyhd8ed1ab_0
-  - openssl=1.1.1s=h7f8727e_0
+  - openssl=1.1.1l=h7f98852_0
   - packaging=21.0=pyhd8ed1ab_0
   - pandas=1.1.5=py36h284efc9_0
   - pandoc=2.14.2=h7f98852_0
@@ -420,22 +418,12 @@ dependencies:
   - zlib=1.2.11=h36c2ea0_1013
   - zstd=1.5.0=ha95c52a_0
   - pip:
-    - beautifulsoup4==4.11.1
     - cached-property==1.5.2
-    - charset-normalizer==2.0.12
-    - filelock==3.4.1
-    - gdown==4.5.4
     - h5py==3.1.0
-    - idna==3.4
-    - ont-fast5-api==4.1.0
     - plotly==4.1.0
     - progressbar33==2.4
     - pycoqc==2.5.2
     - pysam==0.17.0
-    - pysocks==1.7.1
-    - requests==2.27.1
     - retrying==1.3.3
-    - soupsieve==2.3.2.post1
     - tqdm==4.62.3
-    - urllib3==1.26.13
 prefix: /home/user/miniconda3/envs/nanopore
