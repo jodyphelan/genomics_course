@@ -477,11 +477,20 @@
 </p>
         <pre><code>bcftools consensus -f reference.fasta calls.vcf.gz -o consensus_sequence.fasta</code></pre>
 
-
+        <div class="alert alert-danger" role="alert">
+          It is important to understand how the reference sequence can effect the consensus outcome. If unchecked, positions with zero coverage will default to reference. This will result in the experimental sequence becoming more like the reference than it actually is. We can use BEDtools mark positions with low coverage which BCFtools will use to mask the zero coverage positions with 'N's.
+        </div>
 
         <div class="alert alert-primary">
           You will now have a file called ‘consensus_sequence.fasta’. this contains the modified reference, a brand new sequences based on the sequence data we have been working with.
         </div>
+
+
+
+
+
+
+
 
         <br>
         <br>
