@@ -1,0 +1,45 @@
+name: mapping
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - bowtie2=2.5.0=py310h7d4de36_0
+  - bwa=0.7.17=h1f540d2_9
+  - bzip2=1.0.8=h0d85af4_4
+  - c-ares=1.18.1=h0d85af4_0
+  - ca-certificates=2022.12.7=h033912b_0
+  - fastq=2.0.1=pyhdfd78af_0
+  - htslib=1.16=h567f53e_0
+  - igv=2.13.2=hdfd78af_0
+  - krb5=1.20.1=h049b76e_0
+  - libcurl=7.87.0=h6df9250_0
+  - libcxx=14.0.6=hccf4f1f_0
+  - libdeflate=1.13=h775f41a_0
+  - libedit=3.1.20191231=h0678c8f_2
+  - libev=4.33=haf1e3a3_1
+  - libffi=3.4.2=h0d85af4_5
+  - libnghttp2=1.47.0=h5aae05b_1
+  - libsqlite=3.40.0=ha978bb4_0
+  - libssh2=1.10.0=h47af595_3
+  - libzlib=1.2.13=hfd90126_4
+  - minifasta=3.0.2=pyhd8ed1ab_0
+  - ncurses=6.3=h96cf925_1
+  - openjdk=17.0.3=hbc0c0cd_5
+  - openssl=3.0.7=hfd90126_1
+  - perl=5.32.1=2_h0d85af4_perl5
+  - pip=22.3.1=pyhd8ed1ab_0
+  - python=3.10.8=he7542f4_0_cpython
+  - python_abi=3.10=3_cp310
+  - readline=8.1.2=h3899abd_0
+  - samtools=1.16.1=h7e39424_1
+  - setuptools=65.6.3=pyhd8ed1ab_0
+  - tbb=2021.7.0=hb8565cd_1
+  - tk=8.6.12=h5dbffcc_0
+  - trimmomatic=0.39=hdfd78af_2
+  - tzdata=2022g=h191b570_0
+  - wheel=0.38.4=pyhd8ed1ab_0
+  - xz=5.2.6=h775f41a_0
+  - zlib=1.2.13=hfd90126_4
+  - zstd=1.5.2=hfa58983_4
+prefix: /Users/jody/miniconda3/envs/mapping
