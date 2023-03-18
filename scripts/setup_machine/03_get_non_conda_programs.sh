@@ -20,3 +20,10 @@ ln -s ~/git/genomics_course/non_conda_programs/tablet/tablet ~/bin/
 ln -s ~/git/genomics_course/non_conda_programs/artemis/{art,act} ~/bin/
 # tracer
 ln -s ~/git/genomics_course/non_conda_programs/tracer/bin/tracer ~/bin/
+
+mkdir ~/software/
+cd ~/software/
+wget https://cdn.oxfordnanoportal.com/software/analysis/ont-guppy-cpu_6.4.6_linux64.tar.gz
+tar -xvf ont-guppy-cpu_6.4.6_linux64.tar.gz
+rm ont-guppy-cpu_6.4.6_linux64.tar.gz
+echo "export PATH=\$PATH:~/software/ont-guppy-cpu/bin" >> ~/.bashrc
