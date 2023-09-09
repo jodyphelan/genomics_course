@@ -20,6 +20,9 @@ ln -s ~/git/genomics_course/non_conda_programs/tablet/tablet ~/bin/
 ln -s ~/git/genomics_course/non_conda_programs/artemis/{art,act} ~/bin/
 # tracer
 ln -s ~/git/genomics_course/non_conda_programs/tracer/bin/tracer ~/bin/
+# igv
+ln -s ~/git/genomics_course/non_conda_programs/IGV_Linux_2.16.2/igv.sh ~/bin/igv
+
 
 mkdir ~/software/
 cd ~/software/
