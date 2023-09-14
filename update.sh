@@ -1,3 +1,4 @@
 eval "$(conda shell.bash hook)"
 conda activate nanopore
-mamba install -y -c conda-forge -c bioconda pycoqc pysam
+cd /home/user/data/nanopore_activity/kraken/
+retaxdump
