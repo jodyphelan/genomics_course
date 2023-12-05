@@ -11,3 +11,4 @@ conda create --name nanopore --file ~/git/genomics_course/conda_env/nanopore.exp
 conda create --name phylogenetics --file ~/git/genomics_course/conda_env/phylogenetics.explicit.txt 2> ~/logs/phylogenetics.errlog > ~/logs/phylogenetics.log
 conda create --name rnaseq --file ~/git/genomics_course/conda_env/rnaseq.explicit.txt 2> ~/logs/rnaseq.errlog > ~/logs/rnaseq.log
 conda create --name variant_detection --file ~/git/genomics_course/conda_env/variant_detection.explicit.txt 2> ~/logs/variant_detection.errlog > ~/logs/variant_detection.log
+conda create --name ml --file ~/git/genomics_course/conda_env/ml.explicit.txt 2> ~/logs/ml.errlog > ~/logs/ml.log
