@@ -1,7 +1,7 @@
 # multiqc in microbiome env
 eval "$(conda shell.bash hook)"
-conda activate microbiome
-pip install multiqc
+# conda activate microbiome
+# pip install multiqc
 
 # albacore in nanopore env
 #conda activate nanopore
@@ -24,9 +24,9 @@ ln -s ~/git/genomics_course/non_conda_programs/tracer/bin/tracer ~/bin/
 ln -s ~/git/genomics_course/non_conda_programs/IGV_Linux_2.16.2/igv.sh ~/bin/igv
 
 
-mkdir ~/software/
-cd ~/software/
-wget https://cdn.oxfordnanoportal.com/software/analysis/ont-guppy-cpu_6.4.6_linux64.tar.gz
-tar -xvf ont-guppy-cpu_6.4.6_linux64.tar.gz
-rm ont-guppy-cpu_6.4.6_linux64.tar.gz
-echo "export PATH=\$PATH:~/software/ont-guppy-cpu/bin" >> ~/.bashrc
+# mkdir ~/software/
+# cd ~/software/
+# wget https://cdn.oxfordnanoportal.com/software/analysis/ont-guppy-cpu_6.4.6_linux64.tar.gz
+# tar -xvf ont-guppy-cpu_6.4.6_linux64.tar.gz
+# rm ont-guppy-cpu_6.4.6_linux64.tar.gz
+# echo "export PATH=\$PATH:~/software/ont-guppy-cpu/bin" >> ~/.bashrc
