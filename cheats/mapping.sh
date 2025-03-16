@@ -31,12 +31,3 @@ bwa mem ~/data/malaria/Pf3D7_05.fasta ~/data/malaria/IT.Chr5_1.fastq.gz ~/data/m
 samtools index IT.Chr5.bam
 samtools view IT.Chr5.bam | grep "IL39_6014:8:61:7451:18170"
 
-
-# Tradis
-cd ~/data/tradis
-zcat TraDIS_reads_chr1.fastq.gz | wc -l
-perl remove_transposon_and_filter_FASTQ.pl ~/data/tradis/TraDIS_reads_chr1.fastq.gz 0  | gzip -c > TraDIS_reads_chr1.filt.fq.gz 
-bowtie-build Bp.genome.fa Bp.genome.fa
-bowtie -y -a -v 0 -S Bp.genome.fa -q TraDIS_reads_chr1.filt.fq.gz 2> TraDIS_reads_chr1.bowtieLog.txt | samtools view -b - | samtools sort -o TraDIS_reads_chr1.bam -
-samtools index TraDIS_reads_chr1.bam
-samtools view -b TraDIS_reads_chr1.bam chr1:90207-90668 | samtools flagstat -
