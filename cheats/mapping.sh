@@ -1,6 +1,6 @@
 # Intro
 eval "$(conda shell.bash hook)"
-conda activate mapping
+conda activate day1
 cd ~/data/malaria/
 head -n 5 Pf3D7_05.fasta
 zcat IT.Chr5_1.fastq.gz | head -n 12
